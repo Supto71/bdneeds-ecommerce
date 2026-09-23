@@ -1,0 +1,97 @@
+'use client';
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { User } from '@/types';
+
+interface AuthContextType {
+  user: User | null;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
+  login: (email: string, pass: string) => Promise<{ success: boolean; message?: string }>;
+  register: (name: string, email: string, pass: string, phone: string) => Promise<{ success: boolean; message?: string }>;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem('novacart_user');
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
+      }
+    } catch (e) {
+      console.error('Failed to load user', e);
+    }
+  }, []);
+
+  const login = async (email: string, pass: string) => {
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pass }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Login failed' };
+      }
+      setUser(data.user);
+      localStorage.setItem('novacart_user', JSON.stringify(data.user));
+      return { success: true };
+    } catch (e) {
+      return { success: false, message: 'Network error during login' };
+    }
+  };
+
+  const register = async (name: string, email: string, pass: string, phone: string) => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password: pass, phone }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Registration failed' };
+      }
+      setUser(data.user);
+      localStorage.setItem('novacart_user', JSON.stringify(data.user));
+      return { success: true };
+    } catch (e) {
+      return { success: false, message: 'Network error during registration' };
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('novacart_user');
+    fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: !!user,
+        isAdmin: user?.role === 'ADMIN',
+        login,
+        register,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
