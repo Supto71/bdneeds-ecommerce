@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const savedUser = localStorage.getItem('novacart_user');
+      const savedUser = localStorage.getItem('bdneeds_user');
       if (savedUser) {
         setUser(JSON.parse(savedUser));
       }
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: false, message: data.error || 'Login failed' };
       }
       setUser(data.user);
-      localStorage.setItem('novacart_user', JSON.stringify(data.user));
+      localStorage.setItem('bdneeds_user', JSON.stringify(data.user));
       return { success: true };
     } catch (e) {
       return { success: false, message: 'Network error during login' };
@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return { success: false, message: data.error || 'Registration failed' };
       }
       setUser(data.user);
-      localStorage.setItem('novacart_user', JSON.stringify(data.user));
+      localStorage.setItem('bdneeds_user', JSON.stringify(data.user));
       return { success: true };
     } catch (e) {
       return { success: false, message: 'Network error during registration' };
@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('novacart_user');
+    localStorage.removeItem('bdneeds_user');
     fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
   };
 

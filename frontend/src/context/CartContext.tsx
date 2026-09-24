@@ -26,7 +26,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('novacart_cart');
+      const saved = localStorage.getItem('bdneeds_cart');
       if (saved) {
         setItems(JSON.parse(saved));
       }
@@ -38,7 +38,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('novacart_cart', JSON.stringify(items));
+      localStorage.setItem('bdneeds_cart', JSON.stringify(items));
     }
   }, [items, isLoaded]);
 

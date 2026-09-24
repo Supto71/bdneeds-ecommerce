@@ -26,11 +26,11 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
               <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-lg tracking-tighter">
-                NC
+                BN
               </div>
               <div className="flex flex-col">
                 <span className="font-extrabold text-xl tracking-tight text-white leading-none">
-                  NOVA<span className="text-blue-400">CART</span>
+                  Bd<span className="text-blue-400">Needs</span>
                 </span>
                 <span className="text-[9px] font-semibold tracking-widest text-slate-400 uppercase leading-tight mt-0.5">
                   {t('luxuryAndTech')}
@@ -39,21 +39,21 @@ export default function Footer() {
             </div>
 
             <p className="text-sm text-slate-300 max-w-sm leading-relaxed">
-              Curated architectural design, audiophile engineering, and modern luxury essentials. Built for uncompromising quality and longevity in Bangladesh & worldwide.
+              We are more than just an e-commerce platform; we are committed to making your daily life easier and more convenient. Delivering quality products straight to your doorstep.
             </p>
 
             <div className="space-y-2 text-xs text-slate-300 pt-2">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>Gulshan-2, Dhaka 1212, Bangladesh</span>
+                <span>Dhaka, Bangladesh</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>+880 1700-000000 / +880 1800-000000</span>
+                <span>+880 1811-277828</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>concierge@novacart.com</span>
+                <span>contact@bdneeds.com</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-400 shrink-0" />
@@ -174,39 +174,33 @@ export default function Footer() {
 
             {/* Social Links */}
             <div className="pt-2">
-              <span className="text-xs font-semibold text-slate-400 block mb-2">Follow Novacart</span>
+              <span className="text-xs font-semibold text-slate-400 block mb-2">Follow BdNeeds</span>
               <div className="flex items-center space-x-3 text-xs text-slate-300">
-                <a href="#facebook" className="hover:text-white transition-colors">Facebook</a>
-                <span>•</span>
-                <a href="#instagram" className="hover:text-white transition-colors">Instagram</a>
-                <span>•</span>
-                <a href="#youtube" className="hover:text-white transition-colors">YouTube</a>
+                <a href="https://www.facebook.com/profile.php?id=61589093341884" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Facebook</a>
               </div>
             </div>
           </div>
         </div>
 
         {/* Payment Methods & Legal Copyright */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>© {new Date().getFullYear()} {t('allRightsReserved')}</p>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[11px] text-slate-400 mr-1">BDT Payment Gateways:</span>
+        <div className="pt-8 flex flex-col items-center justify-center gap-6 text-xs text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <span className="text-[11px] text-slate-400 mr-1">Payment Options:</span>
             <span className="px-2.5 py-1 bg-[#E2136E]/20 text-[#E2136E] border border-[#E2136E]/40 rounded font-bold tracking-wider text-[10px]">
-              bKash
-            </span>
-            <span className="px-2.5 py-1 bg-[#F7941D]/20 text-[#F7941D] border border-[#F7941D]/40 rounded font-bold tracking-wider text-[10px]">
-              Nagad
-            </span>
-            <span className="px-2.5 py-1 bg-white/10 rounded font-semibold text-white tracking-wider text-[10px]">
-              VISA
-            </span>
-            <span className="px-2.5 py-1 bg-white/10 rounded font-semibold text-white tracking-wider text-[10px]">
-              MASTERCARD
+              bKash / Nagad
             </span>
             <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded font-semibold text-[10px]">
               Cash On Delivery
             </span>
+          </div>
+          
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
+            <p>© {new Date().getFullYear()} {t('allRightsReserved')}</p>
+            <div className="flex items-center gap-4 border-l border-r border-slate-700 px-4">
+              <Link href="/terms" className="hover:text-blue-400 transition-colors">Terms & Conditions</Link>
+              <Link href="/return-policy" className="hover:text-blue-400 transition-colors">Return/Refund Policy</Link>
+            </div>
+            <p className="font-semibold text-slate-300">DBID: <span className="text-white">Pending</span></p>
           </div>
         </div>
       </div>

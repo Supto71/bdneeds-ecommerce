@@ -21,16 +21,29 @@
   --foreground: #0b132b;
 }
 
+html {
+  font-size: 16px; /* Base size for mobile to prevent clutter */
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 17px; /* Slightly larger on tablet/desktop */
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), var(--font-hind-siliguri), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-weight: 400; /* Revert to normal weight to fix cluttered look */
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* Headings: General Sans (EN) + Anek Bangla (BN) */
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'General Sans', var(--font-anek-bangla), var(--font-inter), -apple-system, sans-serif;
+  font-weight: 700; /* Bold headings but not overly aggressive */
 }
 
 

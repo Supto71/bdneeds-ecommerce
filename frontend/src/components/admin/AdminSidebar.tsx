@@ -45,11 +45,11 @@ export default function AdminSidebar() {
         <div className="p-6 border-b border-slate-800 flex items-center justify-between">
           <Link href="/admin" className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-black text-sm text-white">
-              NC
+              BD
             </div>
             <div>
               <span className="font-extrabold text-base tracking-tight text-white block leading-none">
-                NOVA<span className="text-blue-400">CART</span>
+                Bd<span className="text-blue-400">Needs</span>
               </span>
               <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">
                 {t('adminConsole')}

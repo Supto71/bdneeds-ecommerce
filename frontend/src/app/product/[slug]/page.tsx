@@ -26,7 +26,7 @@ export async function generateMetadata(props: {
     title: product.name,
     description: product.shortDescription,
     openGraph: {
-      title: `${product.name} | NOVACART`,
+      title: `${product.name} | BDNEEDS`,
       description: product.shortDescription,
       images: [product.images[0]],
     },

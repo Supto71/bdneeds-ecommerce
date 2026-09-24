@@ -45,7 +45,7 @@ export default function AdminHeader() {
               {user?.name || 'Administrator'}
             </span>
             <span className="text-[10px] text-slate-400 block leading-tight">
-              {user?.email || 'admin@novacart.com'}
+              {user?.email || 'admin@bdneeds.com'}
             </span>
           </div>
 

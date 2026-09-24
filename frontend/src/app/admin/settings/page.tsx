@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import { Save, CheckCircle2, Store, DollarSign, Truck, ShieldCheck } from 'lucide-react';
 
 export default function AdminSettingsPage() {
-  const [storeName, setStoreName] = useState('NOVACART');
+  const [storeName, setStoreName] = useState('BDNEEDS');
   const [currency, setCurrency] = useState('USD ($)');
   const [shippingFee, setShippingFee] = useState('15');
   const [freeShippingThreshold, setFreeShippingThreshold] = useState('99');
   const [taxRate, setTaxRate] = useState('8');
-  const [contactEmail, setContactEmail] = useState('concierge@novacart.com');
+  const [contactEmail, setContactEmail] = useState('concierge@bdneeds.com');
   const [contactPhone, setContactPhone] = useState('+1 (800) 555-NOVA');
   const [saved, setSaved] = useState(false);
 

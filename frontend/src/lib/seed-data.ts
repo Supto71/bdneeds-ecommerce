@@ -1243,8 +1243,8 @@ export const INITIAL_ORDERS: Order[] = [
 export const INITIAL_USERS: User[] = [
   {
     id: 'usr-admin-1',
-    name: 'Novacart Executive Admin',
-    email: 'admin@novacart.com',
+    name: 'bdneeds Executive Admin',
+    email: 'admin@bdneeds.com',
     password: 'admin123',
     role: 'ADMIN',
     phone: '+1 (555) 000-1111',

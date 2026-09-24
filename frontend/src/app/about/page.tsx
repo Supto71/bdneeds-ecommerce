@@ -18,13 +18,13 @@ export default function AboutPage() {
         <section className="relative bg-[#0B132B] text-white py-20 lg:py-32 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center max-w-3xl">
             <span className="text-xs font-extrabold tracking-widest uppercase text-blue-400 mb-3 block">
-              OUR ARCHITECTURAL PHILOSOPHY
+              ABOUT BDNEEDS
             </span>
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
-              Where Acoustic Artistry Meets Modern Craft
+              Your Daily Life, Made Easier
             </h1>
             <p className="mt-6 text-sm sm:text-base text-slate-300 leading-relaxed">
-              Founded on the belief that everyday tools and garments should possess the refinement of fine horology and the engineering rigor of aerospace acoustics.
+              We are more than just an e-commerce platform; we are committed to making your daily life easier and more convenient. Our core pledge is to deliver the best quality products at affordable prices right to your doorstep.
             </p>
           </div>
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-transparent to-transparent pointer-events-none" />
@@ -35,41 +35,41 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-xl mx-auto mb-16">
               <h2 className="text-2xl sm:text-3xl font-black text-[#0B132B]">
-                The Three Novacart Standards
+                Our Mission & Vision
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 mt-2">
-                Uncompromising principles governing every product in our catalog.
+                The core principles that drive everything we do.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                  <Award className="w-6 h-6" />
+                  <ShieldCheck className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-[#0B132B]">Authentic Materials</h3>
+                <h3 className="text-lg font-bold text-[#0B132B]">Building Trust</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Titanium alloys, Australian merino wool, vegetable-tanned Tuscan bridle leather, and double-domed sapphire crystals. We never compromise on raw substance.
+                  Establishing a long-term relationship based on absolute honesty and transparency in every order.
                 </p>
               </div>
 
               <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                  <ShieldCheck className="w-6 h-6" />
+                  <Award className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-[#0B132B]">Studio Engineering</h3>
+                <h3 className="text-lg font-bold text-[#0B132B]">Quality Products</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Calibrated acoustics, gasket-mounted dampening, high-density batteries, and whisper-silent brushless motors tested across thousands of operational hours.
+                  Bringing the finest and most genuine products from home and abroad straight to you.
                 </p>
               </div>
 
               <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
-                  <Globe2 className="w-6 h-6" />
+                  <Sparkles className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-[#0B132B]">Sustainable Longevity</h3>
+                <h3 className="text-lg font-bold text-[#0B132B]">Prompt Service</h3>
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  We reject planned obsolescence. Our electronics feature hot-swappable modularity and our leather goods are designed to develop an enduring patina over decades.
+                  Ensuring the fastest delivery and reliable customer support through the use of modern technology.
                 </p>
               </div>
             </div>
@@ -83,7 +83,7 @@ export default function AboutPage() {
               Experience The Collection Firsthand
             </h2>
             <p className="text-xs sm:text-sm text-slate-500">
-              Complimentary global express shipping on all orders over $99 with full 30-day return privileges.
+              Enjoy 7-day easy returns and fast delivery nationwide. Shop our diverse range of clothing, electronics, kids' products, and sports equipment.
             </p>
             <Link
               href="/shop"

@@ -121,11 +121,11 @@ export default function Header() {
             {/* Brand Logo */}
             <Link href="/" className="flex items-center gap-2.5 group">
               <div className="w-10 h-10 rounded-xl bg-[#0B132B] flex items-center justify-center text-white font-black text-lg tracking-tighter shadow-md group-hover:bg-blue-600 transition-colors">
-                NC
+                BN
               </div>
               <div className="flex flex-col">
                 <span className="font-extrabold text-xl tracking-tight text-[#0B132B] leading-none">
-                  NOVA<span className="text-blue-600">CART</span>
+                  Bd<span className="text-blue-600">Needs</span>
                 </span>
                 <span className="text-[9px] font-semibold tracking-widest text-slate-400 uppercase leading-tight mt-0.5">
                   {t('luxuryAndTech')}

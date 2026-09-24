@@ -1367,8 +1367,8 @@
   "users": [
     {
       "id": "usr-admin-1",
-      "name": "Novacart Executive Admin",
-      "email": "admin@novacart.com",
+      "name": "bdneeds Executive Admin",
+      "email": "admin@bdneeds.com",
       "password": "admin123",
       "role": "ADMIN",
       "phone": "+1 (555) 000-1111",
@@ -1397,12 +1397,12 @@
     }
   ],
   "settings": {
-    "storeName": "NOVACART",
+    "storeName": "BDNEEDS",
     "currency": "USD",
     "shippingFee": 15,
     "freeShippingThreshold": 99,
     "taxRate": 0.08,
-    "contactEmail": "concierge@novacart.com",
+    "contactEmail": "concierge@bdneeds.com",
     "contactPhone": "+1 (800) 555-NOVA"
   }
 }

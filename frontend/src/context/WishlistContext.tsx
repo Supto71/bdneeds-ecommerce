@@ -18,7 +18,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('novacart_wishlist');
+      const saved = localStorage.getItem('bdneeds_wishlist');
       if (saved) {
         setWishlistIds(JSON.parse(saved));
       }
@@ -30,7 +30,7 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('novacart_wishlist', JSON.stringify(wishlistIds));
+      localStorage.setItem('bdneeds_wishlist', JSON.stringify(wishlistIds));
     }
   }, [wishlistIds, isLoaded]);
 

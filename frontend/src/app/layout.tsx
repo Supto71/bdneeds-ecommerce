@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Hind_Siliguri, Anek_Bangla } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/context/Providers';
+import WhatsAppWidget from '@/components/storefront/WhatsAppWidget';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -25,8 +26,8 @@ const anekBangla = Anek_Bangla({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | NOVACART - Premium Multi-Category Shopping',
-    default: 'NOVACART | Premium Multi-Category E-Commerce Platform',
+    template: '%s | BDNEEDS - Premium Multi-Category Shopping',
+    default: 'BDNEEDS | Premium Multi-Category E-Commerce Platform',
   },
   description:
     'Explore curated collections across electronics, luxury fashion, footwear, beauty, accessories, and modern living.',
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     'electronics',
     'fashion',
     'premium shopping',
-    'novacart',
+    'BdNeeds',
     'luxury goods',
   ],
   icons: {
@@ -55,6 +56,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col bg-white text-[#0B132B]">
         <Providers>{children}</Providers>
+        <WhatsAppWidget />
       </body>
     </html>
   );

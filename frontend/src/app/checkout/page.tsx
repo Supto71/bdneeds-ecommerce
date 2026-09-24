@@ -21,6 +21,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { formatPrice } from '@/lib/utils';
 import { CartItem, PaymentMethod } from '@/types';
+import { DIVISIONS, DISTRICTS } from '@/lib/address-data';
 
 function CheckoutContent() {
   const router = useRouter();
@@ -42,10 +43,16 @@ function CheckoutContent() {
 
   // Shipping Address
   const [street, setStreet] = useState('');
-  const [city, setCity] = useState('');
-  const [area, setArea] = useState('');
+  const [division, setDivision] = useState('');
+  const [district, setDistrict] = useState('');
+  const [thana, setThana] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [deliveryNote, setDeliveryNote] = useState('');
+
+  // Reset district when division changes
+  useEffect(() => {
+    setDistrict('');
+  }, [division]);
 
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('COD');
@@ -65,7 +72,7 @@ function CheckoutContent() {
   useEffect(() => {
     if (isBuyNow) {
       try {
-        const stored = sessionStorage.getItem('novacart_buy_now');
+        const stored = sessionStorage.getItem('bdneeds_buy_now');
         if (stored) {
           const parsed = JSON.parse(stored);
           setCheckoutItems(parsed);
@@ -101,12 +108,16 @@ function CheckoutContent() {
     }
   }, [initialCoupon, subtotal, appliedCoupon]);
 
+  // Calculate dynamic shipping fee: Inside Dhaka = 70, Outside = 130 (Express = 150)
+  const isDhaka = division === 'Dhaka';
+  let baseShipping = isDhaka ? 70 : 130;
+  
   const shippingFee =
     deliveryMethod === 'express'
-      ? 120
-      : subtotal >= 1000 || subtotal === 0
+      ? baseShipping + 50 // Express adds 50
+      : subtotal >= 2000 || subtotal === 0 // Assuming free shipping threshold is 2000
       ? 0
-      : 60;
+      : baseShipping;
   const discountAmount = appliedCoupon ? appliedCoupon.discount : 0;
   const taxableAmount = Math.max(0, subtotal - discountAmount);
   const tax = Number((taxableAmount * 0.05).toFixed(2));
@@ -126,8 +137,8 @@ function CheckoutContent() {
       return;
     }
 
-    if (!street || !city || !postalCode) {
-      setErrorMessage('Please complete all required shipping address fields.');
+    if (!street || !division || !district || !thana) {
+      setErrorMessage('Please complete all required shipping address fields (Division, District, Thana, Street).');
       return;
     }
 
@@ -143,9 +154,9 @@ function CheckoutContent() {
           fullName: customerName,
           phone: customerPhone,
           street,
-          city,
-          area: area || city,
-          postalCode,
+          city: district,
+          area: thana,
+          postalCode: postalCode || '0000',
         },
         deliveryNote,
         items: checkoutItems.map((i) => ({
@@ -170,7 +181,7 @@ function CheckoutContent() {
       }
 
       if (isBuyNow) {
-        sessionStorage.removeItem('novacart_buy_now');
+        sessionStorage.removeItem('bdneeds_buy_now');
       } else {
         clearCart();
       }
@@ -298,26 +309,43 @@ function CheckoutContent() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      {t('city')} *
+                      Division *
+                    </label>
+                    <select
+                      required
+                      value={division}
+                      onChange={(e) => setDivision(e.target.value)}
+                      className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
+                    >
+                      <option value="">Select Division</option>
+                      {DIVISIONS.map(div => <option key={div} value={div}>{div}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      District *
+                    </label>
+                    <select
+                      required
+                      value={district}
+                      onChange={(e) => setDistrict(e.target.value)}
+                      disabled={!division}
+                      className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20 disabled:opacity-50"
+                    >
+                      <option value="">Select District</option>
+                      {division && DISTRICTS[division]?.map(dist => <option key={dist} value={dist}>{dist}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Thana / Upazila *
                     </label>
                     <input
                       type="text"
                       required
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      placeholder="Dhaka"
-                      className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Thana / Area
-                    </label>
-                    <input
-                      type="text"
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
-                      placeholder="Gulshan / Banani"
+                      value={thana}
+                      onChange={(e) => setThana(e.target.value)}
+                      placeholder="e.g. Gulshan, Banani, Sadar"
                       className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                     />
                   </div>
@@ -379,7 +407,7 @@ function CheckoutContent() {
                         Dhaka (24-48 hrs), Nationwide (2-3 days)
                       </div>
                       <div className="text-xs font-bold text-blue-600 mt-1">
-                        {subtotal >= 1000 ? t('free') : formatPrice(60)}
+                        {subtotal >= 2000 ? t('free') : formatPrice(isDhaka ? 70 : 130)}
                       </div>
                     </div>
                   </label>
@@ -403,7 +431,7 @@ function CheckoutContent() {
                       <div className="text-[11px] text-slate-500 mt-0.5">
                         Same-day / Next-morning priority courier
                       </div>
-                      <div className="text-xs font-bold text-blue-600 mt-1">{formatPrice(120)}</div>
+                      <div className="text-xs font-bold text-blue-600 mt-1">{formatPrice(isDhaka ? 120 : 180)}</div>
                     </div>
                   </label>
                 </div>
@@ -635,7 +663,7 @@ function CheckoutContent() {
                 </button>
 
                 <p className="text-[11px] text-center text-slate-400">
-                  By confirming your order, you agree to Novacart&apos;s terms of trade.
+                  By confirming your order, you agree to BdNeeds&apos;s terms of trade.
                 </p>
               </div>
             </div>

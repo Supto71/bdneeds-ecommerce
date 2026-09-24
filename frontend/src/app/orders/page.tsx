@@ -64,7 +64,7 @@ export default function OrdersPage() {
               </div>
               <h2 className="text-xl font-bold text-[#0B132B]">No Past Orders Found</h2>
               <p className="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto mt-2 mb-8 leading-relaxed">
-                When you place your first order with Novacart, full real-time telemetry and receipts will appear here.
+                When you place your first order with BdNeeds, full real-time telemetry and receipts will appear here.
               </p>
               <Link
                 href="/shop"

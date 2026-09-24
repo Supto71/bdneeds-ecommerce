@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const response = NextResponse.json({ success: true, user: safeUser });
 
     response.cookies.set({
-      name: 'novacart_session',
+      name: 'bdneeds_session',
       value: JSON.stringify({ id: user.id, role: user.role }),
       httpOnly: true,
       path: '/',

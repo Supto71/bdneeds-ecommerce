@@ -43,7 +43,7 @@ export default function RegisterPage() {
       <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6">
         <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-8 shadow-xs space-y-6">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-black text-[#0B132B]">Create Novacart Account</h1>
+            <h1 className="text-2xl font-black text-[#0B132B]">Create BdNeeds Account</h1>
             <p className="text-xs text-slate-500">
               Join our client circle for expedited checkouts and member privileges.
             </p>
@@ -130,7 +130,7 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
-              {loading ? 'Creating Account...' : 'Create Novacart Account'}
+              {loading ? 'Creating Account...' : 'Create BdNeeds Account'}
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>

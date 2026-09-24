@@ -162,7 +162,7 @@ export const translations = {
 
     // Order Success & Tracking
     orderSuccessTitle: 'Order Confirmed!',
-    orderSuccessDesc: 'Thank you for choosing NOVACART. Your order has been registered and is being processed.',
+    orderSuccessDesc: 'Thank you for choosing BDNEEDS. Your order has been registered and is being processed.',
     orderNumber: 'Order Number',
     trackingNumber: 'Tracking Number',
     estimatedArrival: 'Estimated Arrival',
@@ -216,7 +216,7 @@ export const translations = {
     warrantyAndSupport: 'Warranty & Support',
     privacyPolicy: 'Privacy Policy',
     termsOfService: 'Terms of Service',
-    allRightsReserved: 'All rights reserved. NOVACART Inc.',
+    allRightsReserved: 'All rights reserved. BDNEEDS Inc.',
 
     // Admin Console
     adminDashboard: 'Dashboard',
@@ -440,7 +440,7 @@ export const translations = {
 
     // Order Success & Tracking
     orderSuccessTitle: 'অর্ডার সফল হয়েছে!',
-    orderSuccessDesc: 'NOVACART বেছে নেওয়ার জন্য ধন্যবাদ। আপনার অর্ডারটি গ্রহণ করা হয়েছে এবং প্রসেসিং চলছে।',
+    orderSuccessDesc: 'BDNEEDS বেছে নেওয়ার জন্য ধন্যবাদ। আপনার অর্ডারটি গ্রহণ করা হয়েছে এবং প্রসেসিং চলছে।',
     orderNumber: 'অর্ডার নম্বর',
     trackingNumber: 'ট্র্যাকিং নম্বর',
     estimatedArrival: 'সম্ভাব্য ডেলিভারি সময়',
@@ -494,7 +494,7 @@ export const translations = {
     warrantyAndSupport: 'ওয়ারেন্টি ও সাপোর্ট',
     privacyPolicy: 'প্রাইভেসি পলিসি',
     termsOfService: 'শর্তাবলী',
-    allRightsReserved: 'সর্বস্বত্ব সংরক্ষিত। NOVACART Inc.',
+    allRightsReserved: 'সর্বস্বত্ব সংরক্ষিত। BDNEEDS Inc.',
 
     // Admin Console
     adminDashboard: 'ড্যাশবোর্ড',

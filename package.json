@@ -6,6 +6,11 @@
     "dev": "npm --prefix frontend run dev",
     "build": "npm --prefix frontend run build",
     "start": "npm --prefix frontend run start",
-    "lint": "npm --prefix frontend run lint"
+    "lint": "npm --prefix frontend run lint",
+    "postinstall": "prisma skills sync || exit 0"
+  },
+  "devDependencies": {
+    "@prisma/client": "^7.10.0",
+    "prisma": "^8.0.0-rc.15"
   }
 }

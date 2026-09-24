@@ -75,11 +75,11 @@ export default function ProductDetailView({
   // Track recently viewed in localStorage
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('novacart_recent');
+      const stored = localStorage.getItem('bdneeds_recent');
       let recents: Product[] = stored ? JSON.parse(stored) : [];
       // Filter out current and keep up to 6
       recents = [product, ...recents.filter((p) => p.id !== product.id)].slice(0, 6);
-      localStorage.setItem('novacart_recent', JSON.stringify(recents));
+      localStorage.setItem('bdneeds_recent', JSON.stringify(recents));
       setRecentlyViewed(recents.filter((p) => p.id !== product.id));
     } catch (e) {
       console.error(e);
@@ -134,7 +134,7 @@ export default function ProductDetailView({
       maxStock: currentStock,
     };
 
-    sessionStorage.setItem('novacart_buy_now', JSON.stringify([buyNowItem]));
+    sessionStorage.setItem('bdneeds_buy_now', JSON.stringify([buyNowItem]));
     router.push('/checkout?flow=buy-now');
   };
 

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
+import { Lock, Mail, ArrowRight, AlertCircle, ShoppingBag } from 'lucide-react';
 import AnnouncementBar from '@/components/storefront/AnnouncementBar';
 import Header from '@/components/storefront/Header';
 import Footer from '@/components/storefront/Footer';
@@ -43,87 +43,100 @@ export default function LoginPage() {
       <AnnouncementBar />
       <Header />
 
-      <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6">
-        <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-8 shadow-xs space-y-6">
-          <div className="text-center space-y-2">
-            <h1 className="text-2xl font-black text-[#0B132B]">Client Sign In</h1>
-            <p className="text-xs text-slate-500">
-              Access your order history, saved addresses, and privilege perks.
-            </p>
-          </div>
+      <main className="flex-1 relative flex items-center justify-center py-20 px-4 sm:px-6 overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-400/20 blur-[120px]" />
+          <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-purple-400/20 blur-[120px]" />
+          <div className="absolute -bottom-[20%] left-[20%] w-[60%] h-[50%] rounded-full bg-teal-400/20 blur-[120px]" />
+        </div>
 
-          {/* Quick Demo Fill Pill */}
-          <button
-            type="button"
-            onClick={handleQuickDemoCustomer}
-            className="w-full py-2 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold rounded-xl transition-colors border border-blue-200/60"
-          >
-            Click to autofill Customer Demo credentials
-          </button>
-
-          {error && (
-            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-semibold flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-              <span>{error}</span>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Email Address
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="alex.hayes@example.com"
-                  className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20 font-medium"
-                />
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+        <div className="max-w-md w-full relative z-10">
+          <div className="bg-white/70 backdrop-blur-xl rounded-[2rem] border border-white/50 p-8 sm:p-10 shadow-2xl shadow-blue-900/5 space-y-8">
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-blue-600 to-violet-600 text-white mb-2 shadow-lg shadow-blue-500/30">
+                <ShoppingBag className="w-8 h-8" />
               </div>
+              <h1 className="text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h1>
+              <p className="text-sm text-slate-500 font-medium">
+                Sign in to access your exclusive perks and orders.
+              </p>
             </div>
 
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                <label className="text-xs font-bold text-slate-700">Password</label>
-                <Link
-                  href="/forgot-password"
-                  className="text-[11px] font-semibold text-blue-600 hover:underline"
-                >
-                  Forgot Password?
-                </Link>
-              </div>
-              <div className="relative">
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20 font-medium"
-                />
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              </div>
-            </div>
-
+            {/* Quick Demo Fill Pill */}
             <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3.5 bg-[#0B132B] hover:bg-blue-600 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
+              type="button"
+              onClick={handleQuickDemoCustomer}
+              className="group w-full py-2.5 px-4 bg-gradient-to-r from-blue-50 to-violet-50 hover:from-blue-100 hover:to-violet-100 text-blue-700 text-xs font-bold rounded-2xl transition-all duration-300 border border-blue-200/50 flex items-center justify-center gap-2"
             >
-              {loading ? 'Authenticating...' : 'Sign In To Account'}
-              <ArrowRight className="w-4 h-4" />
+              <span>Autofill Demo Credentials</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </button>
-          </form>
 
-          <div className="pt-4 border-t border-slate-100 text-center text-xs text-slate-500">
-            Don&apos;t have an account yet?{' '}
-            <Link href="/register" className="font-bold text-blue-600 hover:underline">
-              Create an account
-            </Link>
+            {error && (
+              <div className="p-4 bg-rose-50/80 backdrop-blur-sm border border-rose-200 rounded-2xl text-rose-700 text-sm font-semibold flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+                <AlertCircle className="w-5 h-5 shrink-0 text-rose-600" />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-1.5">
+                <label className="block text-sm font-bold text-slate-700 ml-1">
+                  Email Address
+                </label>
+                <div className="relative group">
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="alex.hayes@example.com"
+                    className="w-full pl-11 pr-4 py-3.5 text-sm bg-white/50 border border-slate-200 rounded-2xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white font-medium transition-all duration-300 shadow-sm"
+                  />
+                  <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-blue-500 transition-colors" />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center ml-1">
+                  <label className="text-sm font-bold text-slate-700">Password</label>
+                  <Link
+                    href="/forgot-password"
+                    className="text-xs font-bold text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
+                <div className="relative group">
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full pl-11 pr-4 py-3.5 text-sm bg-white/50 border border-slate-200 rounded-2xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white font-medium transition-all duration-300 shadow-sm"
+                  />
+                  <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-blue-500 transition-colors" />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-2xl text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-[0.98]"
+              >
+                {loading ? 'Authenticating...' : 'Sign In To Account'}
+                {!loading && <ArrowRight className="w-4 h-4" />}
+              </button>
+            </form>
+
+            <div className="pt-6 border-t border-slate-200/60 text-center text-sm font-medium text-slate-500">
+              New to our store?{' '}
+              <Link href="/register" className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600 hover:opacity-80 transition-opacity">
+                Create an account
+              </Link>
+            </div>
           </div>
         </div>
       </main>

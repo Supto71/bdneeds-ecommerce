@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     // Set HTTP-only cookie for session tracking
     response.cookies.set({
-      name: 'novacart_session',
+      name: 'bdneeds_session',
       value: JSON.stringify({ id: user.id, role: user.role }),
       httpOnly: true,
       path: '/',
