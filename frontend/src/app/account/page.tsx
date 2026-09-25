@@ -435,13 +435,15 @@ export default function AccountPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-slate-600 mb-1">Full Name *</label>
+                    <label className="block text-xs font-semibold text-slate-600 mb-1">
+                      Full Name
+                      <span className="ml-1.5 text-[10px] font-normal text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">From profile</span>
+                    </label>
                     <input
                       type="text"
                       value={addressForm.fullName}
-                      onChange={(e) => setAddressForm((f) => ({ ...f, fullName: e.target.value }))}
-                      className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
-                      placeholder="Recipient name"
+                      disabled
+                      className="w-full px-3 py-2.5 text-sm border border-slate-100 rounded-xl bg-slate-50 text-slate-500 cursor-not-allowed"
                     />
                   </div>
                   <div>
