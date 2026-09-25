@@ -55,10 +55,16 @@ export const translations = {
     wearables: 'Wearables',
     computing: 'Computing',
     photography: 'Photography',
-    gaming: 'Gaming',
+    gaming: 'Gaming & Workstation',
     living: 'Living',
     apparel: 'Apparel',
-    accessories: 'Accessories',
+    accessories: 'Watches & Accessories',
+    electronics: 'Electronics & Audio',
+    fashion: 'Luxury & Apparel',
+    footwear: 'Footwear & Sneakers',
+    'home-appliances': 'Smart Living & Climate',
+    beauty: 'Grooming & Skincare',
+    'smart-devices': 'Smart Devices & IoT',
 
     // Section Titles
     shopByDepartment: 'Shop by Department',
@@ -277,6 +283,17 @@ export const translations = {
     adminUnits: 'units',
     adminLeft: 'left',
     adminOutOfStock: 'Out of stock',
+    adminCurations: 'Curations & Feeds',
+
+    // New Footer Keys
+    footerAboutDesc: 'We are more than just an e-commerce platform; we are committed to making your daily life easier and more convenient. Delivering quality products straight to your doorstep.',
+    footerAddress: 'Dhaka, Bangladesh',
+    footerTime: 'Sat – Thu: 09:00 – 21:00 BST | 24/7 Online Support',
+    footerSpam: 'Zero spam. Unsubscribe anytime.',
+    footerFollow: 'Follow BdNeeds',
+    footerPayment: 'Payment Options:',
+    footerTerms: 'Terms & Conditions',
+    footerRefund: 'Return/Refund Policy',
   },
 
   bn: {
@@ -333,10 +350,16 @@ export const translations = {
     wearables: 'পরিধেয় গ্যাজেট',
     computing: 'কম্পিউটিং',
     photography: 'ফটোগ্রাফি',
-    gaming: 'গেমিং',
+    gaming: 'গেমিং ও ওয়ার্কস্টেশন',
     living: 'হোম ও লিভিং',
     apparel: 'পোশাক',
-    accessories: 'এক্সেসরিজ',
+    accessories: 'ঘড়ি ও এক্সেসরিজ',
+    electronics: 'ইলেকট্রনিক্স ও অডিও',
+    fashion: 'লাক্সারি ও পোশাক',
+    footwear: 'জুতো ও স্নিকার্স',
+    'home-appliances': 'স্মার্ট লিভিং ও ক্লাইমেট',
+    beauty: 'গ্রুমিং ও স্কিনকেয়ার',
+    'smart-devices': 'স্মার্ট ডিভাইসেস ও আইওটি',
 
     // Section Titles
     shopByDepartment: 'ক্যাটাগরি অনুযায়ী কিনুন',
@@ -555,6 +578,17 @@ export const translations = {
     adminUnits: 'ইউনিট',
     adminLeft: 'বাকি',
     adminOutOfStock: 'স্টক শেষ',
+    adminCurations: 'কিউরেশন ও ফিড',
+
+    // New Footer Keys
+    footerAboutDesc: 'আমরা শুধুমাত্র একটি ই-কমার্স প্ল্যাটফর্ম নই; আপনার দৈনন্দিন জীবনকে আরও সহজ ও সুবিধাজনক করতে আমরা প্রতিশ্রুতিবদ্ধ। সেরা মানের পণ্য সরাসরি আপনার দোরগোড়ায়।',
+    footerAddress: 'ঢাকা, বাংলাদেশ',
+    footerTime: 'Sat – Thu: 09:00 – 21:00 BST | 24/7 Online Support',
+    footerSpam: 'কোনো স্প্যাম নয়। যেকোনো সময় আনসাবস্ক্রাইব করতে পারবেন।',
+    footerFollow: 'অনুসরণ করুন',
+    footerPayment: 'পেমেন্ট মাধ্যম:',
+    footerTerms: 'শর্তাবলী',
+    footerRefund: 'রিটার্ন / রিফান্ড পলিসি',
   },
 };
 

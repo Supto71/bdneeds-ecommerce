@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard,
@@ -15,6 +16,7 @@ import {
   Tag,
   BarChart3,
   Settings,
+  Star,
   ArrowLeft,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
@@ -29,6 +31,7 @@ export default function AdminSidebar() {
     { key: 'adminProducts', href: '/admin/products', icon: Package },
     { key: 'adminCategories', href: '/admin/categories', icon: FolderTree },
     { key: 'adminBanners', href: '/admin/banners', icon: ImageIcon },
+    { key: 'adminCurations', href: '/admin/curations', icon: Star },
     { key: 'adminOrders', href: '/admin/orders', icon: ShoppingBag },
     { key: 'adminCustomers', href: '/admin/customers', icon: Users },
     { key: 'adminInventory', href: '/admin/inventory', icon: Boxes },
@@ -44,17 +47,14 @@ export default function AdminSidebar() {
         {/* Brand Header */}
         <div className="p-6 border-b border-slate-800 flex items-center justify-between">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center font-black text-sm text-white">
-              BD
-            </div>
-            <div>
-              <span className="font-extrabold text-base tracking-tight text-white block leading-none">
-                Bd<span className="text-blue-400">Needs</span>
-              </span>
-              <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">
-                {t('adminConsole')}
-              </span>
-            </div>
+            <Image
+              src="/logo-white.png"
+              alt="BdNeeds Logo"
+              width={140}
+              height={40}
+              className="object-contain h-8 w-auto"
+              priority
+            />
           </Link>
         </div>
 

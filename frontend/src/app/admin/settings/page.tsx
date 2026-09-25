@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Save, CheckCircle2, Store, DollarSign, Truck, ShieldCheck } from 'lucide-react';
+import { Save, CheckCircle2, Store, DollarSign, Truck, ShieldCheck, Globe } from 'lucide-react';
 
 export default function AdminSettingsPage() {
   const [storeName, setStoreName] = useState('BDNEEDS');
@@ -13,8 +13,70 @@ export default function AdminSettingsPage() {
   const [contactPhone, setContactPhone] = useState('+1 (800) 555-NOVA');
   const [saved, setSaved] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Announcement Bar State
+  const [announcementId, setAnnouncementId] = useState<string | null>(null);
+  const [freeDeliveryText, setFreeDeliveryText] = useState('FREE STANDARD SHIPPING ON ORDERS OVER $99');
+  const [promoText, setPromoText] = useState('GET 20% OFF ALL ACCESSORIES THIS WEEKEND');
+  const [promoBadge, setPromoBadge] = useState('PROMO');
+  const [promoLink, setPromoLink] = useState('/shop');
+
+  React.useEffect(() => {
+    fetch('/api/banners')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const banner = data.find((b: any) => b.type === 'ANNOUNCEMENT');
+          if (banner) {
+            setAnnouncementId(banner.id);
+            setFreeDeliveryText(banner.subtitle || '');
+            setPromoText(banner.title || '');
+            setPromoBadge(banner.badge || '');
+            setPromoLink(banner.ctaLink || '');
+          }
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Save Announcement Banner
+    const payload = {
+      type: 'ANNOUNCEMENT',
+      title: promoText,
+      subtitle: freeDeliveryText,
+      badge: promoBadge,
+      ctaLink: promoLink,
+      ctaText: 'Shop Now',
+      image: '',
+      description: '',
+      price: 0,
+      discount: 0,
+      isActive: true,
+      order: 1
+    };
+
+    try {
+      if (announcementId) {
+        await fetch(`/api/banners/${announcementId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } else {
+        const res = await fetch('/api/banners', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.id) setAnnouncementId(data.id);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -139,6 +201,70 @@ export default function AdminSettingsPage() {
                 value={taxRate}
                 onChange={(e) => setTaxRate(e.target.value)}
                 className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
+          <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
+            <Globe className="w-4 h-4 text-blue-600" />
+            Announcement Bar Settings
+          </h3>
+          <p className="text-xs text-slate-500">
+            Customize the message that appears at the very top of the website.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Free Delivery Text (Left Side, Non-clickable)
+              </label>
+              <input
+                type="text"
+                value={freeDeliveryText}
+                onChange={(e) => setFreeDeliveryText(e.target.value)}
+                placeholder="e.g. FREE STANDARD SHIPPING ON ORDERS OVER $99"
+                className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Promo Badge Text (Inside Blue Box)
+              </label>
+              <input
+                type="text"
+                value={promoBadge}
+                onChange={(e) => setPromoBadge(e.target.value)}
+                placeholder="e.g. PROMO"
+                className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-bold uppercase"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Promo Middle Text (Clickable)
+              </label>
+              <input
+                type="text"
+                value={promoText}
+                onChange={(e) => setPromoText(e.target.value)}
+                placeholder="e.g. GET 20% OFF ALL ACCESSORIES THIS WEEKEND"
+                className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-bold"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Promo Redirect Link
+              </label>
+              <input
+                type="text"
+                value={promoLink}
+                onChange={(e) => setPromoLink(e.target.value)}
+                placeholder="e.g. /shop or /category/accessories"
+                className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800"
               />
             </div>
           </div>

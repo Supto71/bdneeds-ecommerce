@@ -113,6 +113,7 @@ export interface Banner {
   order: number;
   startDate?: string;
   endDate?: string;
+  type?: 'HERO' | 'CAMPAIGN' | 'ANNOUNCEMENT';
 }
 
 export interface Coupon {

@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, ArrowRight, AlertCircle, ShoppingBag } from 'lucide-react';
+import { Lock, Mail, ArrowRight, AlertCircle } from 'lucide-react';
 import AnnouncementBar from '@/components/storefront/AnnouncementBar';
 import Header from '@/components/storefront/Header';
 import Footer from '@/components/storefront/Footer';
@@ -54,10 +55,16 @@ export default function LoginPage() {
         <div className="max-w-md w-full relative z-10">
           <div className="bg-white/70 backdrop-blur-xl rounded-[2rem] border border-white/50 p-8 sm:p-10 shadow-2xl shadow-blue-900/5 space-y-8">
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-blue-600 to-violet-600 text-white mb-2 shadow-lg shadow-blue-500/30">
-                <ShoppingBag className="w-8 h-8" />
+              <div className="flex items-center justify-center mb-6">
+                <Image
+                  src="/logomain.png"
+                  alt="BdNeeds Logo"
+                  width={160}
+                  height={48}
+                  className="object-contain h-12 w-auto"
+                  priority
+                />
               </div>
-              <h1 className="text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h1>
               <p className="text-sm text-slate-500 font-medium">
                 Sign in to access your exclusive perks and orders.
               </p>

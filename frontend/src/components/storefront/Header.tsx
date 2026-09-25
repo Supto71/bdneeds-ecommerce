@@ -119,18 +119,15 @@ export default function Header() {
             </button>
 
             {/* Brand Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-10 h-10 rounded-xl bg-[#0B132B] flex items-center justify-center text-white font-black text-lg tracking-tighter shadow-md group-hover:bg-blue-600 transition-colors">
-                BN
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-xl tracking-tight text-[#0B132B] leading-none">
-                  Bd<span className="text-blue-600">Needs</span>
-                </span>
-                <span className="text-[9px] font-semibold tracking-widest text-slate-400 uppercase leading-tight mt-0.5">
-                  {t('luxuryAndTech')}
-                </span>
-              </div>
+            <Link href="/" className="flex items-center group">
+              <Image 
+                src="/logomain.png" 
+                alt="BdNeeds Logo" 
+                width={160} 
+                height={48} 
+                className="object-contain h-10 sm:h-12 w-auto"
+                priority
+              />
             </Link>
           </div>
 
@@ -186,7 +183,7 @@ export default function Header() {
                         </div>
                         <div>
                           <div className="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-                            {cat.name}
+                            {t(cat.slug as any, cat.name)}
                           </div>
                           <div className="text-xs text-slate-400">
                             {cat.productCount} {t('productsCount')}
@@ -222,14 +219,14 @@ export default function Header() {
             </div>
 
             <Link
-              href="/shop?sort=best-selling"
+              href="/best-sellers"
               className="flex items-center gap-1 px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
             >
               <Flame className="w-4 h-4 text-orange-500" />
               {t('bestSellers')}
             </Link>
             <Link
-              href="/shop?sort=newest"
+              href="/new-arrivals"
               className="flex items-center gap-1 px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-blue-600 rounded-lg transition-colors"
             >
               <Clock className="w-4 h-4 text-emerald-500" />
@@ -315,12 +312,8 @@ export default function Header() {
             )}
           </div>
 
-          {/* Right Action Icons (Language, Wishlist, Cart, User) */}
+          {/* Right Action Icons (Wishlist, Cart, User) */}
           <div className="flex items-center space-x-1 sm:space-x-2">
-            {/* Language Switcher on Header */}
-            <div className="hidden sm:flex items-center mr-1">
-              <LanguageSwitcher />
-            </div>
 
             {/* Wishlist */}
             <Link
@@ -490,13 +483,7 @@ export default function Header() {
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-slate-100 bg-white px-4 pt-3 pb-6 space-y-3">
-          {/* Mobile Language Switcher */}
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-            <span className="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5 text-blue-600" /> Language / ভাষা:
-            </span>
-            <LanguageSwitcher />
-          </div>
+
 
           {/* Mobile Search input */}
           <form onSubmit={handleSearchSubmit} className="mb-4">
@@ -539,7 +526,7 @@ export default function Header() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="text-xs font-medium text-slate-700 hover:text-blue-600 p-1.5 rounded-md hover:bg-slate-50 truncate"
                   >
-                    {cat.name}
+                    {t(cat.slug as any, cat.name)}
                   </Link>
                 ))}
               </div>

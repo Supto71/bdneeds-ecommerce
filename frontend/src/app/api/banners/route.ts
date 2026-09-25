@@ -19,18 +19,22 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    if (!data.title || !data.image) {
-      return NextResponse.json({ error: 'Banner title and image are required' }, { status: 400 });
+    if (!data.title) {
+      return NextResponse.json({ error: 'Banner title is required' }, { status: 400 });
+    }
+    if (data.type !== 'ANNOUNCEMENT' && !data.image) {
+      return NextResponse.json({ error: 'Image is required for this banner type' }, { status: 400 });
     }
 
     const newBanner = await createBanner({
       title: data.title,
       subtitle: data.subtitle || '',
+      type: data.type || 'HERO',
       badge: data.badge || 'EXCLUSIVE',
       description: data.description || '',
       price: data.price ? Number(data.price) : 0,
       discount: data.discount ? Number(data.discount) : 0,
-      image: data.image,
+      image: data.image || '',
       ctaText: data.ctaText || 'Shop Collection',
       ctaLink: data.ctaLink || '/shop',
       isActive: data.isActive ?? true,

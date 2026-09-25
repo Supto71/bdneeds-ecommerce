@@ -4,10 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import { useLanguage } from '@/context/LanguageContext';
+import { Banner } from '@/types';
 
-export default function CampaignBanner() {
-  const { t } = useLanguage();
+interface CampaignBannerProps {
+  banner?: Banner;
+}
+
+export default function CampaignBanner({ banner }: CampaignBannerProps) {
+  if (!banner) return null;
 
   return (
     <section className="py-12 bg-white">
@@ -16,23 +20,23 @@ export default function CampaignBanner() {
           {/* Left Column Text */}
           <div className="p-8 sm:p-12 lg:p-16 space-y-5 z-10">
             <span className="inline-flex items-center px-4 py-1.5 rounded-full bg-white/[0.07] backdrop-blur-md border border-white/20 text-[11px] font-bold tracking-[0.22em] uppercase bg-gradient-to-r from-white via-sky-100 to-blue-200 bg-clip-text text-transparent">
-              {t('limitedOffer')}
+              {banner.badge}
             </span>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-              {t('campaignHeading')}
+              {banner.title}
             </h2>
 
             <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-              {t('campaignSub')}
+              {banner.description || banner.subtitle}
             </p>
 
             <div className="pt-2 flex items-center gap-4">
               <Link
-                href="/category/accessories"
+                href={banner.ctaLink}
                 className="px-7 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition-all shadow-md flex items-center gap-2"
               >
-                {t('exploreCollection')}
+                {banner.ctaText}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -41,8 +45,8 @@ export default function CampaignBanner() {
           {/* Right Column Image */}
           <div className="relative h-72 sm:h-96 lg:h-full min-h-[380px] w-full bg-slate-900">
             <Image
-              src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=1200&q=85"
-              alt="Luxury Chronograph Timepiece"
+              src={banner.image}
+              alt={banner.title}
               fill
               className="object-cover object-center"
               sizes="(max-width: 1024px) 100vw, 600px"

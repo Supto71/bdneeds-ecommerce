@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-inter), var(--font-hind-siliguri), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-inter), var(--font-noto-serif-bengali), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-heading: 'General Sans', var(--font-anek-bangla), var(--font-inter), -apple-system, sans-serif;
   --color-navy-950: #070c1a;
   --color-navy-900: #0b132b;
@@ -34,7 +34,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), var(--font-hind-siliguri), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-inter), var(--font-noto-serif-bengali), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-weight: 400; /* Revert to normal weight to fix cluttered look */
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
