@@ -112,7 +112,7 @@ export default function AccountPage() {
   };
 
   const startEditProfile = () => {
-    setProfileForm({ name: user!.name, phone: user!.phone || '' });
+    setProfileForm({ name: user!.name, phone: user!.phone || '+880' });
     setEditingProfile(true);
     setProfileSuccess(false);
   };
@@ -140,7 +140,7 @@ export default function AccountPage() {
 
   // Address helpers
   const startAddAddress = () => {
-    setAddressForm({ ...EMPTY_ADDRESS, fullName: user!.name, phone: user!.phone || '' });
+    setAddressForm({ ...EMPTY_ADDRESS, fullName: user!.name, phone: user!.phone || '+880' });
     setAddingAddress(true);
     setEditingAddressId(null);
   };
@@ -313,13 +313,16 @@ export default function AccountPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 mb-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      value={profileForm.phone}
-                      onChange={(e) => setProfileForm((f) => ({ ...f, phone: e.target.value }))}
-                      className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-slate-800"
-                      placeholder="+880..."
-                    />
+                    <div className="flex items-center border border-slate-200 rounded-xl bg-white focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:border-blue-500 overflow-hidden">
+                      <span className="pl-3 pr-2 text-xs font-bold text-slate-600 border-r border-slate-200 bg-slate-100 h-full flex items-center py-2.5 shrink-0 select-none">🇧🇩 +880</span>
+                      <input
+                        type="tel"
+                        value={profileForm.phone.startsWith('+880') ? profileForm.phone.slice(4) : profileForm.phone}
+                        onChange={(e) => setProfileForm((f) => ({ ...f, phone: '+880' + e.target.value.replace(/^\+880/, '') }))}
+                        className="flex-1 px-3 py-2.5 text-sm bg-transparent text-slate-800 focus:outline-none"
+                        placeholder="1XXXXXXXXX"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-500 mb-1">Email (cannot be changed)</label>
@@ -448,13 +451,16 @@ export default function AccountPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 mb-1">Phone</label>
-                    <input
-                      type="tel"
-                      value={addressForm.phone}
-                      onChange={(e) => setAddressForm((f) => ({ ...f, phone: e.target.value }))}
-                      className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500"
-                      placeholder="01XXXXXXXXX"
-                    />
+                    <div className="flex items-center border border-slate-200 rounded-xl bg-white focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:border-blue-500 overflow-hidden">
+                      <span className="pl-3 pr-2 text-xs font-bold text-slate-600 border-r border-slate-200 bg-slate-100 h-full flex items-center py-2.5 shrink-0 select-none">🇧🇩 +880</span>
+                      <input
+                        type="tel"
+                        value={addressForm.phone.startsWith('+880') ? addressForm.phone.slice(4) : addressForm.phone}
+                        onChange={(e) => setAddressForm((f) => ({ ...f, phone: '+880' + e.target.value.replace(/^\+880/, '') }))}
+                        className="flex-1 px-3 py-2.5 text-sm bg-transparent text-slate-800 focus:outline-none"
+                        placeholder="1XXXXXXXXX"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-slate-600 mb-1">Street / House *</label>
