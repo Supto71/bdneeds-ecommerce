@@ -27,7 +27,7 @@ export default async function HomePage() {
 
       <main className="flex-1">
         {/* Dynamic Hero Carousel */}
-        <HeroCarousel banners={banners} />
+        <HeroCarousel banners={banners.filter(b => b.type === 'HERO')} />
 
         {/* Dynamic Circular Category Slider */}
         <CategoryCarousel categories={categories} />
@@ -36,7 +36,7 @@ export default async function HomePage() {
         <BestSellersSection products={products} />
 
         {/* Editorial Campaign Banner */}
-        <CampaignBanner />
+        <CampaignBanner banner={banners.find(b => b.type === 'CAMPAIGN')} />
 
         {/* New Arrivals Section */}
         <NewArrivalsSection products={products} />

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Mail, Phone, MapPin, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -24,28 +25,28 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-lg tracking-tighter">
-                BN
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-xl tracking-tight text-white leading-none">
-                  Bd<span className="text-blue-400">Needs</span>
-                </span>
-                <span className="text-[9px] font-semibold tracking-widest text-slate-400 uppercase leading-tight mt-0.5">
-                  {t('luxuryAndTech')}
-                </span>
-              </div>
+            <div className="flex items-center">
+              <Link href="/">
+                <Image
+                  src="/logomain.png"
+                  alt="BdNeeds Logo"
+                  width={160}
+                  height={48}
+                  className="object-contain h-10 sm:h-12 w-auto"
+                  style={{ filter: 'brightness(0) invert(1)' }}
+                  priority
+                />
+              </Link>
             </div>
 
             <p className="text-sm text-slate-300 max-w-sm leading-relaxed">
-              We are more than just an e-commerce platform; we are committed to making your daily life easier and more convenient. Delivering quality products straight to your doorstep.
+              {t('footerAboutDesc')}
             </p>
 
             <div className="space-y-2 text-xs text-slate-300 pt-2">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>Dhaka, Bangladesh</span>
+                <span>{t('footerAddress')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-blue-400 shrink-0" />
@@ -57,7 +58,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>Sat – Thu: 09:00 – 21:00 BST | 24/7 Online Support</span>
+                <span>{t('footerTime')}</span>
               </div>
             </div>
           </div>
@@ -168,13 +169,13 @@ export default function Footer() {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <span className="text-[10px] text-slate-400">Zero spam. Unsubscribe anytime.</span>
+                <span className="text-[10px] text-slate-400">{t('footerSpam')}</span>
               </form>
             )}
 
             {/* Social Links */}
             <div className="pt-2">
-              <span className="text-xs font-semibold text-slate-400 block mb-2">Follow BdNeeds</span>
+              <span className="text-xs font-semibold text-slate-400 block mb-2">{t('footerFollow')}</span>
               <div className="flex items-center space-x-3 text-xs text-slate-300">
                 <a href="https://www.facebook.com/profile.php?id=61589093341884" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Facebook</a>
               </div>
@@ -185,7 +186,7 @@ export default function Footer() {
         {/* Payment Methods & Legal Copyright */}
         <div className="pt-8 flex flex-col items-center justify-center gap-6 text-xs text-slate-400">
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <span className="text-[11px] text-slate-400 mr-1">Payment Options:</span>
+            <span className="text-[11px] text-slate-400 mr-1">{t('footerPayment')}</span>
             <span className="px-2.5 py-1 bg-[#E2136E]/20 text-[#E2136E] border border-[#E2136E]/40 rounded font-bold tracking-wider text-[10px]">
               bKash / Nagad
             </span>
@@ -197,8 +198,8 @@ export default function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
             <p>© {new Date().getFullYear()} {t('allRightsReserved')}</p>
             <div className="flex items-center gap-4 border-l border-r border-slate-700 px-4">
-              <Link href="/terms" className="hover:text-blue-400 transition-colors">Terms & Conditions</Link>
-              <Link href="/return-policy" className="hover:text-blue-400 transition-colors">Return/Refund Policy</Link>
+              <Link href="/terms" className="hover:text-blue-400 transition-colors">{t('footerTerms')}</Link>
+              <Link href="/return-policy" className="hover:text-blue-400 transition-colors">{t('footerRefund')}</Link>
             </div>
             <p className="font-semibold text-slate-300">DBID: <span className="text-white">Pending</span></p>
           </div>

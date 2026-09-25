@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -30,8 +30,8 @@ model Category {
   id           String    @id @default(cuid())
   name         String
   slug         String    @unique
-  description  String    @db.Text
-  image        String    @db.Text
+  description  String   
+  image        String   
   icon         String?
   productCount Int       @default(0)
   isActive     Boolean   @default(true)
@@ -55,8 +55,8 @@ model Product {
   discount         Float    @default(0)
   stock            Int      @default(0)
   sku              String   @unique
-  shortDescription String   @db.Text
-  description      String   @db.LongText
+  shortDescription String  
+  description      String  
   features         Json
   specifications   Json
   images           Json
@@ -98,16 +98,23 @@ model Banner {
   title       String
   subtitle    String
   badge       String
-  description String    @db.Text
+  description String   
   price       Float
   discount    Float     @default(0)
-  image       String    @db.Text
+  image       String   
   ctaText     String
   ctaLink     String
   isActive    Boolean   @default(true)
   order       Int       @default(0)
   startDate   DateTime?
   endDate     DateTime?
+  type        BannerType @default(HERO)
+}
+
+enum BannerType {
+  HERO
+  CAMPAIGN
+  ANNOUNCEMENT
 }
 
 model Coupon {
@@ -136,7 +143,7 @@ model Order {
   customerEmail   String
   customerPhone   String
   shippingAddress Json
-  deliveryNote    String?       @db.Text
+  deliveryNote    String?      
   subtotal        Float
   discount        Float         @default(0)
   couponCode      String?
@@ -184,7 +191,7 @@ model OrderItem {
   productId      String
   productName    String
   productSlug    String
-  productImage   String  @db.Text
+  productImage   String 
   variantId      String?
   variantSku     String?
   variantColor   String?
@@ -206,7 +213,7 @@ model Review {
   customerAvatar    String?
   rating            Int
   title             String
-  comment           String   @db.Text
+  comment           String  
   images            Json
   isVerifiedPurchase Boolean @default(false)
   isApproved        Boolean  @default(true)

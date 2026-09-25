@@ -38,7 +38,7 @@ export default function NewArrivalsSection({ products }: NewArrivalsSectionProps
           </div>
 
           <Link
-            href="/shop?sort=newest"
+            href="/new-arrivals"
             className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors self-start sm:self-auto"
           >
             {t('exploreCollection')}

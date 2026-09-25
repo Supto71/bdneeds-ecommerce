@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Hind_Siliguri, Anek_Bangla } from 'next/font/google';
+import { Inter, Noto_Serif_Bengali, Anek_Bangla } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/context/Providers';
 import WhatsAppWidget from '@/components/storefront/WhatsAppWidget';
@@ -10,10 +10,10 @@ const inter = Inter({
   display: 'swap',
 });
 
-const hindSiliguri = Hind_Siliguri({
-  subsets: ['bengali', 'latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-hind-siliguri',
+const notoSerifBengali = Noto_Serif_Bengali({
+  subsets: ['bengali'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-noto-serif-bengali',
   display: 'swap',
 });
 
@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${hindSiliguri.variable} ${anekBangla.variable} antialiased`}
+      className={`${inter.variable} ${notoSerifBengali.variable} ${anekBangla.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-white text-[#0B132B]">
         <Providers>{children}</Providers>

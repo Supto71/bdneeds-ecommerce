@@ -16,6 +16,7 @@ export default function AdminBannersPage() {
   // Form
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
+  const [type, setType] = useState<'HERO' | 'CAMPAIGN' | 'ANNOUNCEMENT'>('HERO');
   const [badge, setBadge] = useState('NEW RELEASE');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
@@ -44,6 +45,7 @@ export default function AdminBannersPage() {
     setEditBanner(null);
     setTitle('');
     setSubtitle('');
+    setType('HERO');
     setBadge('FEATURED RELEASE');
     setDescription('');
     setPrice('299');
@@ -59,6 +61,7 @@ export default function AdminBannersPage() {
     setEditBanner(b);
     setTitle(b.title);
     setSubtitle(b.subtitle);
+    setType(b.type || 'HERO');
     setBadge(b.badge);
     setDescription(b.description);
     setPrice(b.price.toString());
@@ -72,11 +75,13 @@ export default function AdminBannersPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !image) return;
+    if (!title) return;
+    if (type !== 'ANNOUNCEMENT' && !image) return;
 
     const payload = {
       title,
       subtitle,
+      type,
       badge,
       description,
       price: Number(price) || 0,
@@ -157,7 +162,7 @@ export default function AdminBannersPage() {
 
               <div className="p-6 space-y-2">
                 <p className="text-xs font-bold text-blue-600 uppercase tracking-wide">
-                  {b.subtitle}
+                  {b.type === 'CAMPAIGN' ? 'Campaign Banner' : b.type === 'ANNOUNCEMENT' ? 'Announcement Bar' : 'Hero Carousel'} • {b.subtitle}
                 </p>
                 <h3 className="text-base font-black text-[#0B132B] line-clamp-1">{b.title}</h3>
                 <p className="text-xs text-slate-500 line-clamp-2">{b.description}</p>
@@ -220,6 +225,17 @@ export default function AdminBannersPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
+                  <label className="block font-bold text-slate-700 mb-1">Banner Type</label>
+                  <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value as 'HERO' | 'CAMPAIGN' | 'ANNOUNCEMENT')}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  >
+                    <option value="HERO">Hero Carousel</option>
+                    <option value="CAMPAIGN">Campaign Banner</option>
+                  </select>
+                </div>
+                <div>
                   <label className="block font-bold text-slate-700 mb-1">Subtitle</label>
                   <input
                     type="text"
@@ -229,29 +245,32 @@ export default function AdminBannersPage() {
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
                   />
                 </div>
-                <div>
-                  <label className="block font-bold text-slate-700 mb-1">Badge</label>
-                  <input
-                    type="text"
-                    value={badge}
-                    onChange={(e) => setBadge(e.target.value)}
-                    placeholder="LIMITED EDITION"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl uppercase font-bold"
-                  />
-                </div>
               </div>
 
               <div>
-                <label className="block font-bold text-slate-700 mb-1">Image URL *</label>
+                <label className="block font-bold text-slate-700 mb-1">Badge</label>
                 <input
-                  type="url"
-                  required
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  type="text"
+                  value={badge}
+                  onChange={(e) => setBadge(e.target.value)}
+                  placeholder="LIMITED EDITION"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl uppercase font-bold"
                 />
               </div>
+
+              {type !== 'ANNOUNCEMENT' && (
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Image URL *</label>
+                  <input
+                    type="url"
+                    required
+                    value={image}
+                    onChange={(e) => setImage(e.target.value)}
+                    placeholder="https://images.unsplash.com/..."
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Description</label>

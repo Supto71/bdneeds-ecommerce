@@ -37,7 +37,7 @@ export default function BestSellersSection({ products }: BestSellersSectionProps
           </div>
 
           <Link
-            href="/shop?sort=best-selling"
+            href="/best-sellers"
             className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors self-start sm:self-auto"
           >
             {t('exploreCollection')}
