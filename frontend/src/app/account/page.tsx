@@ -13,6 +13,7 @@ import {
   ShieldAlert,
   LogOut,
   ChevronRight,
+  Camera,
 } from 'lucide-react';
 import AnnouncementBar from '@/components/storefront/AnnouncementBar';
 import Header from '@/components/storefront/Header';
@@ -23,8 +24,32 @@ import { useWishlist } from '@/context/WishlistContext';
 
 export default function AccountPage() {
   const router = useRouter();
-  const { user, isAdmin, logout } = useAuth();
+  const { user, isAdmin, logout, updateAvatar } = useAuth();
   const { totalWishlist } = useWishlist();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = React.useState(false);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert('File size must be less than 2MB');
+      return;
+    }
+
+    setIsUploading(true);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64String = reader.result as string;
+      const res = await updateAvatar(base64String);
+      if (!res.success) {
+        alert(res.message);
+      }
+      setIsUploading(false);
+    };
+    reader.readAsDataURL(file);
+  };
 
   if (!user) {
     return (
@@ -69,14 +94,35 @@ export default function AccountPage() {
           {/* Header Profile Card */}
           <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className="relative w-16 h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-200 shrink-0">
-                {user.avatarUrl ? (
-                  <Image src={user.avatarUrl} alt={user.name} fill className="object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center font-black text-xl text-slate-500">
-                    {user.name.charAt(0)}
+              <div className="relative group shrink-0">
+                <div 
+                  className="relative w-16 h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-200 cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  {user.avatarUrl ? (
+                    <Image src={user.avatarUrl} alt={user.name} fill className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center font-black text-xl text-slate-500">
+                      {user.name.charAt(0)}
+                    </div>
+                  )}
+                  {/* Overlay for hover */}
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Camera className="w-5 h-5 text-white" />
                   </div>
-                )}
+                  {isUploading && (
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
               </div>
 
               <div>

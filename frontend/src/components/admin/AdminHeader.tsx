@@ -3,14 +3,39 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LogOut, ExternalLink, Globe } from 'lucide-react';
+import { LogOut, ExternalLink, Globe, Camera } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import Image from 'next/image';
 import { useLanguage, LanguageSwitcher } from '@/context/LanguageContext';
 
 export default function AdminHeader() {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, updateAvatar } = useAuth();
   const { t } = useLanguage();
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = React.useState(false);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert('File size must be less than 2MB');
+      return;
+    }
+
+    setIsUploading(true);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64String = reader.result as string;
+      const res = await updateAvatar(base64String);
+      if (!res.success) {
+        alert(res.message);
+      }
+      setIsUploading(false);
+    };
+    reader.readAsDataURL(file);
+  };
 
   return (
     <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between z-30">
@@ -47,6 +72,37 @@ export default function AdminHeader() {
             <span className="text-[10px] text-slate-400 block leading-tight">
               {user?.email || 'admin@bdneeds.com'}
             </span>
+          </div>
+
+          <div className="relative group shrink-0">
+            <div 
+              className="relative w-9 h-9 rounded-full overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {user?.avatarUrl ? (
+                <Image src={user.avatarUrl} alt={user.name || 'Admin'} fill className="object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center font-bold text-sm text-slate-500">
+                  {user?.name?.charAt(0) || 'A'}
+                </div>
+              )}
+              {/* Overlay for hover */}
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Camera className="w-3.5 h-3.5 text-white" />
+              </div>
+              {isUploading && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+            </div>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageUpload}
+              accept="image/*"
+              className="hidden"
+            />
           </div>
 
           <button

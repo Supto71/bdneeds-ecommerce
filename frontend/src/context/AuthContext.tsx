@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, pass: string) => Promise<{ success: boolean; message?: string }>;
   register: (name: string, email: string, pass: string, phone: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
+  updateAvatar: (avatarUrl: string) => Promise<{ success: boolean; message?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -72,6 +73,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
   };
 
+  const updateAvatar = async (avatarUrl: string) => {
+    if (!user) return { success: false, message: 'Not logged in' };
+    
+    try {
+      const res = await fetch('/api/user/update-avatar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, avatarUrl }),
+      });
+      const data = await res.json();
+      
+      if (!res.ok) {
+        return { success: false, message: data.error || 'Failed to update avatar' };
+      }
+      
+      const updatedUser = { ...user, avatarUrl };
+      setUser(updatedUser);
+      localStorage.setItem('bdneeds_user', JSON.stringify(updatedUser));
+      return { success: true };
+    } catch (e) {
+      return { success: false, message: 'Network error while updating avatar' };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -81,6 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         register,
         logout,
+        updateAvatar,
       }}
     >
       {children}
