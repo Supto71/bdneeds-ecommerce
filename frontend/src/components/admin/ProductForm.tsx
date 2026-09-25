@@ -60,7 +60,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
 
   const [specs, setSpecs] = useState<{ key: string; val: string }[]>(
     initialData?.specifications
-      ? Object.entries(initialData.specifications).map(([key, val]) => ({ key, val }))
+      ? Object.entries(initialData.specifications as Record<string, string>).map(([key, val]) => ({ key, val }))
       : [{ key: 'Warranty', val: '2 Years Official' }]
   );
 

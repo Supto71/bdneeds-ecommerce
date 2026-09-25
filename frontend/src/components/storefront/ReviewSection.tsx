@@ -187,7 +187,7 @@ export default function ReviewSection({
                         )}
                       </div>
                       <div className="text-[11px] text-slate-400">
-                        {formatDate(rev.createdAt)}
+                        {formatDate(String(rev.createdAt))}
                       </div>
                     </div>
                   </div>

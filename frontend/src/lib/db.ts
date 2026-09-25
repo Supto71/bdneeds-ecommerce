@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { ProductFilters } from './types'; // We might need to define ProductFilters here if not in types
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -94,25 +93,25 @@ export async function getProducts(filters?: ProductFiltersDef) {
     orderBy,
     include: { variants: true },
   });
-  return products;
+  return products as unknown as import('@/types').Product[];
 }
 
 export async function getAllProductsAdmin() {
-  return prisma.product.findMany({ include: { variants: true } });
+  return prisma.product.findMany({ include: { variants: true } }) as unknown as Promise<import('@/types').Product[]>;
 }
 
 export async function getProductBySlug(slug: string) {
   return prisma.product.findUnique({
     where: { slug },
     include: { variants: true, reviews: true },
-  });
+  }) as unknown as Promise<import('@/types').Product & { reviews: import('@/types').Review[] } | null>;
 }
 
 export async function getProductById(id: string) {
   return prisma.product.findUnique({
     where: { id },
     include: { variants: true, reviews: true },
-  });
+  }) as unknown as Promise<import('@/types').Product & { reviews: import('@/types').Review[] } | null>;
 }
 
 export async function getRelatedProducts(productId: string, categoryId: string, limit = 4) {
@@ -120,7 +119,7 @@ export async function getRelatedProducts(productId: string, categoryId: string, 
     where: { categoryId, id: { not: productId }, isPublished: true },
     take: limit,
     include: { variants: true },
-  });
+  }) as unknown as Promise<import('@/types').Product[]>;
 }
 
 export async function createProduct(data: any) {

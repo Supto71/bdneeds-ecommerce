@@ -48,7 +48,7 @@ export default async function OrderDetailPage(props: {
                   #{order.orderNumber}
                 </h1>
                 <p className="text-xs text-slate-400 mt-1">
-                  Placed on {formatDate(order.createdAt)} • Tracking #{order.trackingNumber}
+                  Placed on {formatDate(new Date(order.createdAt).toISOString())} • Tracking #{order.trackingNumber}
                 </p>
               </div>
 
@@ -69,7 +69,7 @@ export default async function OrderDetailPage(props: {
                 Milestones & Dispatch Status
               </h3>
               <div className="relative pl-6 border-l-2 border-slate-200 space-y-6">
-                {order.timeline?.map((ev, i) => (
+                {(order.timeline as any[])?.map((ev, i) => (
                   <div key={i} className="relative">
                     <div className="absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-white shadow-xs" />
                     <div>
@@ -135,9 +135,9 @@ export default async function OrderDetailPage(props: {
                 <span className="font-bold text-slate-900 block text-sm mb-2">
                   Delivery Destination
                 </span>
-                <p className="font-semibold text-slate-800">{order.shippingAddress.fullName}</p>
-                <p>{order.shippingAddress.street}</p>
-                <p>{order.shippingAddress.city}, {order.shippingAddress.postalCode}</p>
+                <p className="font-semibold text-slate-800">{(order.shippingAddress as any)?.fullName}</p>
+                <p>{(order.shippingAddress as any)?.street}</p>
+                <p>{(order.shippingAddress as any)?.city}, {(order.shippingAddress as any)?.postalCode}</p>
                 <p className="text-slate-400 mt-2">Phone: {order.customerPhone}</p>
                 <p className="text-slate-400">Email: {order.customerEmail}</p>
               </div>

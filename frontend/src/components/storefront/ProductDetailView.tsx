@@ -880,7 +880,7 @@ export default function ProductDetailView({
                     {Object.entries(product.specifications || {}).map(([key, val]) => (
                       <div key={key} className="py-2 flex justify-between">
                         <span className="text-slate-400">{key}</span>
-                        <span className="font-semibold text-slate-800">{val}</span>
+                        <span className="font-semibold text-slate-800">{String(val)}</span>
                       </div>
                     ))}
                   </div>

@@ -29,7 +29,7 @@ export interface Category {
   slug: string;
   description: string;
   image: string;
-  icon?: string;
+  icon?: string | null;
   productCount: number;
   isActive: boolean;
   isFeatured: boolean;
@@ -57,13 +57,13 @@ export interface ProductVariant {
   sku: string;
   colorName: string;
   colorHex: string;
-  size?: string;
-  storage?: string;
-  ram?: string;
+  size?: string | null;
+  storage?: string | null;
+  ram?: string | null;
   price: number;
   stock: number;
   lowStockThreshold: number;
-  images: string[];
+  images: any[];
 }
 
 export interface Product {
@@ -74,8 +74,8 @@ export interface Product {
   brandId?: string;
   categoryId: string;
   categoryName: string;
-  subcategoryId?: string;
-  subcategoryName?: string;
+  subcategoryId?: string | null;
+  subcategoryName?: string | null;
   basePrice: number;
   originalPrice: number;
   discount: number;
@@ -83,11 +83,11 @@ export interface Product {
   sku: string;
   shortDescription: string;
   description: string;
-  features: string[];
-  specifications: Record<string, string>;
-  images: string[];
+  features: any[];
+  specifications: any;
+  images: any[];
   variants: ProductVariant[];
-  tags: string[];
+  tags: any[];
   rating: number;
   reviewCount: number;
   salesCount: number;
@@ -111,8 +111,8 @@ export interface Banner {
   ctaLink: string;
   isActive: boolean;
   order: number;
-  startDate?: string;
-  endDate?: string;
+  startDate?: string | Date | null;
+  endDate?: string | Date | null;
   type?: 'HERO' | 'CAMPAIGN' | 'ANNOUNCEMENT';
 }
 
@@ -198,16 +198,16 @@ export interface Order {
 export interface Review {
   id: string;
   productId: string;
-  userId?: string;
+  userId?: string | null;
   customerName: string;
-  customerAvatar?: string;
+  customerAvatar?: string | null;
   rating: number;
   title: string;
   comment: string;
-  images: string[];
+  images: any[];
   isVerifiedPurchase: boolean;
   isApproved: boolean;
-  createdAt: string;
+  createdAt: string | Date;
 }
 
 export interface CartItem {

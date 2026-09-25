@@ -124,7 +124,7 @@ export default function AdminReviewsPage() {
                         <span className="text-slate-400 text-[11px]">Unverified</span>
                       )}
                     </td>
-                    <td className="p-4 text-slate-400">{formatDate(rev.createdAt)}</td>
+                    <td className="p-4 text-slate-400">{formatDate(String(rev.createdAt))}</td>
                     <td className="p-4">
                       {rev.isApproved ? (
                         <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full font-bold text-[10px] uppercase">

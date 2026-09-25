@@ -28,7 +28,7 @@ export async function generateMetadata(props: {
     openGraph: {
       title: `${product.name} | BDNEEDS`,
       description: product.shortDescription,
-      images: [product.images[0]],
+      images: [(product.images as string[])?.[0]],
     },
   };
 }
@@ -55,7 +55,7 @@ export default async function ProductPage(props: {
       <main className="flex-1">
         <ProductDetailView
           product={product}
-          reviews={reviews}
+          reviews={reviews as unknown as import('@/types').Review[]}
           relatedProducts={relatedProducts}
         />
       </main>
