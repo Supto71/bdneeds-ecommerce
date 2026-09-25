@@ -203,8 +203,16 @@ export async function deleteBanner(id: string) {
 
 export async function getOrders(userId?: string) {
   if (userId) {
+    const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+    const email = user?.email;
+
     return prisma.order.findMany({
-      where: { userId },
+      where: {
+        OR: [
+          { userId },
+          ...(email ? [{ customerEmail: email }] : [])
+        ]
+      },
       orderBy: { createdAt: 'desc' },
       include: { items: true },
     });
@@ -372,7 +380,8 @@ export async function updateOrderStatus(orderId: string, newStatus: any, note?: 
       orderStatus: newStatus,
       paymentStatus: paymentStatus || order.paymentStatus,
       timeline,
-    }
+    },
+    include: { items: true }
   });
 }
 
