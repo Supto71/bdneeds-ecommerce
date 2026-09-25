@@ -372,16 +372,7 @@ export default function Header() {
                         <p className="text-xs text-slate-500 truncate">{user.email}</p>
                       </div>
 
-                      {isAdmin && (
-                        <Link
-                          href="/admin"
-                          onClick={() => setShowUserDropdown(false)}
-                          className="flex items-center gap-2 px-4 py-2 text-sm text-blue-600 font-semibold hover:bg-blue-50 transition-colors"
-                        >
-                          <ShieldAlert className="w-4 h-4" />
-                          {t('adminConsole')}
-                        </Link>
-                      )}
+
 
                       <Link
                         href="/orders"
@@ -436,14 +427,7 @@ export default function Header() {
                           {t('register')}
                         </Link>
                       </div>
-                      <Link
-                        href="/admin/login"
-                        onClick={() => setShowUserDropdown(false)}
-                        className="flex items-center gap-2 px-4 py-2.5 text-xs text-slate-600 hover:bg-slate-50 font-medium"
-                      >
-                        <ShieldAlert className="w-3.5 h-3.5 text-slate-400" />
-                        {t('adminConsole')}
-                      </Link>
+
                     </>
                   )}
                 </div>
@@ -538,15 +522,7 @@ export default function Header() {
             >
               {t('trackOrder')}
             </Link>
-            {isAdmin && (
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block px-3 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 rounded-lg"
-              >
-                {t('adminConsole')}
-              </Link>
-            )}
+
           </div>
         </div>
       )}

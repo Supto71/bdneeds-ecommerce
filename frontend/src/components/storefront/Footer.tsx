@@ -128,11 +128,7 @@ export default function Footer() {
                   {t('aboutUs')}
                 </Link>
               </li>
-              <li>
-                <Link href="/admin/login" className="hover:text-blue-400 transition-colors text-slate-400">
-                  {t('adminConsole')}
-                </Link>
-              </li>
+
             </ul>
           </div>
 
