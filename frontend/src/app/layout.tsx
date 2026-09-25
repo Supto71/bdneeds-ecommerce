@@ -3,6 +3,7 @@ import { Inter, Noto_Serif_Bengali, Anek_Bangla } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/context/Providers';
 import WhatsAppWidget from '@/components/storefront/WhatsAppWidget';
+import NavigationProgress from '@/components/NavigationProgress';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -55,6 +56,7 @@ export default function RootLayout({
       className={`${inter.variable} ${notoSerifBengali.variable} ${anekBangla.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-white text-[#0B132B]">
+        <NavigationProgress />
         <Providers>{children}</Providers>
         <WhatsAppWidget />
       </body>

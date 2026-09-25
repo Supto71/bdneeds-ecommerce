@@ -7,6 +7,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isAuthLoading: boolean; // localStorage থেকে user load হওয়া পর্যন্ত true
   login: (email: string, pass: string) => Promise<{ success: boolean; message?: string }>;
   register: (name: string, email: string, pass: string, phone: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true); // শুরুতে loading
 
   useEffect(() => {
     try {
@@ -27,6 +29,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (e) {
       console.error('Failed to load user', e);
+    } finally {
+      setIsAuthLoading(false); // localStorage check শেষ
     }
   }, []);
 
@@ -128,6 +132,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         isAuthenticated: !!user,
         isAdmin: user?.role === 'ADMIN',
+        isAuthLoading,
         login,
         register,
         logout,

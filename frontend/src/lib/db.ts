@@ -4,7 +4,9 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({
+  log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+})
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
@@ -227,24 +229,109 @@ export async function getOrderById(id: string) {
 }
 
 export async function createOrder(input: any) {
-  // Simplified for MySQL migration
   const orderNumber = `NC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
   const trackingNumber = `NV-${Math.floor(10000000 + Math.random() * 90000000)}-US`;
-  
+
+  // Step 1: Fetch real prices and product details from DB
+  const enrichedItems = await Promise.all(
+    input.items.map(async (item: any) => {
+      const product = await prisma.product.findUnique({
+        where: { id: item.productId },
+        include: { variants: true },
+      });
+
+      if (!product) throw new Error(`Product not found: ${item.productId}`);
+
+      let price = product.basePrice;
+      let variantSku: string | null = null;
+      let variantColor: string | null = null;
+      let variantSize: string | null = null;
+      let variantStorage: string | null = null;
+
+      if (item.variantId) {
+        const variant = product.variants.find((v) => v.id === item.variantId);
+        if (variant) {
+          price = variant.price;
+          variantSku = variant.sku;
+          variantColor = variant.colorName;
+          variantSize = variant.size ?? null;
+          variantStorage = variant.storage ?? null;
+        }
+      }
+
+      const productImages = product.images as string[];
+      const productImage = Array.isArray(productImages) && productImages.length > 0
+        ? productImages[0]
+        : '';
+
+      return {
+        productId: product.id,
+        productName: product.name,
+        productSlug: product.slug,
+        productImage,
+        variantId: item.variantId || null,
+        variantSku,
+        variantColor,
+        variantSize,
+        variantStorage,
+        price,
+        quantity: item.quantity,
+        total: price * item.quantity,
+      };
+    })
+  );
+
+  // Step 2: Calculate financials
+  const subtotal = enrichedItems.reduce((acc, item) => acc + item.total, 0);
+
+  // Apply coupon discount
+  let discount = 0;
+  let couponCode: string | null = null;
+  if (input.couponCode) {
+    const coupon = await prisma.coupon.findUnique({ where: { code: input.couponCode } });
+    if (coupon && coupon.isActive && coupon.usedCount < coupon.usageLimit) {
+      couponCode = coupon.code;
+      if (coupon.discountType === 'PERCENTAGE') {
+        discount = Math.min(subtotal * (coupon.discountValue / 100), coupon.maxDiscount ?? Infinity);
+      } else {
+        discount = coupon.discountValue;
+      }
+      discount = Math.round(discount * 100) / 100;
+      // Increment usage
+      await prisma.coupon.update({ where: { id: coupon.id }, data: { usedCount: coupon.usedCount + 1 } });
+    }
+  }
+
+  // Shipping: inside Dhaka = 70, outside = 130, free if subtotal >= 2000
+  const city: string = (input.shippingAddress?.city || '').toLowerCase();
+  const isDhaka = city === 'dhaka';
+  let shippingFee = isDhaka ? 70 : 130;
+  if (subtotal >= 2000) shippingFee = 0;
+
+  const taxableAmount = Math.max(0, subtotal - discount);
+  const tax = Number((taxableAmount * 0.05).toFixed(2));
+  const total = Number((taxableAmount + shippingFee + tax).toFixed(2));
+
+  // Step 3: Build userId relation safely
+  const userConnect = input.userId
+    ? { user: { connect: { id: input.userId } } }
+    : {};
+
   const order = await prisma.order.create({
     data: {
       orderNumber,
-      userId: input.userId,
+      ...userConnect,
       customerName: input.customerName,
       customerEmail: input.customerEmail,
       customerPhone: input.customerPhone,
       shippingAddress: input.shippingAddress,
-      deliveryNote: input.deliveryNote,
-      subtotal: input.items.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0),
-      discount: 0,
-      shippingFee: 70,
-      tax: 0,
-      total: input.items.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0) + 70,
+      deliveryNote: input.deliveryNote || '',
+      subtotal,
+      discount,
+      couponCode,
+      shippingFee,
+      tax,
+      total,
       paymentMethod: input.paymentMethod,
       paymentStatus: input.paymentMethod === 'COD' ? 'PENDING' : 'PAID',
       orderStatus: 'PENDING',
@@ -255,23 +342,15 @@ export async function createOrder(input: any) {
           title: 'Order Placed',
           timestamp: new Date().toISOString(),
           note: `Order registered successfully via ${input.paymentMethod}.`,
-        }
+        },
       ],
       items: {
-        create: input.items.map((item: any) => ({
-          productId: item.productId,
-          productName: item.productName || 'Product',
-          productSlug: item.productSlug || 'product',
-          productImage: item.productImage || '',
-          variantId: item.variantId,
-          price: item.price || 0,
-          quantity: item.quantity,
-          total: (item.price || 0) * item.quantity,
-        }))
-      }
+        create: enrichedItems,
+      },
     },
-    include: { items: true }
+    include: { items: true },
   });
+
   return order;
 }
 
