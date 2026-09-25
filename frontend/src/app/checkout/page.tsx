@@ -56,7 +56,6 @@ function CheckoutContent() {
 
   // Payment
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('COD');
-  const [deliveryMethod, setDeliveryMethod] = useState<'standard' | 'express'>('standard');
 
   // Coupon
   const [couponCode, setCouponCode] = useState(initialCoupon);
@@ -108,14 +107,12 @@ function CheckoutContent() {
     }
   }, [initialCoupon, subtotal, appliedCoupon]);
 
-  // Calculate dynamic shipping fee: Inside Dhaka = 70, Outside = 130 (Express = 150)
-  const isDhaka = division === 'Dhaka';
+  // Calculate dynamic shipping fee: Inside Dhaka = 70, Outside = 130
+  const isDhaka = district === 'Dhaka';
   let baseShipping = isDhaka ? 70 : 130;
   
   const shippingFee =
-    deliveryMethod === 'express'
-      ? baseShipping + 50 // Express adds 50
-      : subtotal >= 2000 || subtotal === 0 // Assuming free shipping threshold is 2000
+    subtotal >= 2000 || subtotal === 0 // Assuming free shipping threshold is 2000
       ? 0
       : baseShipping;
   const discountAmount = appliedCoupon ? appliedCoupon.discount : 0;
@@ -386,19 +383,15 @@ function CheckoutContent() {
                   {t('deliveryMethod')}
                 </h3>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div className="grid grid-cols-1 gap-3 pt-2">
                   <label
-                    className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                      deliveryMethod === 'standard'
-                        ? 'border-blue-600 bg-blue-50/40 text-[#0B132B]'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
+                    className="flex items-start gap-3 p-4 rounded-2xl border border-blue-600 bg-blue-50/40 text-[#0B132B] transition-all"
                   >
                     <input
                       type="radio"
                       name="delivery"
-                      checked={deliveryMethod === 'standard'}
-                      onChange={() => setDeliveryMethod('standard')}
+                      checked={true}
+                      readOnly
                       className="mt-0.5 text-blue-600"
                     />
                     <div>
@@ -409,29 +402,6 @@ function CheckoutContent() {
                       <div className="text-xs font-bold text-blue-600 mt-1">
                         {subtotal >= 2000 ? t('free') : formatPrice(isDhaka ? 70 : 130)}
                       </div>
-                    </div>
-                  </label>
-
-                  <label
-                    className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                      deliveryMethod === 'express'
-                        ? 'border-blue-600 bg-blue-50/40 text-[#0B132B]'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="delivery"
-                      checked={deliveryMethod === 'express'}
-                      onChange={() => setDeliveryMethod('express')}
-                      className="mt-0.5 text-blue-600"
-                    />
-                    <div>
-                      <div className="text-xs font-bold">{t('expressDelivery')}</div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">
-                        Same-day / Next-morning priority courier
-                      </div>
-                      <div className="text-xs font-bold text-blue-600 mt-1">{formatPrice(isDhaka ? 120 : 180)}</div>
                     </div>
                   </label>
                 </div>
