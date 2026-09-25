@@ -1,5 +1,0 @@
-{
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "prisma generate && next build",
-  "framework": "nextjs"
-}
