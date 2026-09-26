@@ -64,9 +64,40 @@ function CheckoutContent() {
     discount: number;
   } | null>(null);
 
+  // Store Settings
+  const [settings, setSettings] = useState<any>(null);
+
   // Status
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [couponError, setCouponError] = useState('');
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode) return;
+    setIsApplyingCoupon(true);
+    setCouponError('');
+    try {
+      const res = await fetch('/api/coupons/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: couponCode, subtotal }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        setAppliedCoupon({ code: data.code, discount: data.discount });
+      } else {
+        setCouponError(data.error || 'Invalid or expired promo code');
+        setAppliedCoupon(null);
+      }
+    } catch (e) {
+      setCouponError('Failed to apply coupon. Please try again.');
+      setAppliedCoupon(null);
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
 
   useEffect(() => {
     if (isBuyNow) {
@@ -107,17 +138,30 @@ function CheckoutContent() {
     }
   }, [initialCoupon, subtotal, appliedCoupon]);
 
-  // Calculate dynamic shipping fee: Inside Dhaka = 70, Outside = 130
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (!data.error) setSettings(data);
+      })
+      .catch(console.error);
+  }, []);
+
+  // Calculate dynamic shipping fee from Settings
   const isDhaka = district === 'Dhaka';
-  let baseShipping = isDhaka ? 70 : 130;
+  const feeInside = settings?.shippingFeeInsideDhaka ?? 70;
+  const feeOutside = settings?.shippingFeeOutsideDhaka ?? 130;
+  const freeThreshold = settings?.freeShippingThreshold ?? 5000;
+  
+  let baseShipping = isDhaka ? feeInside : feeOutside;
   
   const shippingFee =
-    subtotal >= 2000 || subtotal === 0 // Assuming free shipping threshold is 2000
+    subtotal >= freeThreshold || subtotal === 0
       ? 0
       : baseShipping;
   const discountAmount = appliedCoupon ? appliedCoupon.discount : 0;
   const taxableAmount = Math.max(0, subtotal - discountAmount);
-  const tax = Number((taxableAmount * 0.05).toFixed(2));
+  const tax = 0; // Tax removed
   const finalTotal = Number((taxableAmount + shippingFee + tax).toFixed(2));
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
@@ -131,6 +175,11 @@ function CheckoutContent() {
 
     if (!customerName || !customerEmail || !customerPhone) {
       setErrorMessage('Please provide your full contact information.');
+      return;
+    }
+
+    if (customerPhone.trim().length !== 11) {
+      setErrorMessage('Phone number must be exactly 11 digits.');
       return;
     }
 
@@ -259,9 +308,11 @@ function CheckoutContent() {
                     <input
                       type="tel"
                       required
+                      pattern="[0-9]{11}"
+                      title="Phone number must be exactly 11 digits"
                       value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      placeholder="+880 1700-000000"
+                      onChange={(e) => setCustomerPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                      placeholder="01XXXXXXXXX"
                       className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                     />
                   </div>
@@ -400,7 +451,7 @@ function CheckoutContent() {
                         Dhaka (24-48 hrs), Nationwide (2-3 days)
                       </div>
                       <div className="text-xs font-bold text-blue-600 mt-1">
-                        {subtotal >= 2000 ? t('free') : formatPrice(isDhaka ? 70 : 130)}
+                        {subtotal >= (settings?.freeShippingThreshold ?? 5000) ? t('free') : formatPrice(isDhaka ? (settings?.shippingFeeInsideDhaka ?? 70) : (settings?.shippingFeeOutsideDhaka ?? 130))}
                       </div>
                     </div>
                   </label>
@@ -487,7 +538,7 @@ function CheckoutContent() {
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <Wallet className="w-4 h-4 text-[#E2136E]" />
+                        <Image src="/images/bkash-logo.png" alt="bKash" width={40} height={20} className="object-contain" />
                         <span className="text-xs font-bold text-slate-800">
                           bKash (বিকাশ)
                         </span>
@@ -514,7 +565,7 @@ function CheckoutContent() {
                     />
                     <div>
                       <div className="flex items-center gap-2">
-                        <Wallet className="w-4 h-4 text-[#F7941D]" />
+                        <Image src="/images/nagad-logo.png" alt="Nagad" width={40} height={20} className="object-contain" />
                         <span className="text-xs font-bold text-slate-800">
                           Nagad (নগদ)
                         </span>
@@ -539,8 +590,8 @@ function CheckoutContent() {
                 </h3>
 
                 <div className="divide-y divide-slate-100 max-h-72 overflow-y-auto pr-1">
-                  {checkoutItems.map((item) => (
-                    <div key={item.id} className="py-3 flex items-center gap-3">
+                  {checkoutItems.map((item, idx) => (
+                    <div key={`${item.id}-${idx}`} className="py-3 flex items-center gap-3">
                       <div className="relative w-14 h-14 rounded-xl bg-slate-50 overflow-hidden shrink-0 border border-slate-100">
                         <Image
                           src={item.productImage}
@@ -565,6 +616,30 @@ function CheckoutContent() {
                       </span>
                     </div>
                   ))}
+                </div>
+
+                <div className="pt-4 border-t border-slate-100">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Enter promo code"
+                      value={couponCode}
+                      onChange={(e) => {
+                        setCouponCode(e.target.value.toUpperCase());
+                        setCouponError('');
+                      }}
+                      className="flex-1 px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      disabled={!couponCode || isApplyingCoupon}
+                      className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                    >
+                      {isApplyingCoupon ? 'Applying...' : 'Apply'}
+                    </button>
+                  </div>
+                  {couponError && <p className="text-rose-600 text-[11px] mt-2 font-medium">{couponError}</p>}
                 </div>
 
                 <div className="space-y-2.5 text-xs pt-4 border-t border-slate-100">
@@ -595,12 +670,7 @@ function CheckoutContent() {
                     </span>
                   </div>
 
-                  <div className="flex justify-between text-slate-600">
-                    <span>{t('estimatedTax')}</span>
-                    <span className="font-semibold text-slate-800">
-                      {formatPrice(tax)}
-                    </span>
-                  </div>
+
 
                   <div className="pt-3 border-t border-slate-100 flex justify-between items-baseline">
                     <span className="text-sm font-bold text-[#0B132B]">{t('total')}</span>

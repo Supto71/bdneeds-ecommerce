@@ -193,6 +193,9 @@ export interface Order {
   trackingNumber: string;
   timeline: OrderTimeline[];
   createdAt: string;
+  user?: {
+    isFraud: boolean;
+  };
 }
 
 export interface Review {

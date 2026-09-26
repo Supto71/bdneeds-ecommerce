@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getOrderById, updateOrderStatus } from '@/lib/db';
+import { getOrderById, updateOrderStatus, deleteOrder } from '@/lib/db';
 
 export async function GET(
   request: Request,
@@ -36,5 +36,18 @@ export async function PATCH(
     return NextResponse.json(updated);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update order status' }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+    await deleteOrder(id);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to delete order' }, { status: 500 });
   }
 }

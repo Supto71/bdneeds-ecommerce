@@ -14,14 +14,21 @@ import { Order } from '@/types';
 import { formatPrice, formatDate } from '@/lib/utils';
 
 export default function OrdersPage() {
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const { t } = useLanguage();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const url = user ? `/api/orders?userId=${user.id}` : '/api/orders';
-    fetch(url)
+    if (isAuthLoading) return; // Wait for auth to finish checking local storage
+
+    if (!user) {
+      setLoading(false);
+      return; // Do not fetch if not logged in
+    }
+
+    setLoading(true);
+    fetch(`/api/orders?userId=${user.id}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -30,7 +37,7 @@ export default function OrdersPage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [user]);
+  }, [user, isAuthLoading]);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

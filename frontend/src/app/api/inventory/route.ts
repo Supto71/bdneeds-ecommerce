@@ -12,16 +12,19 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
   try {
-    const { productId, variantId, stock } = await request.json();
+    const { productId, variantId, stock, threshold } = await request.json();
 
-    if (!productId || stock === undefined) {
+    if (!productId || (stock === undefined && threshold === undefined)) {
       return NextResponse.json(
-        { error: 'Product ID and stock quantity are required' },
+        { error: 'Product ID and at least one field to update are required' },
         { status: 400 }
       );
     }
 
-    const success = await updateStock(productId, variantId, Number(stock));
+    const newStock = stock !== undefined ? Number(stock) : undefined;
+    const newThreshold = threshold !== undefined ? Number(threshold) : undefined;
+
+    const success = await updateStock(productId, variantId, newStock, newThreshold);
     if (!success) {
       return NextResponse.json(
         { error: 'Failed to update stock. Product or variant not found.' },
@@ -29,7 +32,7 @@ export async function PATCH(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, stock: Number(stock) });
+    return NextResponse.json({ success: true, stock: newStock, threshold: newThreshold });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update stock' }, { status: 500 });
   }

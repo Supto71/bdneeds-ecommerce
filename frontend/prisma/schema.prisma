@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -16,6 +15,7 @@ model User {
   role      Role     @default(CUSTOMER)
   phone     String   @default("")
   avatarUrl String?
+  isFraud   Boolean  @default(false)
   createdAt DateTime @default(now())
 
   orders  Order[]
@@ -69,6 +69,7 @@ model Product {
   isBestSeller     Boolean  @default(false)
   isNew            Boolean  @default(false)
   isPublished      Boolean  @default(true)
+  lowStockThreshold Int     @default(5)
   createdAt        DateTime @default(now())
 
   category Category       @relation(fields: [categoryId], references: [id])
@@ -225,12 +226,22 @@ model Review {
 }
 
 model Settings {
-  id                    Int    @id @default(autoincrement())
-  storeName             String @default("BdNeeds")
-  currency              String @default("BDT")
-  shippingFee           Float  @default(70)
-  freeShippingThreshold Float  @default(5000)
-  taxRate               Float  @default(0)
-  contactEmail          String @default("contact@bdneeds.com")
-  contactPhone          String @default("01811277828")
+  id                      Int    @id @default(autoincrement())
+  storeName               String @default("BdNeeds")
+  currency                String @default("BDT")
+  shippingFeeInsideDhaka  Float  @default(70)
+  shippingFeeOutsideDhaka Float  @default(130)
+  freeShippingThreshold   Float  @default(5000)
+  taxRate                 Float  @default(0)
+  contactEmail            String @default("contact@bdneeds.com")
+  contactPhone            String @default("01811277828")
+}
+
+model RecycleBin {
+  id           String   @id @default(cuid())
+  entityType   String   // 'Order', 'Product', 'Category', 'User'
+  entityId     String
+  entityTitle  String
+  originalData Json
+  deletedAt    DateTime @default(now())
 }

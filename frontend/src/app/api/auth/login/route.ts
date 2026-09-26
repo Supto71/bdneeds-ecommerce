@@ -1,21 +1,21 @@
 import { NextResponse } from 'next/server';
-import { getUserByEmail } from '@/lib/db';
+import { getUserByIdentifier } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { identifier, password } = await request.json();
 
-    if (!email || !password) {
+    if (!identifier || !password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: 'Email/Phone and password are required' },
         { status: 400 }
       );
     }
 
-    const user = await getUserByEmail(email);
+    const user = await getUserByIdentifier(identifier);
     if (!user || user.password !== password) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'Invalid credentials' },
         { status: 401 }
       );
     }

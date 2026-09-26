@@ -181,16 +181,7 @@ export default function Footer() {
 
         {/* Payment Methods & Legal Copyright */}
         <div className="pt-8 flex flex-col items-center justify-center gap-6 text-xs text-slate-400">
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <span className="text-[11px] text-slate-400 mr-1">{t('footerPayment')}</span>
-            <span className="px-2.5 py-1 bg-[#E2136E]/20 text-[#E2136E] border border-[#E2136E]/40 rounded font-bold tracking-wider text-[10px]">
-              bKash / Nagad
-            </span>
-            <span className="px-2.5 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 rounded font-semibold text-[10px]">
-              Cash On Delivery
-            </span>
-          </div>
-          
+
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
             <p>© {new Date().getFullYear()} {t('allRightsReserved')}</p>
             <div className="flex items-center gap-4 border-l border-r border-slate-700 px-4">

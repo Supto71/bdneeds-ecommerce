@@ -236,6 +236,7 @@ export const translations = {
     adminCoupons: 'Coupons & Promos',
     adminAnalytics: 'Analytics',
     adminSettings: 'Store Settings',
+    adminRecycleBin: 'Recycle Bin',
     adminLiveSync: 'Storefront Live & Synchronized',
     adminViewStore: 'View Store',
     adminBackToStore: 'Back to Storefront',

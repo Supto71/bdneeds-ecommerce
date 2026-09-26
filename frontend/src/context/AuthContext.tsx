@@ -8,7 +8,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isAuthLoading: boolean; // localStorage থেকে user load হওয়া পর্যন্ত true
-  login: (email: string, pass: string) => Promise<{ success: boolean; message?: string }>;
+  login: (identifier: string, pass: string) => Promise<{ success: boolean; message?: string }>;
   register: (name: string, email: string, pass: string, phone: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   updateAvatar: (avatarUrl: string) => Promise<{ success: boolean; message?: string }>;
@@ -34,12 +34,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const login = async (email: string, pass: string) => {
+  const login = async (identifier: string, pass: string) => {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password: pass }),
+        body: JSON.stringify({ identifier, password: pass }),
       });
       const data = await res.json();
       if (!res.ok) {

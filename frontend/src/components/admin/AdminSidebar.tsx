@@ -18,6 +18,7 @@ import {
   Settings,
   Star,
   ArrowLeft,
+  Trash2,
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { TranslationKey } from '@/lib/translations';
@@ -39,6 +40,7 @@ export default function AdminSidebar() {
     { key: 'adminCoupons', href: '/admin/coupons', icon: Tag },
     { key: 'adminAnalytics', href: '/admin/analytics', icon: BarChart3 },
     { key: 'adminSettings', href: '/admin/settings', icon: Settings },
+    { key: 'adminRecycleBin', href: '/admin/recycle-bin', icon: Trash2 },
   ];
 
   return (

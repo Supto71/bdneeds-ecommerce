@@ -9,6 +9,7 @@ import {
   Trash2,
   Image as ImageIcon,
   CheckCircle2,
+  XCircle,
   Layers,
   ChevronLeft,
 } from 'lucide-react';
@@ -67,6 +68,35 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
   // Submission State
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        setImages([...images, data.url]);
+      } else {
+        alert(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+      e.target.value = '';
+    }
+  };
 
   const handleAddImage = () => {
     if (newImageUrl.trim()) {
@@ -380,25 +410,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                 <span>Featured Product</span>
               </label>
 
-              <label className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isBestSeller}
-                  onChange={(e) => setIsBestSeller(e.target.checked)}
-                  className="rounded text-blue-600"
-                />
-                <span>Best Seller Badge</span>
-              </label>
 
-              <label className="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={isNew}
-                  onChange={(e) => setIsNew(e.target.checked)}
-                  className="rounded text-blue-600"
-                />
-                <span>New Arrival Badge</span>
-              </label>
             </div>
           </div>
         )}
@@ -419,10 +431,21 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
               <button
                 type="button"
                 onClick={handleAddImage}
-                className="px-4 py-2 bg-[#0B132B] text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors"
+                className="px-4 py-2 bg-slate-200 text-slate-800 text-xs font-bold rounded-xl hover:bg-slate-300 transition-colors"
               >
-                Add Image URL
+                Add URL
               </button>
+              
+              <label className="px-4 py-2 bg-[#0B132B] text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors cursor-pointer flex items-center justify-center">
+                {uploadingImage ? 'Uploading...' : 'Upload Image'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  disabled={uploadingImage}
+                />
+              </label>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
@@ -633,8 +656,16 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
 
         {/* Status Message */}
         {message && (
-          <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs font-bold flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <div className={`p-4 border rounded-2xl text-xs font-bold flex items-center gap-2 ${
+            message.toLowerCase().includes('failed') || message.toLowerCase().includes('error')
+              ? 'bg-rose-50 border-rose-200 text-rose-800'
+              : 'bg-emerald-50 border-emerald-200 text-emerald-800'
+          }`}>
+            {message.toLowerCase().includes('failed') || message.toLowerCase().includes('error') ? (
+              <XCircle className="w-4 h-4 text-rose-600" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            )}
             <span>{message}</span>
           </div>
         )}

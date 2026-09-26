@@ -14,7 +14,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
 
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -24,7 +24,7 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    const res = await login(email, password);
+    const res = await login(identifier, password);
     setLoading(false);
 
     if (res.success) {
@@ -35,7 +35,7 @@ export default function LoginPage() {
   };
 
   const handleQuickDemoCustomer = () => {
-    setEmail('alex.hayes@example.com');
+    setIdentifier('alex.hayes@example.com');
     setPassword('customer123');
   };
 
@@ -90,15 +90,15 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-1.5">
                 <label className="block text-sm font-bold text-slate-700 ml-1">
-                  Email Address
+                  Email Address or Phone Number
                 </label>
                 <div className="relative group">
                   <input
-                    type="email"
+                    type="text"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alex.hayes@example.com"
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)}
+                    placeholder="email@example.com or 01XXXXXXXXX"
                     className="w-full pl-11 pr-4 py-3.5 text-sm bg-white/50 border border-slate-200 rounded-2xl text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white font-medium transition-all duration-300 shadow-sm"
                   />
                   <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-blue-500 transition-colors" />

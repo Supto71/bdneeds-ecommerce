@@ -10,6 +10,21 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
+async function moveToRecycleBin(entityType: string, id: string, entityTitle: string, data: any) {
+  try {
+    await prisma.recycleBin.create({
+      data: {
+        entityType,
+        entityId: id,
+        entityTitle,
+        originalData: JSON.parse(JSON.stringify(data))
+      }
+    });
+  } catch (err) {
+    console.error('Failed to move to recycle bin:', err);
+  }
+}
+
 // ==========================================
 // PRODUCTS API
 // ==========================================
@@ -48,11 +63,62 @@ export async function getProducts(filters?: ProductFiltersDef) {
     where.brand = { equals: filters.brand };
   }
   if (filters?.search) {
-    where.OR = [
-      { name: { contains: filters.search } },
-      { brand: { contains: filters.search } },
-      { shortDescription: { contains: filters.search } },
-    ];
+    const originalTerms = filters.search.trim().toLowerCase().split(/\s+/);
+    
+    // Synonym mapping for basic semantic search feel
+    const synonyms: Record<string, string[]> = {
+      'clothes': ['apparel', 'fashion', 't-shirt', 'shirt', 'pant', 'wear'],
+      'cloth': ['apparel', 'fashion', 't-shirt', 'shirt', 'pant', 'wear'],
+      'clothing': ['apparel', 'fashion', 't-shirt', 'shirt', 'pant', 'wear'],
+      'gadget': ['electronic', 'smart', 'device', 'audio'],
+      'gadgets': ['electronic', 'smart', 'device', 'audio'],
+      'skin': ['skincare', 'serum', 'beauty', 'grooming', 'lotion'],
+      'shoe': ['sneaker', 'footwear', 'boot', 'runner'],
+      'shoes': ['sneaker', 'footwear', 'boot', 'runner'],
+      'pc': ['computer', 'laptop', 'desktop', 'workstation'],
+      'computer': ['pc', 'laptop', 'desktop', 'workstation'],
+      'phone': ['smartphone', 'mobile', 'cellphone'],
+      'bag': ['briefcase', 'backpack', 'tote', 'luggage', 'pouch'],
+      'bags': ['briefcase', 'backpack', 'tote', 'luggage', 'pouch'],
+    };
+
+    const termConditions = originalTerms.map(term => {
+      const termGroup = [term];
+      if (synonyms[term]) {
+        termGroup.push(...synonyms[term]);
+      }
+
+      const orConditions = termGroup.map(t => {
+        let stem = t;
+        if (stem.length > 3) {
+          if (stem.endsWith('ies')) stem = stem.slice(0, -3) + 'y';
+          else if (stem.endsWith('es') && !stem.endsWith('shoes')) stem = stem.slice(0, -2);
+          else if (stem.endsWith('s') && !stem.endsWith('ss')) stem = stem.slice(0, -1);
+          else if (stem.endsWith('ing')) stem = stem.slice(0, -3);
+          else if (stem.endsWith('e')) stem = stem.slice(0, -1);
+        }
+        if (stem.length < 3) stem = t;
+
+        return {
+          OR: [
+            { name: { contains: stem, mode: 'insensitive' as any } },
+            { brand: { contains: stem, mode: 'insensitive' as any } },
+            { shortDescription: { contains: stem, mode: 'insensitive' as any } },
+            { description: { contains: stem, mode: 'insensitive' as any } },
+            { categoryName: { contains: stem, mode: 'insensitive' as any } },
+          ]
+        };
+      });
+
+      return { OR: orConditions };
+    });
+
+    if (where.OR) {
+      where.AND = [{ OR: where.OR }, ...termConditions];
+      delete where.OR;
+    } else {
+      where.AND = termConditions;
+    }
   }
   if (filters?.minPrice !== undefined) {
     where.basePrice = { ...((where.basePrice as any) || {}), gte: filters.minPrice };
@@ -125,14 +191,44 @@ export async function getRelatedProducts(productId: string, categoryId: string, 
 }
 
 export async function createProduct(data: any) {
-  return prisma.product.create({ data });
+  const { variants, ...productData } = data;
+  return prisma.product.create({
+    data: {
+      ...productData,
+      ...(variants && {
+        variants: {
+          create: variants.map((v: any) => {
+            const { id, productId, ...rest } = v;
+            return rest;
+          })
+        }
+      })
+    }
+  });
 }
 
 export async function updateProduct(id: string, data: any) {
-  return prisma.product.update({ where: { id }, data });
+  const { variants, ...productData } = data;
+  return prisma.product.update({
+    where: { id },
+    data: {
+      ...productData,
+      ...(variants && {
+        variants: {
+          deleteMany: {},
+          create: variants.map((v: any) => {
+            const { id: vId, productId, ...rest } = v;
+            return rest;
+          })
+        }
+      })
+    }
+  });
 }
 
 export async function deleteProduct(id: string) {
+  const prod = await prisma.product.findUnique({ where: { id }, include: { variants: true } });
+  if (prod) await moveToRecycleBin('Product', id, prod.name, prod);
   await prisma.product.delete({ where: { id } });
   return true;
 }
@@ -142,14 +238,34 @@ export async function deleteProduct(id: string) {
 // ==========================================
 
 export async function getCategories() {
-  return prisma.category.findMany({
+  const categories = await prisma.category.findMany({
     where: { isActive: true },
     orderBy: { order: 'asc' },
+    include: {
+      _count: {
+        select: { products: true }
+      }
+    }
   });
+  return categories.map(c => ({
+    ...c,
+    productCount: c._count.products
+  }));
 }
 
 export async function getAllCategoriesAdmin() {
-  return prisma.category.findMany({ orderBy: { order: 'asc' } });
+  const categories = await prisma.category.findMany({
+    orderBy: { order: 'asc' },
+    include: {
+      _count: {
+        select: { products: true }
+      }
+    }
+  });
+  return categories.map(c => ({
+    ...c,
+    productCount: c._count.products
+  }));
 }
 
 export async function getCategoryBySlug(slug: string) {
@@ -165,6 +281,8 @@ export async function updateCategory(id: string, data: any) {
 }
 
 export async function deleteCategory(id: string) {
+  const cat = await prisma.category.findUnique({ where: { id } });
+  if (cat) await moveToRecycleBin('Category', id, cat.name, cat);
   await prisma.category.delete({ where: { id } });
   return true;
 }
@@ -193,6 +311,8 @@ export async function updateBanner(id: string, data: any) {
 }
 
 export async function deleteBanner(id: string) {
+  const banner = await prisma.banner.findUnique({ where: { id } });
+  if (banner) await moveToRecycleBin('Banner', id, banner.title, banner);
   await prisma.banner.delete({ where: { id } });
   return true;
 }
@@ -214,12 +334,12 @@ export async function getOrders(userId?: string) {
         ]
       },
       orderBy: { createdAt: 'desc' },
-      include: { items: true },
+      include: { items: true, user: { select: { isFraud: true } } },
     });
   }
   return prisma.order.findMany({
     orderBy: { createdAt: 'desc' },
-    include: { items: true },
+    include: { items: true, user: { select: { isFraud: true } } },
   });
 }
 
@@ -232,7 +352,7 @@ export async function getOrderById(id: string) {
         { trackingNumber: id },
       ],
     },
-    include: { items: true },
+    include: { items: true, user: { select: { isFraud: true } } },
   });
 }
 
@@ -310,14 +430,20 @@ export async function createOrder(input: any) {
     }
   }
 
-  // Shipping: inside Dhaka = 70, outside = 130, free if subtotal >= 2000
+  // Fetch Store Settings for Shipping rules
+  const settings = await prisma.settings.findFirst();
+  const feeInside = settings?.shippingFeeInsideDhaka ?? 70;
+  const feeOutside = settings?.shippingFeeOutsideDhaka ?? 130;
+  const freeThreshold = settings?.freeShippingThreshold ?? 5000;
+
+  // Shipping logic
   const city: string = (input.shippingAddress?.city || '').toLowerCase();
   const isDhaka = city === 'dhaka';
-  let shippingFee = isDhaka ? 70 : 130;
-  if (subtotal >= 2000) shippingFee = 0;
+  let shippingFee = isDhaka ? feeInside : feeOutside;
+  if (subtotal >= freeThreshold) shippingFee = 0;
 
   const taxableAmount = Math.max(0, subtotal - discount);
-  const tax = Number((taxableAmount * 0.05).toFixed(2));
+  const tax = 0; // Number((taxableAmount * 0.05).toFixed(2));
   const total = Number((taxableAmount + shippingFee + tax).toFixed(2));
 
   // Step 3: Build userId relation safely
@@ -360,6 +486,12 @@ export async function createOrder(input: any) {
   });
 
   return order;
+}
+
+export async function deleteOrder(id: string) {
+  const order = await prisma.order.findUnique({ where: { id }, include: { items: true } });
+  if (order) await moveToRecycleBin('Order', id, `Order #${order.orderNumber}`, order);
+  return prisma.order.delete({ where: { id } });
 }
 
 export async function updateOrderStatus(orderId: string, newStatus: any, note?: string, paymentStatus?: any) {
@@ -415,8 +547,8 @@ export async function getInventoryStatus() {
         productName: p.name,
         sku: p.sku,
         stock: p.stock,
-        lowStockThreshold: 5,
-        isLowStock: p.stock > 0 && p.stock <= 5,
+        lowStockThreshold: p.lowStockThreshold,
+        isLowStock: p.stock > 0 && p.stock <= p.lowStockThreshold,
         isOutOfStock: p.stock <= 0,
       });
     }
@@ -424,17 +556,22 @@ export async function getInventoryStatus() {
   return inventoryItems;
 }
 
-export async function updateStock(productId: string, variantId: string | undefined, newStock: number) {
+export async function updateStock(productId: string, variantId: string | undefined, newStock?: number, newThreshold?: number) {
   if (variantId) {
+    const data: any = {};
+    if (newStock !== undefined) data.stock = Math.max(0, newStock);
+    if (newThreshold !== undefined) data.lowStockThreshold = Math.max(0, newThreshold);
     await prisma.productVariant.update({
       where: { id: variantId },
-      data: { stock: Math.max(0, newStock) }
+      data
     });
-    // Optional: Update parent product stock by summing variants
   } else {
+    const data: any = {};
+    if (newStock !== undefined) data.stock = Math.max(0, newStock);
+    if (newThreshold !== undefined) data.lowStockThreshold = Math.max(0, newThreshold);
     await prisma.product.update({
       where: { id: productId },
-      data: { stock: Math.max(0, newStock) }
+      data
     });
   }
   return true;
@@ -468,6 +605,8 @@ export async function moderateReview(id: string, isApproved: boolean) {
 }
 
 export async function deleteReview(id: string) {
+  const review = await prisma.review.findUnique({ where: { id } });
+  if (review) await moveToRecycleBin('Review', id, review.title, review);
   await prisma.review.delete({ where: { id } });
   return true;
 }
@@ -503,7 +642,13 @@ export async function createCoupon(data: any) {
   return prisma.coupon.create({ data });
 }
 
+export async function updateCoupon(id: string, data: any) {
+  return prisma.coupon.update({ where: { id }, data });
+}
+
 export async function deleteCoupon(id: string) {
+  const coupon = await prisma.coupon.findUnique({ where: { id } });
+  if (coupon) await moveToRecycleBin('Coupon', id, coupon.code, coupon);
   await prisma.coupon.delete({ where: { id } });
   return true;
 }
@@ -518,6 +663,17 @@ export async function getUsers() {
 
 export async function getUserByEmail(email: string) {
   return prisma.user.findUnique({ where: { email } });
+}
+
+export async function getUserByIdentifier(identifier: string) {
+  return prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: identifier },
+        { phone: identifier },
+      ],
+    },
+  });
 }
 
 export async function createUser(data: any) {

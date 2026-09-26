@@ -20,6 +20,36 @@ export default function AdminCustomersPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleMarkFraud = async (id: string, isFraud: boolean) => {
+    if (!confirm(isFraud ? 'Mark this client as fraud?' : 'Unmark this client as fraud?')) return;
+    try {
+      const res = await fetch(`/api/customers/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ isFraud }),
+      });
+      if (res.ok) {
+        setCustomers((prev) => prev.map(c => c.id === id ? { ...c, isFraud, clientTag: isFraud ? 'Fraud Client' : 'Regular Client' } : c));
+        // A full refresh would correctly recalculate the tag if we unmarked them, but this optimistic update is ok for now.
+        window.location.reload(); 
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDeleteClient = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this client? This will delete all their orders and reviews.')) return;
+    try {
+      const res = await fetch(`/api/customers/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setCustomers((prev) => prev.filter(c => c.id !== id));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const filtered = customers.filter(
     (c) =>
       !search ||
@@ -66,7 +96,8 @@ export default function AdminCustomersPage() {
                 <th className="p-4">Orders Placed</th>
                 <th className="p-4">Lifetime Spend</th>
                 <th className="p-4">Last Activity</th>
-                <th className="p-4 pr-6">Member Since</th>
+                <th className="p-4">Member Since</th>
+                <th className="p-4 pr-6 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
@@ -103,8 +134,14 @@ export default function AdminCustomersPage() {
                         </div>
                         <div>
                           <div className="font-bold text-slate-900">{client.name}</div>
-                          <span className="text-[10px] font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">
-                            VIP Client
+                          <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${
+                            client.clientTag === 'VIP Client' ? 'text-purple-600 bg-purple-50' :
+                            client.clientTag === 'Return Client' ? 'text-orange-600 bg-orange-50' :
+                            client.clientTag === 'New Client' ? 'text-green-600 bg-green-50' :
+                            client.clientTag === 'Fraud Client' ? 'text-red-600 bg-red-50' :
+                            'text-blue-600 bg-blue-50'
+                          }`}>
+                            {client.clientTag || 'Regular Client'}
                           </span>
                         </div>
                       </div>
@@ -134,8 +171,28 @@ export default function AdminCustomersPage() {
                     <td className="p-4 text-slate-500">
                       {client.lastOrder ? formatDate(client.lastOrder) : 'No orders yet'}
                     </td>
-                    <td className="p-4 pr-6 text-slate-400">
+                    <td className="p-4 text-slate-400">
                       {formatDate(client.createdAt)}
+                    </td>
+                    <td className="p-4 pr-6 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button 
+                          onClick={() => handleMarkFraud(client.id, client.clientTag !== 'Fraud Client')}
+                          className={`px-2 py-1 text-[10px] font-bold rounded-lg transition-colors ${
+                            client.clientTag === 'Fraud Client' 
+                            ? 'bg-slate-100 text-slate-500 hover:bg-slate-200' 
+                            : 'bg-orange-50 text-orange-600 hover:bg-orange-100'
+                          }`}
+                        >
+                          {client.clientTag === 'Fraud Client' ? 'Unmark Fraud' : 'Mark Fraud'}
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteClient(client.id)}
+                          className="px-2 py-1 text-[10px] font-bold bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

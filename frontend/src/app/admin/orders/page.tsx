@@ -122,7 +122,15 @@ export default function AdminOrdersPage() {
                       </div>
                     </td>
                     <td className="p-4">
-                      <div className="font-bold text-slate-900">{ord.customerName}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="font-bold text-slate-900">{ord.customerName}</div>
+                        {ord.user?.isFraud && (
+                          <div className="flex items-center gap-1 bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">
+                            <AlertCircle className="w-3 h-3" />
+                            <span>Fraud Alert</span>
+                          </div>
+                        )}
+                      </div>
                       <div className="text-[11px] text-slate-400">{ord.customerEmail}</div>
                     </td>
                     <td className="p-4">
@@ -135,13 +143,12 @@ export default function AdminOrdersPage() {
                     </td>
                     <td className="p-4">
                       <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          ord.orderStatus === 'DELIVERED'
+                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${ord.orderStatus === 'DELIVERED'
                             ? 'bg-emerald-50 text-emerald-700'
                             : ord.orderStatus === 'CANCELLED'
-                            ? 'bg-rose-50 text-rose-700'
-                            : 'bg-blue-50 text-blue-700'
-                        }`}
+                              ? 'bg-rose-50 text-rose-700'
+                              : 'bg-blue-50 text-blue-700'
+                          }`}
                       >
                         {ord.orderStatus}
                       </span>

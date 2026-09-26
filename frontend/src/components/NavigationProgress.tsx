@@ -36,14 +36,40 @@ function NavigationProgressInner() {
     const handleClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement).closest('a');
       if (!target) return;
+      
       const href = target.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto')) return;
+      if (!href || href.startsWith('#') || href.startsWith('mailto')) return;
+      if (target.getAttribute('target') === '_blank') return;
+
+      const isSamePage = target.pathname === window.location.pathname && target.search === window.location.search;
+
+      // External link check
+      if (target.href.startsWith('http') && target.origin !== window.location.origin) {
+        return;
+      }
 
       // Internal navigation detected
       setVisible(true);
       setProgress(15);
 
       if (intervalRef.current) clearInterval(intervalRef.current);
+
+      if (isSamePage) {
+        // Scroll to top for same-page navigation
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Simulate a quick successful load for same-page clicks
+        if (timerRef.current) clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+          setProgress(100);
+          timerRef.current = setTimeout(() => {
+            setVisible(false);
+            setProgress(0);
+          }, 400);
+        }, 200);
+        return;
+      }
+
       intervalRef.current = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 85) {

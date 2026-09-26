@@ -76,15 +76,51 @@ export default function ShopCatalog({
   const filteredProducts = useMemo(() => {
     let list = [...initialProducts];
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.brand.toLowerCase().includes(q) ||
-          p.categoryName.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
-      );
+    if (searchQuery.trim() && searchQuery.trim().toLowerCase() !== initialSearchQuery?.toLowerCase().trim()) {
+      const originalTerms = searchQuery.toLowerCase().trim().split(/\s+/);
+      const synonyms: Record<string, string[]> = {
+        'clothes': ['apparel', 'fashion', 't-shirt', 'shirt', 'pant', 'wear'],
+        'cloth': ['apparel', 'fashion', 't-shirt', 'shirt', 'pant', 'wear'],
+        'clothing': ['apparel', 'fashion', 't-shirt', 'shirt', 'pant', 'wear'],
+        'gadget': ['electronic', 'smart', 'device', 'audio'],
+        'gadgets': ['electronic', 'smart', 'device', 'audio'],
+        'skin': ['skincare', 'serum', 'beauty', 'grooming', 'lotion'],
+        'shoe': ['sneaker', 'footwear', 'boot', 'runner'],
+        'shoes': ['sneaker', 'footwear', 'boot', 'runner'],
+        'pc': ['computer', 'laptop', 'desktop', 'workstation'],
+        'computer': ['pc', 'laptop', 'desktop', 'workstation'],
+        'phone': ['smartphone', 'mobile', 'cellphone'],
+        'bag': ['briefcase', 'backpack', 'tote', 'luggage', 'pouch'],
+        'bags': ['briefcase', 'backpack', 'tote', 'luggage', 'pouch'],
+      };
+
+      const termGroups = originalTerms.map(term => {
+        const group = [term];
+        if (synonyms[term]) group.push(...synonyms[term]);
+        return group.map(t => {
+          let stem = t;
+          if (stem.length > 3) {
+            if (stem.endsWith('ies')) stem = stem.slice(0, -3) + 'y';
+            else if (stem.endsWith('es') && !stem.endsWith('shoes')) stem = stem.slice(0, -2);
+            else if (stem.endsWith('s') && !stem.endsWith('ss')) stem = stem.slice(0, -1);
+            else if (stem.endsWith('ing')) stem = stem.slice(0, -3);
+            else if (stem.endsWith('e')) stem = stem.slice(0, -1);
+          }
+          return stem.length < 3 ? t : stem;
+        });
+      });
+
+      list = list.filter((p) => {
+        return termGroups.every(groupStems => 
+          groupStems.some(stem =>
+            p.name.toLowerCase().includes(stem) ||
+            p.brand.toLowerCase().includes(stem) ||
+            p.categoryName.toLowerCase().includes(stem) ||
+            (p.shortDescription && p.shortDescription.toLowerCase().includes(stem)) ||
+            p.tags.some((t) => t.toLowerCase().includes(stem))
+          )
+        );
+      });
     }
 
     if (selectedCategory) {
@@ -307,24 +343,22 @@ export default function ShopCatalog({
               </h4>
               <div className="space-y-1.5">
                 <button
-                  onClick={() => setSelectedCategory('')}
+                  onClick={() => router.push('/shop')}
                   className={`w-full flex items-center justify-between text-xs py-1.5 px-2 rounded-md transition-colors ${
-                    !selectedCategory
+                    !selectedCategory && !initialCategorySlug
                       ? 'bg-blue-50 text-blue-600 font-bold'
                       : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
                   <span>{t('allCategories')}</span>
-                  <span className="text-slate-400">{initialProducts.length}</span>
+                  <span className="text-slate-400"></span>
                 </button>
                 {categories.map((cat) => (
                   <button
                     key={cat.id}
-                    onClick={() =>
-                      setSelectedCategory(selectedCategory === cat.id ? '' : cat.id)
-                    }
+                    onClick={() => router.push(`/category/${cat.slug}`)}
                     className={`w-full flex items-center justify-between text-xs py-1.5 px-2 rounded-md transition-colors ${
-                      selectedCategory === cat.id || selectedCategory === cat.slug
+                      selectedCategory === cat.id || selectedCategory === cat.slug || initialCategorySlug === cat.id || initialCategorySlug === cat.slug
                         ? 'bg-blue-50 text-blue-600 font-bold'
                         : 'text-slate-600 hover:bg-slate-50'
                     }`}
@@ -471,24 +505,25 @@ export default function ShopCatalog({
                 </h4>
                 <div className="space-y-1.5">
                   <button
-                    onClick={() => setSelectedCategory('')}
+                    onClick={() => router.push('/shop')}
                     className={`w-full flex items-center justify-between text-xs py-2 px-3 rounded-md transition-colors ${
-                      !selectedCategory
+                      !selectedCategory && !initialCategorySlug
                         ? 'bg-blue-50 text-blue-600 font-bold'
                         : 'text-slate-600 hover:bg-slate-50 border border-slate-100'
                     }`}
                   >
                     <span>{t('allCategories')}</span>
-                    <span className="text-slate-400">{initialProducts.length}</span>
+                    <span className="text-slate-400"></span>
                   </button>
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
-                      onClick={() =>
-                        setSelectedCategory(selectedCategory === cat.id ? '' : cat.id)
-                      }
+                      onClick={() => {
+                        setMobileFilterOpen(false);
+                        router.push(`/category/${cat.slug}`);
+                      }}
                       className={`w-full flex items-center justify-between text-xs py-2 px-3 rounded-md transition-colors ${
-                        selectedCategory === cat.id || selectedCategory === cat.slug
+                        selectedCategory === cat.id || selectedCategory === cat.slug || initialCategorySlug === cat.id || initialCategorySlug === cat.slug
                           ? 'bg-blue-50 text-blue-600 font-bold'
                           : 'text-slate-600 hover:bg-slate-50 border border-slate-100'
                       }`}

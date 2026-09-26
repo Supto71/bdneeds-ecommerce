@@ -5,12 +5,13 @@ import { Save, CheckCircle2, Store, DollarSign, Truck, ShieldCheck, Globe } from
 
 export default function AdminSettingsPage() {
   const [storeName, setStoreName] = useState('BDNEEDS');
-  const [currency, setCurrency] = useState('USD ($)');
-  const [shippingFee, setShippingFee] = useState('15');
-  const [freeShippingThreshold, setFreeShippingThreshold] = useState('99');
-  const [taxRate, setTaxRate] = useState('8');
-  const [contactEmail, setContactEmail] = useState('concierge@bdneeds.com');
-  const [contactPhone, setContactPhone] = useState('+1 (800) 555-NOVA');
+  const [currency, setCurrency] = useState('BDT (৳)');
+  const [shippingFeeInsideDhaka, setShippingFeeInsideDhaka] = useState('70');
+  const [shippingFeeOutsideDhaka, setShippingFeeOutsideDhaka] = useState('130');
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState('5000');
+  const [taxRate, setTaxRate] = useState('0');
+  const [contactEmail, setContactEmail] = useState('contact@bdneeds.com');
+  const [contactPhone, setContactPhone] = useState('01811277828');
   const [saved, setSaved] = useState(false);
 
   // Announcement Bar State
@@ -36,10 +37,46 @@ export default function AdminSettingsPage() {
         }
       })
       .catch(console.error);
+
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data && !data.error) {
+          setStoreName(data.storeName || 'BDNEEDS');
+          setCurrency('BDT (৳)');
+          setShippingFeeInsideDhaka(data.shippingFeeInsideDhaka?.toString() || '70');
+          setShippingFeeOutsideDhaka(data.shippingFeeOutsideDhaka?.toString() || '130');
+          setFreeShippingThreshold(data.freeShippingThreshold?.toString() || '5000');
+          setTaxRate(data.taxRate?.toString() || '0');
+          setContactEmail(data.contactEmail || 'contact@bdneeds.com');
+          setContactPhone(data.contactPhone || '01811277828');
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Save Store Settings
+    try {
+      await fetch('/api/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          storeName,
+          currency: 'BDT',
+          shippingFeeInsideDhaka: Number(shippingFeeInsideDhaka),
+          shippingFeeOutsideDhaka: Number(shippingFeeOutsideDhaka),
+          freeShippingThreshold: Number(freeShippingThreshold),
+          taxRate: Number(taxRate),
+          contactEmail,
+          contactPhone
+        })
+      });
+    } catch (err) {
+      console.error(err);
+    }
 
     // Save Announcement Banner
     const payload = {
@@ -129,9 +166,6 @@ export default function AdminSettingsPage() {
                 className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-800"
               >
                 <option value="BDT (৳)">BDT (৳) - Bangladeshi Taka</option>
-                <option value="USD ($)">USD ($) - United States Dollar</option>
-                <option value="EUR (€)">EUR (€) - Eurozone</option>
-                <option value="GBP (£)">GBP (£) - British Pound</option>
               </select>
             </div>
 
@@ -170,12 +204,24 @@ export default function AdminSettingsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Standard Shipping Flat Fee (BDT)
+                Inside Dhaka Shipping Fee (BDT)
               </label>
               <input
                 type="number"
-                value={shippingFee}
-                onChange={(e) => setShippingFee(e.target.value)}
+                value={shippingFeeInsideDhaka}
+                onChange={(e) => setShippingFeeInsideDhaka(e.target.value)}
+                className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Outside Dhaka Shipping Fee (BDT)
+              </label>
+              <input
+                type="number"
+                value={shippingFeeOutsideDhaka}
+                onChange={(e) => setShippingFeeOutsideDhaka(e.target.value)}
                 className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800"
               />
             </div>

@@ -141,6 +141,77 @@ async function main() {
     }
   }
 
+  // Orders
+  for (const ord of INITIAL_ORDERS) {
+    const createdOrder = await prisma.order.create({
+      data: {
+        id: ord.id,
+        orderNumber: ord.orderNumber,
+        userId: ord.userId,
+        customerName: ord.customerName,
+        customerEmail: ord.customerEmail,
+        customerPhone: ord.customerPhone,
+        shippingAddress: ord.shippingAddress,
+        deliveryNote: ord.deliveryNote,
+        subtotal: ord.subtotal,
+        discount: ord.discount,
+        couponCode: ord.couponCode,
+        shippingFee: ord.shippingFee,
+        tax: ord.tax,
+        total: ord.total,
+        paymentMethod: ord.paymentMethod === 'COD' ? 'COD' : 'CARD',
+        paymentStatus: ord.paymentStatus === 'PAID' ? 'PAID' : 'PENDING',
+        orderStatus: ord.orderStatus === 'DELIVERED' ? 'DELIVERED' : 'PENDING',
+        trackingNumber: ord.trackingNumber,
+        timeline: ord.timeline as any,
+        createdAt: ord.createdAt ? new Date(ord.createdAt) : undefined,
+      }
+    });
+
+    if (ord.items && ord.items.length > 0) {
+      for (const item of ord.items) {
+        await prisma.orderItem.create({
+          data: {
+            id: item.id,
+            orderId: createdOrder.id,
+            productId: item.productId,
+            productName: item.productName,
+            productSlug: item.productSlug,
+            productImage: item.productImage,
+            variantId: item.variantId,
+            variantSku: item.variantSku,
+            variantColor: item.variantColor,
+            variantSize: item.variantSize,
+            variantStorage: item.variantStorage,
+            price: item.price,
+            quantity: item.quantity,
+            total: item.total,
+          }
+        });
+      }
+    }
+  }
+
+  // Reviews
+  for (const review of INITIAL_REVIEWS) {
+    await prisma.review.create({
+      data: {
+        id: review.id,
+        productId: review.productId,
+        userId: review.userId,
+        customerName: review.customerName,
+        customerAvatar: review.customerAvatar,
+        rating: review.rating,
+        title: review.title,
+        comment: review.comment,
+        images: review.images,
+        isVerifiedPurchase: review.isVerifiedPurchase,
+        isApproved: review.isApproved,
+        createdAt: review.createdAt ? new Date(review.createdAt) : undefined,
+      }
+    });
+  }
+
   console.log('Database seeded successfully!');
 }
 

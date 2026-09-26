@@ -375,6 +375,13 @@ export default function Header() {
 
 
                       <Link
+                        href="/account"
+                        onClick={() => setShowUserDropdown(false)}
+                        className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                      >
+                        My Profile
+                      </Link>
+                      <Link
                         href="/orders"
                         onClick={() => setShowUserDropdown(false)}
                         className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"

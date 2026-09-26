@@ -10,7 +10,9 @@ export default function AdminInventoryPage() {
   const [filterLowStock, setFilterLowStock] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editingStock, setEditingStock] = useState<Record<string, number>>({});
-  const [savingId, setSavingId] = useState<string | null>(null);
+  const [editingThreshold, setEditingThreshold] = useState<Record<string, number>>({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [savingAll, setSavingAll] = useState(false);
 
   const fetchInventory = () => {
     setLoading(true);
@@ -31,41 +33,49 @@ export default function AdminInventoryPage() {
     setEditingStock((prev) => ({ ...prev, [key]: val }));
   };
 
-  const handleSaveStock = async (item: any) => {
-    const key = `${item.productId}-${item.variantId || 'base'}`;
-    const newStock = editingStock[key] !== undefined ? editingStock[key] : item.stock;
+  const handleThresholdChange = (key: string, val: number) => {
+    setEditingThreshold((prev) => ({ ...prev, [key]: val }));
+  };
 
-    setSavingId(key);
+  const handleSaveAll = async () => {
+    setSavingAll(true);
     try {
-      const res = await fetch('/api/inventory', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          productId: item.productId,
-          variantId: item.variantId,
-          stock: newStock,
-        }),
+      // Find all keys that have either stock or threshold changed
+      const changedKeys = new Set([...Object.keys(editingStock), ...Object.keys(editingThreshold)]);
+      const changes = Array.from(changedKeys).filter((key) => {
+        const item = inventory.find((i) => `${i.productId}-${i.variantId || 'base'}` === key);
+        if (!item) return false;
+        const stockChanged = editingStock[key] !== undefined && editingStock[key] !== item.stock;
+        const thresholdChanged = editingThreshold[key] !== undefined && editingThreshold[key] !== item.lowStockThreshold;
+        return stockChanged || thresholdChanged;
       });
 
-      if (res.ok) {
-        setInventory((prev) =>
-          prev.map((i) => {
-            if (i.productId === item.productId && i.variantId === item.variantId) {
-              return {
-                ...i,
-                stock: newStock,
-                isLowStock: newStock > 0 && newStock <= i.lowStockThreshold,
-                isOutOfStock: newStock <= 0,
-              };
-            }
-            return i;
-          })
-        );
-      }
+      await Promise.all(
+        changes.map(async (key) => {
+          const item = inventory.find((i) => `${i.productId}-${i.variantId || 'base'}` === key);
+          if (!item) return;
+
+          await fetch('/api/inventory', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              productId: item.productId,
+              variantId: item.variantId,
+              stock: editingStock[key] !== undefined ? editingStock[key] : item.stock,
+              threshold: editingThreshold[key] !== undefined ? editingThreshold[key] : item.lowStockThreshold,
+            }),
+          });
+        })
+      );
+
+      fetchInventory();
+      setIsEditing(false);
+      setEditingStock({});
+      setEditingThreshold({});
     } catch (e) {
       console.error(e);
     } finally {
-      setSavingId(null);
+      setSavingAll(false);
     }
   };
 
@@ -92,13 +102,47 @@ export default function AdminInventoryPage() {
           </p>
         </div>
 
-        <button
-          onClick={fetchInventory}
-          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 self-start sm:self-auto"
-        >
-          <RefreshCw className="w-3.5 h-3.5" />
-          Refresh Ledger
-        </button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          {!isEditing ? (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+            >
+              Edit Stock
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditingStock({});
+                  setEditingThreshold({});
+                }}
+                disabled={savingAll}
+                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveAll}
+                disabled={savingAll}
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 disabled:opacity-70"
+              >
+                <Save className="w-3.5 h-3.5" />
+                {savingAll ? 'Saving...' : 'Save Changes'}
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={fetchInventory}
+            disabled={savingAll}
+            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Filter Bar */}
@@ -160,8 +204,8 @@ export default function AdminInventoryPage() {
                   const key = `${item.productId}-${item.variantId || 'base'}`;
                   const currentVal =
                     editingStock[key] !== undefined ? editingStock[key] : item.stock;
-                  const isModified = editingStock[key] !== undefined && editingStock[key] !== item.stock;
-                  const isSaving = savingId === key;
+                  const currentThreshold =
+                    editingThreshold[key] !== undefined ? editingThreshold[key] : item.lowStockThreshold;
 
                   return (
                     <tr key={key} className="hover:bg-slate-50/50 transition-colors">
@@ -184,7 +228,20 @@ export default function AdminInventoryPage() {
                         {item.stock}
                       </td>
                       <td className="p-4 text-slate-400">
-                        {item.lowStockThreshold} units
+                        {isEditing ? (
+                          <input
+                            type="number"
+                            min="0"
+                            value={currentThreshold}
+                            onChange={(e) =>
+                              handleThresholdChange(key, parseInt(e.target.value) || 0)
+                            }
+                            disabled={savingAll}
+                            className="w-16 px-2 py-1 bg-white border border-blue-200 text-slate-900 rounded text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600/20"
+                          />
+                        ) : (
+                          <>{item.lowStockThreshold} units</>
+                        )}
                       </td>
                       <td className="p-4">
                         {item.isOutOfStock ? (
@@ -210,18 +267,13 @@ export default function AdminInventoryPage() {
                             onChange={(e) =>
                               handleStockChange(key, parseInt(e.target.value) || 0)
                             }
-                            className="w-20 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-blue-600/20"
+                            disabled={!isEditing || savingAll}
+                            className={`w-20 px-2.5 py-1 border rounded-lg text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-blue-600/20 ${
+                              isEditing
+                                ? 'bg-white border-blue-200 text-slate-900'
+                                : 'bg-slate-50 border-transparent text-slate-500 cursor-not-allowed'
+                            }`}
                           />
-                          {isModified && (
-                            <button
-                              onClick={() => handleSaveStock(item)}
-                              disabled={isSaving}
-                              className="p-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-2xs"
-                              title="Commit new stock"
-                            >
-                              <Save className="w-3.5 h-3.5" />
-                            </button>
-                          )}
                         </div>
                       </td>
                     </tr>

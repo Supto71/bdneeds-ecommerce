@@ -15,7 +15,7 @@ export default function RegisterPage() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('+880');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -93,17 +93,20 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
-                Phone Number
+                Phone Number *
               </label>
-              <div className="relative flex items-center border border-slate-200 rounded-xl bg-slate-50 focus-within:ring-2 focus-within:ring-blue-600/20 focus-within:border-blue-500 overflow-hidden">
-                <span className="pl-3 pr-2 text-xs font-bold text-slate-600 border-r border-slate-200 bg-slate-100 h-full flex items-center py-2.5 shrink-0 select-none">🇧🇩 +880</span>
+              <div className="relative">
                 <input
                   type="tel"
-                  value={phone.startsWith('+880') ? phone.slice(4) : phone}
-                  onChange={(e) => setPhone('+880' + e.target.value.replace(/^\+880/, ''))}
-                  placeholder="1XXXXXXXXX"
-                  className="flex-1 px-3 py-2.5 text-xs bg-transparent text-slate-800 focus:outline-none"
+                  required
+                  pattern="[0-9]{11}"
+                  title="Phone number must be exactly 11 digits"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+                  placeholder="01XXXXXXXXX"
+                  className="w-full pl-9 pr-3 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                 />
+                <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               </div>
             </div>
 

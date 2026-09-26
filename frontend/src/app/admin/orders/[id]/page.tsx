@@ -3,6 +3,7 @@
 import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import {
   ChevronLeft,
   Truck,
@@ -11,6 +12,7 @@ import {
   PackageCheck,
   Save,
   Clock,
+  Trash2,
 } from 'lucide-react';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
 import { formatPrice, formatDate } from '@/lib/utils';
@@ -23,10 +25,12 @@ export default function AdminOrderDetailPage(props: {
   const [loading, setLoading] = useState(true);
 
   // Status Form State
+  const router = useRouter();
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus>('PENDING');
   const [selectedPaymentStatus, setSelectedPaymentStatus] = useState<PaymentStatus>('PENDING');
   const [statusNote, setStatusNote] = useState('');
   const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [updateMessage, setUpdateMessage] = useState('');
 
   const fetchOrder = () => {
@@ -75,6 +79,23 @@ export default function AdminOrderDetailPage(props: {
       console.error(e);
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handleDeleteOrder = async () => {
+    if (!confirm('Are you sure you want to delete this order? This action cannot be undone.')) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/orders/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        router.push('/admin/orders');
+      } else {
+        alert('Failed to delete order.');
+        setDeleting(false);
+      }
+    } catch (e) {
+      alert('An error occurred.');
+      setDeleting(false);
     }
   };
 
@@ -216,8 +237,16 @@ export default function AdminOrderDetailPage(props: {
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
                 Customer Information
               </h4>
-              <p className="font-bold text-sm text-slate-900">{order.customerName}</p>
-              <p className="text-slate-600">{order.customerEmail}</p>
+              <div className="flex items-center gap-2">
+                <p className="font-bold text-sm text-slate-900">{order.customerName}</p>
+                {order.user?.isFraud && (
+                  <div className="flex items-center gap-1 bg-red-50 text-red-600 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">
+                    <AlertCircle className="w-3 h-3" />
+                    <span>Fraud Alert</span>
+                  </div>
+                )}
+              </div>
+              <p className="text-slate-600 mt-1">{order.customerEmail}</p>
               <p className="text-slate-600 font-medium">{order.customerPhone}</p>
             </div>
 
@@ -227,6 +256,7 @@ export default function AdminOrderDetailPage(props: {
               </h4>
               <p className="font-bold text-slate-900">{order.shippingAddress.fullName}</p>
               <p>{order.shippingAddress.street}</p>
+              {order.shippingAddress.area && <p>{order.shippingAddress.area}</p>}
               <p>
                 {order.shippingAddress.city}, {order.shippingAddress.postalCode}
               </p>
@@ -310,6 +340,18 @@ export default function AdminOrderDetailPage(props: {
                 <Save className="w-4 h-4" />
                 {updating ? 'Updating...' : 'Commit Status Change'}
               </button>
+
+              <div className="pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={handleDeleteOrder}
+                  disabled={deleting}
+                  className="w-full py-3 bg-red-50 hover:bg-red-100 disabled:opacity-50 text-red-600 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 border border-red-200"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  {deleting ? 'Deleting...' : 'Delete Order'}
+                </button>
+              </div>
             </form>
           </div>
 

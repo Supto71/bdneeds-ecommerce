@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCoupons, createCoupon, deleteCoupon } from '@/lib/db';
+import { getCoupons, createCoupon, deleteCoupon, updateCoupon } from '@/lib/db';
 
 export async function GET() {
   try {
@@ -34,6 +34,33 @@ export async function POST(request: Request) {
     return NextResponse.json(newCoupon, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create coupon' }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const data = await request.json();
+    if (!data.id || !data.code || !data.discountValue) {
+      return NextResponse.json(
+        { error: 'ID, Coupon code and discount value are required' },
+        { status: 400 }
+      );
+    }
+
+    const updatedCoupon = await updateCoupon(data.id, {
+      code: data.code,
+      discountType: data.discountType || 'PERCENTAGE',
+      discountValue: Number(data.discountValue),
+      minOrderValue: Number(data.minOrderValue || 0),
+      maxDiscount: data.maxDiscount ? Number(data.maxDiscount) : undefined,
+      expiryDate: data.expiryDate || '2027-12-31T23:59:59Z',
+      usageLimit: Number(data.usageLimit || 1000),
+      isActive: data.isActive ?? true,
+    });
+
+    return NextResponse.json(updatedCoupon, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to update coupon' }, { status: 500 });
   }
 }
 

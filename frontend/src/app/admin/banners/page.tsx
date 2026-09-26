@@ -25,6 +25,35 @@ export default function AdminBannersPage() {
   const [ctaText, setCtaText] = useState('Shop Collection');
   const [ctaLink, setCtaLink] = useState('/shop');
   const [isActive, setIsActive] = useState(true);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        setImage(data.url);
+      } else {
+        alert(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+      e.target.value = '';
+    }
+  };
 
   const fetchBanners = () => {
     setLoading(true);
@@ -260,15 +289,27 @@ export default function AdminBannersPage() {
 
               {type !== 'ANNOUNCEMENT' && (
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Image URL *</label>
-                  <input
-                    type="url"
-                    required
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                    placeholder="https://images.unsplash.com/..."
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-                  />
+                  <label className="block font-bold text-slate-700 mb-1">Image URL or File *</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      required
+                      value={image}
+                      onChange={(e) => setImage(e.target.value)}
+                      placeholder="https://images.unsplash.com/..."
+                      className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                    />
+                    <label className="px-4 py-2 bg-[#0B132B] text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors cursor-pointer flex items-center justify-center">
+                      {uploadingImage ? 'Uploading...' : 'Upload Image'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        disabled={uploadingImage}
+                      />
+                    </label>
+                  </div>
                 </div>
               )}
 
