@@ -53,7 +53,7 @@ export default function InvoicePage(props: { params: Promise<{ id: string }> }) 
           <p className="text-sm text-slate-600 mt-1 max-w-xs">
             {typeof order.shippingAddress === 'string' 
               ? order.shippingAddress 
-              : `${order.shippingAddress.street}, ${order.shippingAddress.area ? order.shippingAddress.area + ', ' : ''}${order.shippingAddress.city} - ${order.shippingAddress.postalCode}`}
+              : (() => { const a = order.shippingAddress as { street: string; area?: string; city: string; postalCode: string }; return `${a.street}, ${a.area ? a.area + ', ' : ''}${a.city} - ${a.postalCode}`; })()}
           </p>
           <p className="text-sm text-slate-600 mt-2">{order.customerPhone}</p>
           <p className="text-sm text-slate-600">{order.customerEmail}</p>
@@ -108,10 +108,10 @@ export default function InvoicePage(props: { params: Promise<{ id: string }> }) 
             <span>Subtotal:</span>
             <span className="font-semibold text-slate-900">{formatPrice(order.subtotal)}</span>
           </div>
-          {(order.discountAmount > 0 || order.discount > 0) && (
+          {((order.discountAmount ?? 0) > 0 || order.discount > 0) && (
             <div className="flex justify-between text-sm text-emerald-600 font-medium">
               <span>Discount ({order.appliedCoupon || order.couponCode || 'Promo'}):</span>
-              <span>-{formatPrice(order.discountAmount || order.discount)}</span>
+              <span>-{formatPrice((order.discountAmount ?? 0) || order.discount)}</span>
             </div>
           )}
           <div className="flex justify-between text-sm text-slate-600">

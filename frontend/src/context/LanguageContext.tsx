@@ -44,7 +44,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   const t = (key: TranslationKey, fallback?: string): string => {
     const dict = translations[language] || translations.en;
-    return dict[key] || fallback || translations.en[key] || key;
+    return (dict as Record<string, string>)[key] || fallback || (translations.en as Record<string, string>)[key] || key;
   };
 
   return (

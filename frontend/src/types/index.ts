@@ -140,6 +140,7 @@ export interface OrderItem {
   variantColor?: string;
   variantSize?: string;
   variantStorage?: string;
+  variantName?: string;
   price: number;
   quantity: number;
   total: number;
@@ -183,8 +184,11 @@ export interface Order {
   items: OrderItem[];
   subtotal: number;
   discount: number;
+  discountAmount?: number;
   couponCode?: string;
+  appliedCoupon?: string;
   shippingFee: number;
+  shippingCost?: number;
   tax: number;
   total: number;
   paymentMethod: PaymentMethod;

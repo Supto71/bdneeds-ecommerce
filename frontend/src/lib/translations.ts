@@ -536,6 +536,7 @@ export const translations = {
     adminCoupons: 'কুপন ও অফার',
     adminAnalytics: 'অ্যানালিটিক্স',
     adminSettings: 'স্টোর সেটিংস',
+    adminRecycleBin: 'রিসাইকেল বিন',
     adminLiveSync: 'স্টোরফ্রন্ট লাইভ ও সিঙ্কড',
     adminViewStore: 'স্টোর দেখুন',
     adminBackToStore: 'স্টোরফ্রন্টে ফিরে যান',
