@@ -34,10 +34,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleQuickDemoCustomer = () => {
-    setIdentifier('alex.hayes@example.com');
-    setPassword('customer123');
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -70,15 +66,6 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* Quick Demo Fill Pill */}
-            <button
-              type="button"
-              onClick={handleQuickDemoCustomer}
-              className="group w-full py-2.5 px-4 bg-gradient-to-r from-blue-50 to-violet-50 hover:from-blue-100 hover:to-violet-100 text-blue-700 text-xs font-bold rounded-2xl transition-all duration-300 border border-blue-200/50 flex items-center justify-center gap-2"
-            >
-              <span>Autofill Demo Credentials</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </button>
 
             {error && (
               <div className="p-4 bg-rose-50/80 backdrop-blur-sm border border-rose-200 rounded-2xl text-rose-700 text-sm font-semibold flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
