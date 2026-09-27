@@ -292,11 +292,11 @@ export default function AdminBannersPage() {
                   <label className="block font-bold text-slate-700 mb-1">Image URL or File *</label>
                   <div className="flex gap-2">
                     <input
-                      type="url"
+                      type="text"
                       required
                       value={image}
                       onChange={(e) => setImage(e.target.value)}
-                      placeholder="https://images.unsplash.com/..."
+                      placeholder="https://images.unsplash.com/... or upload"
                       className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
                     />
                     <label className="px-4 py-2 bg-[#0B132B] text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors cursor-pointer flex items-center justify-center">
@@ -325,7 +325,7 @@ export default function AdminBannersPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Price ($)</label>
+                  <label className="block font-bold text-slate-700 mb-1">Price (৳)</label>
                   <input
                     type="number"
                     value={price}

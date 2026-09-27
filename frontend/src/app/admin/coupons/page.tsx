@@ -211,7 +211,7 @@ export default function AdminCouponsPage() {
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                   >
                     <option value="PERCENTAGE">Percentage (%)</option>
-                    <option value="FIXED">Fixed Amount ($)</option>
+                    <option value="FIXED">Fixed Amount (৳)</option>
                   </select>
                 </div>
                 <div>
@@ -229,7 +229,7 @@ export default function AdminCouponsPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Min Order ($)</label>
+                  <label className="block font-bold text-slate-700 mb-1">Min Order (৳)</label>
                   <input
                     type="number"
                     value={minOrderValue}
@@ -238,7 +238,7 @@ export default function AdminCouponsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-700 mb-1">Max Discount ($)</label>
+                  <label className="block font-bold text-slate-700 mb-1">Max Discount (৳)</label>
                   <input
                     type="number"
                     value={maxDiscount}

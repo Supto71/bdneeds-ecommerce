@@ -162,7 +162,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
       categoryName,
       shortDescription,
       description,
-      basePrice: Number(basePrice),
+      basePrice: Number(basePrice || originalPrice),
       originalPrice: Number(originalPrice || basePrice),
       stock: Number(stock),
       sku: sku || `NOV-${Date.now()}`,
@@ -333,28 +333,40 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Base Retail Price ($) *
+                  Base Retail Price (৳)
                 </label>
                 <input
                   type="number"
                   step="0.01"
-                  required
                   value={basePrice}
-                  onChange={(e) => setBasePrice(e.target.value)}
-                  placeholder="349.00"
+                  onChange={(e) => {
+                    const newPrice = e.target.value;
+                    setBasePrice(newPrice);
+                    if (newPrice) {
+                      setVariants(prev => prev.map(v => ({ ...v, price: Number(newPrice) })));
+                    }
+                  }}
+                  placeholder="Optional"
                   className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20 font-bold"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Original Strikethrough Price ($)
+                  Original Strikethrough Price (৳) *
                 </label>
                 <input
                   type="number"
                   step="0.01"
+                  required
                   value={originalPrice}
-                  onChange={(e) => setOriginalPrice(e.target.value)}
+                  onChange={(e) => {
+                    const newPrice = e.target.value;
+                    setOriginalPrice(newPrice);
+                    if (!basePrice && newPrice) {
+                      setVariants(prev => prev.map(v => ({ ...v, price: Number(newPrice) })));
+                    }
+                  }}
                   placeholder="399.00"
                   className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                 />
@@ -539,7 +551,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">Price ($)</label>
+                        <label className="block text-[11px] font-bold text-slate-600 mb-1">Price (৳)</label>
                         <input
                           type="number"
                           value={v.price}

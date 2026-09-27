@@ -157,7 +157,7 @@ function TrackOrderContent() {
               </div>
 
               {/* Progress Milestones Tracker */}
-              <div className="pt-8 pb-4">
+              <div className="pt-8 pb-12 sm:pb-4">
                 <div className="relative flex items-center justify-between">
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-slate-200 w-full z-0" />
                   <div
@@ -189,7 +189,7 @@ function TrackOrderContent() {
                           {isPassed ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
                         </div>
                         <span
-                          className={`text-[9px] sm:text-[11px] font-semibold mt-2 text-center uppercase tracking-tight hidden sm:block ${
+                          className={`absolute top-10 sm:static text-[8px] sm:text-[11px] font-semibold sm:mt-2 text-center uppercase tracking-tighter w-14 sm:w-auto leading-[10px] sm:leading-tight ${
                             isPassed ? 'text-blue-950 font-bold' : 'text-slate-400'
                           }`}
                         >

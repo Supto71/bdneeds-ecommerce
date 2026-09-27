@@ -592,22 +592,44 @@ export async function getAllReviewsAdmin() {
   return prisma.review.findMany({ orderBy: { createdAt: 'desc' } });
 }
 
+export async function syncProductRating(productId: string) {
+  const reviews = await prisma.review.findMany({
+    where: { productId, isApproved: true },
+    select: { rating: true }
+  });
+  const reviewCount = reviews.length;
+  const rating = reviewCount > 0 
+    ? Number((reviews.reduce((acc, r) => acc + r.rating, 0) / reviewCount).toFixed(1)) 
+    : 0;
+
+  await prisma.product.update({
+    where: { id: productId },
+    data: { rating, reviewCount }
+  });
+}
+
 export async function createReview(data: any) {
-  return prisma.review.create({ data });
+  const review = await prisma.review.create({ data });
+  if (review.isApproved) await syncProductRating(review.productId);
+  return review;
 }
 
 export async function moderateReview(id: string, isApproved: boolean) {
-  await prisma.review.update({
+  const review = await prisma.review.update({
     where: { id },
     data: { isApproved }
   });
+  await syncProductRating(review.productId);
   return true;
 }
 
 export async function deleteReview(id: string) {
   const review = await prisma.review.findUnique({ where: { id } });
-  if (review) await moveToRecycleBin('Review', id, review.title, review);
-  await prisma.review.delete({ where: { id } });
+  if (review) {
+    await moveToRecycleBin('Review', id, review.title, review);
+    await prisma.review.delete({ where: { id } });
+    await syncProductRating(review.productId);
+  }
   return true;
 }
 

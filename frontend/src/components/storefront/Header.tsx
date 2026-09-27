@@ -367,7 +367,7 @@ export default function Header() {
                   {user ? (
                     <>
                       <div className="px-4 py-2 border-b border-slate-100">
-                        <p className="text-xs text-slate-400 font-medium">Signed in as</p>
+                        <p className="text-xs text-slate-400 font-medium">{t('signedInAs')}</p>
                         <p className="text-sm font-bold text-[#0B132B] truncate">{user.name}</p>
                         <p className="text-xs text-slate-500 truncate">{user.email}</p>
                       </div>
@@ -379,7 +379,7 @@ export default function Header() {
                         onClick={() => setShowUserDropdown(false)}
                         className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
                       >
-                        My Profile
+                        {t('myProfile')}
                       </Link>
                       <Link
                         href="/orders"
@@ -456,16 +456,9 @@ export default function Header() {
                 }}
                 onFocus={() => setShowSearchDropdown(true)}
                 placeholder={t('searchPlaceholder')}
-                className="w-full pl-9 pr-9 py-2 text-xs bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-800 placeholder-slate-400"
+                className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-800 placeholder-slate-400"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <Link
-                href="/shop"
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-blue-600 transition-colors"
-                aria-label="Filter"
-              >
-                <SlidersHorizontal className="w-4 h-4" />
-              </Link>
             </div>
           </form>
         </div>
@@ -476,19 +469,7 @@ export default function Header() {
         <div className="lg:hidden border-t border-slate-100 bg-white px-4 pt-3 pb-6 space-y-3">
 
 
-          {/* Mobile Search input */}
-          <form onSubmit={handleSearchSubmit} className="mb-4">
-            <div className="relative">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('searchPlaceholder')}
-                className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg text-slate-800"
-              />
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            </div>
-          </form>
+
 
           <div className="space-y-1">
             <Link
@@ -522,13 +503,7 @@ export default function Header() {
                 ))}
               </div>
             </div>
-            <Link
-              href="/track-order"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 rounded-lg"
-            >
-              {t('trackOrder')}
-            </Link>
+
 
           </div>
         </div>

@@ -14,6 +14,7 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { isAdmin, isAuthenticated, isAuthLoading } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   useEffect(() => {
     // Auth load হওয়া পর্যন্ত অপেক্ষা করো
@@ -30,6 +31,11 @@ export default function AdminLayout({
       router.replace('/');
     }
   }, [isAuthLoading, isAuthenticated, isAdmin, pathname, router]);
+
+  // Close sidebar on navigation on mobile
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [pathname]);
 
   // Login page — sidebar/header ছাড়া
   if (pathname === '/admin/login') {
@@ -62,10 +68,22 @@ export default function AdminLayout({
 
   return (
     <div className="flex h-screen bg-slate-50 overflow-hidden text-slate-800">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <AdminHeader />
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8 bg-slate-50">
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar with slide effect */}
+      <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} md:relative md:translate-x-0 transition duration-200 ease-in-out z-50 md:z-0 h-full flex flex-col shrink-0`}>
+        <AdminSidebar />
+      </div>
+
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden w-full">
+        <AdminHeader onMenuClick={() => setIsSidebarOpen(true)} />
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-slate-50">
           {children}
         </main>
       </div>

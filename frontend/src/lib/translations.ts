@@ -21,6 +21,8 @@ export const translations = {
     noResultsFound: 'No products matching',
     account: 'Account',
     myAccount: 'My Account',
+    signedInAs: 'Signed in as',
+    myProfile: 'My Profile',
     myOrders: 'My Orders',
     wishlist: 'Wishlist',
     shoppingBag: 'Shopping Bag',
@@ -67,7 +69,7 @@ export const translations = {
     'smart-devices': 'Smart Devices & IoT',
 
     // Section Titles
-    shopByDepartment: 'Shop by Department',
+    shopByDepartment: 'Shop by Category',
     exploreDepartmentsDesc: 'Curated premium collections engineered for modern lifestyle and performance',
     bestSellers: 'Best Sellers',
     bestSellersDesc: 'Top-ranking essentials loved by thousands of verified customers worldwide',
@@ -317,6 +319,8 @@ export const translations = {
     noResultsFound: 'কোনো পণ্য পাওয়া যায়নি',
     account: 'অ্যাকাউন্ট',
     myAccount: 'আমার অ্যাকাউন্ট',
+    signedInAs: 'লগ-ইন করা আছে',
+    myProfile: 'আমার প্রোফাইল',
     myOrders: 'আমার অর্ডার',
     wishlist: 'পছন্দের তালিকা',
     shoppingBag: 'শপিং ব্যাগ',

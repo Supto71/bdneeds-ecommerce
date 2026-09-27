@@ -63,13 +63,15 @@ export function useLanguage() {
 }
 
 export function LanguageSwitcher({ className = '' }: { className?: string }) {
-  const { language, setLanguage } = useLanguage();
+  const { language, toggleLanguage } = useLanguage();
 
   return (
-    <div className={`inline-flex items-center rounded-lg border border-slate-200/80 bg-slate-50/80 p-0.5 text-xs font-semibold backdrop-blur-xs ${className}`}>
-      <button
-        type="button"
-        onClick={() => setLanguage('en')}
+    <button
+      type="button"
+      onClick={toggleLanguage}
+      className={`inline-flex items-center rounded-lg border border-slate-200/80 bg-slate-50/80 p-0.5 text-xs font-semibold backdrop-blur-xs cursor-pointer ${className}`}
+    >
+      <span
         className={`px-2 py-0.5 rounded-md transition-all ${
           language === 'en'
             ? 'bg-[#0B132B] text-white shadow-xs'
@@ -78,10 +80,8 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
         title="English"
       >
         EN
-      </button>
-      <button
-        type="button"
-        onClick={() => setLanguage('bn')}
+      </span>
+      <span
         className={`px-2 py-0.5 rounded-md transition-all ${
           language === 'bn'
             ? 'bg-blue-600 text-white shadow-xs'
@@ -90,7 +90,7 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
         title="বাংলা (Bengali)"
       >
         বাংলা
-      </button>
-    </div>
+      </span>
+    </button>
   );
 }

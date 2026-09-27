@@ -88,19 +88,19 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
 
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+        <div className="absolute top-2 left-2 flex flex-col items-start gap-1 z-10">
           {discountPercent > 0 && (
-            <span className="px-2.5 py-1 text-[11px] font-extrabold tracking-wide uppercase bg-rose-600 text-white rounded-md shadow-xs">
+            <span className="px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-rose-600 text-white rounded shadow-sm">
               -{discountPercent}%
             </span>
           )}
           {product.isBestSeller && (
-            <span className="px-2.5 py-1 text-[10px] font-bold tracking-wide uppercase bg-[#0B132B] text-white rounded-md shadow-xs">
+            <span className="px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-[#0B132B] text-white rounded shadow-sm">
               {t('bestsellerRank')}
             </span>
           )}
           {product.isNew && (
-            <span className="px-2.5 py-1 text-[10px] font-bold tracking-wide uppercase bg-emerald-600 text-white rounded-md shadow-xs">
+            <span className="px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase bg-emerald-600 text-white rounded shadow-sm">
               NEW
             </span>
           )}
@@ -183,12 +183,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {/* Price & Mobile Add Button */}
           <div className="flex items-center justify-between">
-            <div className="flex items-baseline gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
               <span className="text-base sm:text-lg font-extrabold text-[#0B132B]">
                 {formatPrice(displayPrice)}
               </span>
               {originalPrice > displayPrice && (
-                <span className="text-xs text-slate-400 line-through font-medium">
+                <span className="text-[11px] sm:text-xs text-slate-400 line-through font-medium mt-0.5 sm:mt-0">
                   {formatPrice(originalPrice)}
                 </span>
               )}

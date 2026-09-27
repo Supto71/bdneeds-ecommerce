@@ -16,7 +16,7 @@ export default function AdminSettingsPage() {
 
   // Announcement Bar State
   const [announcementId, setAnnouncementId] = useState<string | null>(null);
-  const [freeDeliveryText, setFreeDeliveryText] = useState('FREE STANDARD SHIPPING ON ORDERS OVER $99');
+  const [freeDeliveryText, setFreeDeliveryText] = useState('FREE STANDARD SHIPPING ON ORDERS OVER ৳99');
   const [promoText, setPromoText] = useState('GET 20% OFF ALL ACCESSORIES THIS WEEKEND');
   const [promoBadge, setPromoBadge] = useState('PROMO');
   const [promoLink, setPromoLink] = useState('/shop');
@@ -270,7 +270,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={freeDeliveryText}
                 onChange={(e) => setFreeDeliveryText(e.target.value)}
-                placeholder="e.g. FREE STANDARD SHIPPING ON ORDERS OVER $99"
+                placeholder="e.g. FREE STANDARD SHIPPING ON ORDERS OVER ৳99"
                 className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800"
               />
             </div>

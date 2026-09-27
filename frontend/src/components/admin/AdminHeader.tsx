@@ -8,7 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import Image from 'next/image';
 import { useLanguage, LanguageSwitcher } from '@/context/LanguageContext';
 
-export default function AdminHeader() {
+export default function AdminHeader({ onMenuClick }: { onMenuClick?: () => void }) {
   const router = useRouter();
   const { user, logout, updateAvatar } = useAuth();
   const { t } = useLanguage();
@@ -40,7 +40,14 @@ export default function AdminHeader() {
   return (
     <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between z-30">
       <div className="flex items-center gap-3">
-        <span className="flex items-center gap-2 px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200">
+        {/* Mobile Menu Toggle */}
+        <button 
+          onClick={onMenuClick}
+          className="md:hidden p-1.5 -ml-2 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </button>
+        <span className="hidden sm:flex items-center gap-2 px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full border border-emerald-200">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           {t('adminLiveSync')}
         </span>

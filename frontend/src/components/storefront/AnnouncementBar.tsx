@@ -31,18 +31,12 @@ export default function AnnouncementBar() {
           </span>
         </div>
 
-        <div className="w-full md:w-auto text-center flex items-center justify-center gap-2 text-[11px] sm:text-xs">
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-600 text-white tracking-wider uppercase">
+        <div className="w-full md:w-auto flex items-center justify-start md:justify-center gap-1.5 text-[9px] sm:text-[11px] md:text-xs whitespace-nowrap overflow-hidden">
+          <span className="inline-flex shrink-0 items-center px-1 py-0.5 rounded text-[8px] font-bold bg-blue-600 text-white tracking-wider uppercase">
             {announcement?.badge || 'Promo'}
           </span>
-          <span>
-            {announcement?.ctaLink ? (
-              <Link href={announcement.ctaLink} className="hover:underline">
-                {announcement?.title || t('promoNotice')}
-              </Link>
-            ) : (
-              announcement?.title || t('promoNotice')
-            )}
+          <span className="truncate">
+            {announcement?.title || t('promoNotice')}
           </span>
         </div>
 

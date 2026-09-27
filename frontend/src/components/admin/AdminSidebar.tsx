@@ -38,13 +38,12 @@ export default function AdminSidebar() {
     { key: 'adminInventory', href: '/admin/inventory', icon: Boxes },
     { key: 'adminReviews', href: '/admin/reviews', icon: MessageSquare },
     { key: 'adminCoupons', href: '/admin/coupons', icon: Tag },
-    { key: 'adminAnalytics', href: '/admin/analytics', icon: BarChart3 },
     { key: 'adminSettings', href: '/admin/settings', icon: Settings },
     { key: 'adminRecycleBin', href: '/admin/recycle-bin', icon: Trash2 },
   ];
 
   return (
-    <aside className="w-64 bg-[#0B132B] text-white flex flex-col justify-between shrink-0 border-r border-slate-800">
+    <aside className="w-64 bg-[#0B132B] text-white flex flex-col justify-between shrink-0 border-r border-slate-800 h-full">
       <div>
         {/* Brand Header */}
         <div className="p-6 border-b border-slate-800 flex items-center justify-between">
