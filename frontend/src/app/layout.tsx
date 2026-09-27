@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter, Noto_Serif_Bengali, Anek_Bangla } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/context/Providers';
-import WhatsAppWidget from '@/components/storefront/WhatsAppWidget';
 import NavigationProgress from '@/components/NavigationProgress';
 
 const inter = Inter({
@@ -58,7 +57,6 @@ export default function RootLayout({
       <body className="min-h-screen flex flex-col bg-white text-[#0B132B]">
         <NavigationProgress />
         <Providers>{children}</Providers>
-        <WhatsAppWidget />
       </body>
     </html>
   );
