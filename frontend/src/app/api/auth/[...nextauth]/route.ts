@@ -1,9 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -68,17 +66,22 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async session({ session, token }) {
-      if (token?.dbUser) {
-        (session as any).user.dbUser = token.dbUser;
-      } else if (session?.user?.email) {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: session.user.email },
-        });
-        if (dbUser) {
-          (session as any).user.dbUser = dbUser;
+      try {
+        if (token?.dbUser) {
+          (session as any).user.dbUser = token.dbUser;
+        } else if (session?.user?.email) {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: session.user.email },
+          });
+          if (dbUser) {
+            (session as any).user.dbUser = dbUser;
+          }
         }
+        return session;
+      } catch (error) {
+        console.error("NextAuth session Error:", error);
+        return session;
       }
-      return session;
     },
   },
   session: {
