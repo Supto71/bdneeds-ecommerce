@@ -17,9 +17,11 @@ import {
 import { Product } from '@/types';
 import { formatPrice } from '@/lib/utils';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminProductsPage() {
   const { t } = useLanguage();
+  const { isAdmin } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
@@ -79,13 +81,15 @@ export default function AdminProductsPage() {
           </p>
         </div>
 
-        <Link
-          href="/admin/products/new"
-          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
-        >
-          <Plus className="w-4 h-4" />
-          {t('adminAddNewProduct')}
-        </Link>
+        {isAdmin && (
+          <Link
+            href="/admin/products/new"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
+          >
+            <Plus className="w-4 h-4" />
+            {t('adminAddNewProduct')}
+          </Link>
+        )}
       </div>
 
       {/* Filter and Search Bar */}
@@ -217,20 +221,24 @@ export default function AdminProductsPage() {
                         >
                           <ExternalLink className="w-4 h-4" />
                         </Link>
-                        <Link
-                          href={`/admin/products/${prod.id}`}
-                          className="p-1.5 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100"
-                          title="Edit product"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(prod.id, prod.name)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
-                          title="Delete product"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                        {isAdmin && (
+                          <>
+                            <Link
+                              href={`/admin/products/${prod.id}`}
+                              className="p-1.5 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100"
+                              title="Edit product"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(prod.id, prod.name)}
+                              className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
+                              title="Delete product"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>

@@ -6,7 +6,10 @@ import { Plus, Edit, Trash2, CheckCircle2, XCircle, ArrowUpRight } from 'lucide-
 import { Banner } from '@/types';
 import { formatPrice } from '@/lib/utils';
 
+import { useAuth } from '@/context/AuthContext';
+
 export default function AdminBannersPage() {
+  const { isAdmin } = useAuth();
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -166,13 +169,15 @@ export default function AdminBannersPage() {
           </p>
         </div>
 
-        <button
-          onClick={openCreate}
-          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
-        >
-          <Plus className="w-4 h-4" />
-          Create Hero Slide
-        </button>
+        {isAdmin && (
+          <button
+            onClick={openCreate}
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
+          >
+            <Plus className="w-4 h-4" />
+            Create Hero Slide
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -213,18 +218,22 @@ export default function AdminBannersPage() {
               </span>
 
               <div className="flex items-center gap-1">
-                <button
-                  onClick={() => openEdit(b)}
-                  className="p-2 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100"
-                >
-                  <Edit className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => handleDelete(b.id)}
-                  className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                {isAdmin && (
+                  <>
+                    <button
+                      onClick={() => openEdit(b)}
+                      className="p-2 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(b.id)}
+                      className="p-2 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

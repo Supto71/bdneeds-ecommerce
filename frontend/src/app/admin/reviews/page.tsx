@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Star, CheckCircle2, XCircle, Trash2, ShieldCheck } from 'lucide-react';
 import { Review } from '@/types';
 import { formatDate } from '@/lib/utils';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminReviewsPage() {
+  const { isAdmin } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -138,27 +140,31 @@ export default function AdminReviewsPage() {
                     </td>
                     <td className="p-4 pr-6 text-right">
                       <div className="flex items-center justify-end gap-1.5">
-                        {rev.isApproved ? (
-                          <button
-                            onClick={() => handleModerate(rev.id, false)}
-                            className="px-2.5 py-1 bg-slate-100 hover:bg-amber-100 hover:text-amber-800 text-slate-700 rounded-lg text-xs font-bold"
-                          >
-                            Unpublish
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleModerate(rev.id, true)}
-                            className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-2xs"
-                          >
-                            Approve
-                          </button>
+                        {isAdmin && (
+                          <>
+                            {rev.isApproved ? (
+                              <button
+                                onClick={() => handleModerate(rev.id, false)}
+                                className="px-2.5 py-1 bg-slate-100 hover:bg-amber-100 hover:text-amber-800 text-slate-700 rounded-lg text-xs font-bold"
+                              >
+                                Unpublish
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => handleModerate(rev.id, true)}
+                                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-2xs"
+                              >
+                                Approve
+                              </button>
+                            )}
+                            <button
+                              onClick={() => handleDelete(rev.id)}
+                              className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </>
                         )}
-                        <button
-                          onClick={() => handleDelete(rev.id)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
                       </div>
                     </td>
                   </tr>

@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import { Save, CheckCircle2, Store, DollarSign, Truck, ShieldCheck, Globe } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminSettingsPage() {
+  const { isAdmin } = useAuth();
   const [storeName, setStoreName] = useState('BDNEEDS');
   const [currency, setCurrency] = useState('BDT (৳)');
   const [shippingFeeInsideDhaka, setShippingFeeInsideDhaka] = useState('70');
@@ -317,13 +319,15 @@ export default function AdminSettingsPage() {
         </div>
 
         <div className="flex justify-end">
-          <button
-            type="submit"
-            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-md"
-          >
-            <Save className="w-4 h-4" />
-            Save Store Configuration
-          </button>
+          {isAdmin && (
+            <button
+              type="submit"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-md"
+            >
+              <Save className="w-4 h-4" />
+              Save Store Configuration
+            </button>
+          )}
         </div>
       </form>
     </div>

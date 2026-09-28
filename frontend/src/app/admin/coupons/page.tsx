@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Tag, Trash2, CheckCircle2, Clock, Edit } from 'lucide-react';
 import { Coupon } from '@/types';
 import { formatPrice, formatDate } from '@/lib/utils';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminCouponsPage() {
+  const { isAdmin } = useAuth();
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -116,13 +118,15 @@ export default function AdminCouponsPage() {
           </p>
         </div>
 
-        <button
-          onClick={openCreateModal}
-          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
-        >
-          <Plus className="w-4 h-4" />
-          Create Promo Voucher
-        </button>
+        {isAdmin && (
+          <button
+            onClick={openCreateModal}
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
+          >
+            <Plus className="w-4 h-4" />
+            Create Promo Voucher
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -137,20 +141,24 @@ export default function AdminCouponsPage() {
                   {coupon.code}
                 </span>
                 <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => openEditModal(coupon)}
-                    className="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-slate-100"
-                    title="Edit"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(coupon.id)}
-                    className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  {isAdmin && (
+                    <>
+                      <button
+                        onClick={() => openEditModal(coupon)}
+                        className="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-slate-100"
+                        title="Edit"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(coupon.id)}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
 

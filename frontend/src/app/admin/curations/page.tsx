@@ -5,9 +5,11 @@ import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import { Product } from '@/types';
 import { Flame, Sparkles, Search } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CurationsPage() {
   const { t } = useLanguage();
+  const { isAdmin } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -123,9 +125,10 @@ export default function CurationsPage() {
                     <td className="py-3 text-center">
                       <button
                         onClick={() => toggleStatus(product, 'isBestSeller')}
+                        disabled={!isAdmin}
                         className={`inline-flex items-center justify-center w-8 h-8 rounded-full transition-colors ${
-                          product.isBestSeller ? 'bg-orange-100 text-orange-600' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
-                        }`}
+                          product.isBestSeller ? 'bg-orange-100 text-orange-600' : 'bg-slate-100 text-slate-400'
+                        } ${isAdmin ? 'hover:bg-slate-200 cursor-pointer' : 'opacity-70 cursor-not-allowed'}`}
                         title="Toggle Best Seller"
                       >
                         <Flame className="w-4 h-4" />
@@ -134,9 +137,10 @@ export default function CurationsPage() {
                     <td className="py-3 text-center">
                       <button
                         onClick={() => toggleStatus(product, 'isNew')}
+                        disabled={!isAdmin}
                         className={`inline-flex items-center justify-center w-8 h-8 rounded-full transition-colors ${
-                          product.isNew ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
-                        }`}
+                          product.isNew ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'
+                        } ${isAdmin ? 'hover:bg-slate-200 cursor-pointer' : 'opacity-70 cursor-not-allowed'}`}
                         title="Toggle New Arrival"
                       >
                         <Sparkles className="w-4 h-4" />

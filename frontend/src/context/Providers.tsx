@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { SessionProvider } from 'next-auth/react';
 import { AuthProvider } from './AuthContext';
 import { CartProvider } from './CartContext';
 import { WishlistProvider } from './WishlistContext';
@@ -10,14 +11,16 @@ import CartDrawer from '@/components/storefront/CartDrawer';
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <LanguageProvider>
-      <AuthProvider>
-        <CartProvider>
-          <WishlistProvider>
-            {children}
-            <CartDrawer />
-          </WishlistProvider>
-        </CartProvider>
-      </AuthProvider>
+      <SessionProvider>
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>
+              {children}
+              <CartDrawer />
+            </WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
+      </SessionProvider>
     </LanguageProvider>
   );
 }

@@ -4,7 +4,7 @@ import { getUsers, getOrders } from '@/lib/db';
 export async function GET() {
   try {
     const users = await getUsers();
-    const customers = users.filter((u) => u.role === 'CUSTOMER');
+    const customers = users; // Return all users so admin can assign roles
     const allOrders = await getOrders();
 
     const customerSummaries = customers.map((c) => {

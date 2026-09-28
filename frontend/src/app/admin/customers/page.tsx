@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Search, Users, Mail, Phone, ShoppingBag, DollarSign } from 'lucide-react';
+import { Search, Users, Mail, Phone, ShoppingBag, DollarSign, Shield } from 'lucide-react';
 import { formatPrice, formatDate } from '@/lib/utils';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminCustomersPage() {
+  const { isAdmin } = useAuth();
   const [customers, setCustomers] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
@@ -32,6 +34,22 @@ export default function AdminCustomersPage() {
         setCustomers((prev) => prev.map(c => c.id === id ? { ...c, isFraud, clientTag: isFraud ? 'Fraud Client' : 'Regular Client' } : c));
         // A full refresh would correctly recalculate the tag if we unmarked them, but this optimistic update is ok for now.
         window.location.reload(); 
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleChangeRole = async (id: string, newRole: string) => {
+    if (!confirm(`Change role to ${newRole}?`)) return;
+    try {
+      const res = await fetch(`/api/customers/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: newRole }),
+      });
+      if (res.ok) {
+        setCustomers((prev) => prev.map(c => c.id === id ? { ...c, role: newRole } : c));
       }
     } catch (e) {
       console.error(e);
@@ -143,6 +161,13 @@ export default function AdminCustomersPage() {
                           }`}>
                             {client.clientTag || 'Regular Client'}
                           </span>
+                          {client.role !== 'CUSTOMER' && (
+                            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ml-1 ${
+                              client.role === 'ADMIN' ? 'text-indigo-600 bg-indigo-50' : 'text-teal-600 bg-teal-50'
+                            }`}>
+                              {client.role}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </td>
@@ -175,24 +200,35 @@ export default function AdminCustomersPage() {
                       {formatDate(client.createdAt)}
                     </td>
                     <td className="p-4 pr-6 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button 
-                          onClick={() => handleMarkFraud(client.id, client.clientTag !== 'Fraud Client')}
-                          className={`px-2 py-1 text-[10px] font-bold rounded-lg transition-colors ${
-                            client.clientTag === 'Fraud Client' 
-                            ? 'bg-slate-100 text-slate-500 hover:bg-slate-200' 
-                            : 'bg-orange-50 text-orange-600 hover:bg-orange-100'
-                          }`}
-                        >
-                          {client.clientTag === 'Fraud Client' ? 'Unmark Fraud' : 'Mark Fraud'}
-                        </button>
-                        <button 
-                          onClick={() => handleDeleteClient(client.id)}
-                          className="px-2 py-1 text-[10px] font-bold bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
-                        >
-                          Delete
-                        </button>
-                      </div>
+                      {isAdmin && (
+                        <div className="flex items-center justify-end gap-2">
+                          <select 
+                            value={client.role || 'CUSTOMER'} 
+                            onChange={(e) => handleChangeRole(client.id, e.target.value)}
+                            className="px-2 py-1 text-[10px] font-bold bg-slate-50 border border-slate-200 rounded-lg text-slate-700 outline-none"
+                          >
+                            <option value="CUSTOMER">Customer</option>
+                            <option value="MODERATOR">Moderator</option>
+                            <option value="ADMIN">Admin</option>
+                          </select>
+                          <button 
+                            onClick={() => handleMarkFraud(client.id, client.clientTag !== 'Fraud Client')}
+                            className={`px-2 py-1 text-[10px] font-bold rounded-lg transition-colors ${
+                              client.clientTag === 'Fraud Client' 
+                              ? 'bg-slate-100 text-slate-500 hover:bg-slate-200' 
+                              : 'bg-orange-50 text-orange-600 hover:bg-orange-100'
+                            }`}
+                          >
+                            {client.clientTag === 'Fraud Client' ? 'Unmark Fraud' : 'Mark Fraud'}
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteClient(client.id)}
+                            className="px-2 py-1 text-[10px] font-bold bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))

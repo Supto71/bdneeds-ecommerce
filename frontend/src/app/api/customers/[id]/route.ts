@@ -6,10 +6,15 @@ const prisma = new PrismaClient();
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const { isFraud } = await request.json();
+    const { isFraud, role } = await request.json();
+    
+    const updateData: any = {};
+    if (isFraud !== undefined) updateData.isFraud = isFraud;
+    if (role !== undefined) updateData.role = role;
+
     await prisma.user.update({
       where: { id },
-      data: { isFraud },
+      data: updateData,
     });
     return NextResponse.json({ success: true });
   } catch (error) {

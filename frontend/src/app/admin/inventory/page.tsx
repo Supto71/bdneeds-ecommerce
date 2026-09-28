@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, Boxes, AlertTriangle, CheckCircle2, Save, RefreshCw } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminInventoryPage() {
+  const { isAdmin } = useAuth();
   const [inventory, setInventory] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [filterLowStock, setFilterLowStock] = useState(false);
@@ -103,34 +105,38 @@ export default function AdminInventoryPage() {
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          {!isEditing ? (
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
-            >
-              Edit Stock
-            </button>
-          ) : (
+          {isAdmin && (
             <>
-              <button
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditingStock({});
-                  setEditingThreshold({});
-                }}
-                disabled={savingAll}
-                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveAll}
-                disabled={savingAll}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 disabled:opacity-70"
-              >
-                <Save className="w-3.5 h-3.5" />
-                {savingAll ? 'Saving...' : 'Save Changes'}
-              </button>
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+                >
+                  Edit Stock
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                      setEditingStock({});
+                      setEditingThreshold({});
+                    }}
+                    disabled={savingAll}
+                    className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-bold transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveAll}
+                    disabled={savingAll}
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 disabled:opacity-70"
+                  >
+                    <Save className="w-3.5 h-3.5" />
+                    {savingAll ? 'Saving...' : 'Save Changes'}
+                  </button>
+                </>
+              )}
             </>
           )}
 

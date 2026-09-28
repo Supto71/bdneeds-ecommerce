@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
-  DollarSign,
   ShoppingBag,
   Users,
   AlertTriangle,
@@ -17,9 +16,11 @@ import {
 import { formatPrice, formatDate } from '@/lib/utils';
 import { Order } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminDashboardPage() {
   const { t } = useLanguage();
+  const { isAdmin } = useAuth();
   const [analytics, setAnalytics] = useState<any>(null);
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,20 +61,22 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Link
-            href="/admin/products/new"
-            className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
-          >
-            {t('adminCreateProduct')}
-          </Link>
-          <Link
-            href="/admin/banners"
-            className="px-4 py-2.5 bg-[#0B132B] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
-          >
-            {t('adminManageBanners')}
-          </Link>
-        </div>
+        {isAdmin && (
+          <div className="flex items-center gap-3">
+            <Link
+              href="/admin/products/new"
+              className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+            >
+              {t('adminCreateProduct')}
+            </Link>
+            <Link
+              href="/admin/banners"
+              className="px-4 py-2.5 bg-[#0B132B] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
+            >
+              {t('adminManageBanners')}
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* KPI Metric Cards */}
@@ -85,7 +88,7 @@ export default function AdminDashboardPage() {
               {t('adminTotalRevenue')}
             </span>
             <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <DollarSign className="w-5 h-5" />
+              <span className="text-lg font-bold">৳</span>
             </div>
           </div>
           <div className="text-2xl sm:text-3xl font-black text-[#0B132B]">

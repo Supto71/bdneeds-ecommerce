@@ -30,10 +30,6 @@ export default function AdminLoginPage() {
     }
   };
 
-  const handleQuickDemoAdmin = () => {
-    setEmail('admin@bdneeds.com');
-    setPassword('admin123');
-  };
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 bg-slate-950 overflow-hidden">
@@ -62,15 +58,6 @@ export default function AdminLoginPage() {
             </p>
           </div>
 
-          {/* Quick Demo Autofill button */}
-          <button
-            type="button"
-            onClick={handleQuickDemoAdmin}
-            className="group w-full py-2.5 px-4 bg-slate-800/80 hover:bg-slate-800 text-blue-400 text-xs font-bold rounded-2xl transition-all duration-300 border border-slate-700/80 hover:border-blue-500/50 flex items-center justify-center gap-2 shadow-inner"
-          >
-            <span>Autofill Admin Demo Credentials</span>
-            <ArrowRight className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-          </button>
 
           {error && (
             <div className="p-4 bg-rose-950/50 border border-rose-900/50 rounded-2xl text-rose-400 text-sm font-semibold flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
@@ -90,7 +77,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@bdneeds.com"
+                  placeholder="Enter your admin email"
                   className="w-full pl-11 pr-4 py-3.5 text-sm bg-slate-950/50 border border-slate-700/80 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 font-medium transition-all duration-300 shadow-inner"
                 />
                 <Mail className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-blue-400 transition-colors" />

@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Plus, Edit, Trash2, CheckCircle2, XCircle, FolderTree } from 'lucide-react';
 import { Category } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export default function AdminCategoriesPage() {
+  const { isAdmin } = useAuth();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -140,13 +142,15 @@ export default function AdminCategoriesPage() {
           </p>
         </div>
 
-        <button
-          onClick={openCreateModal}
-          className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
-        >
-          <Plus className="w-4 h-4" />
-          Add Category
-        </button>
+        {isAdmin && (
+          <button
+            onClick={openCreateModal}
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
+          >
+            <Plus className="w-4 h-4" />
+            Add Category
+          </button>
+        )}
       </div>
 
       {/* Categories Grid */}
@@ -162,20 +166,24 @@ export default function AdminCategoriesPage() {
                   <Image src={cat.image} alt={cat.name} fill className="object-cover" />
                 </div>
                 <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => openEditModal(cat)}
-                    className="p-1.5 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100"
-                    title="Edit"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(cat.id, cat.name)}
-                    className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  {isAdmin && (
+                    <>
+                      <button
+                        onClick={() => openEditModal(cat)}
+                        className="p-1.5 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100"
+                        title="Edit"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(cat.id, cat.name)}
+                        className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-slate-100"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
 

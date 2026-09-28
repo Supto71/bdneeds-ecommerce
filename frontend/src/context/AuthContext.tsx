@@ -2,11 +2,13 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@/types';
+import { getSession, signOut as nextAuthSignOut } from 'next-auth/react';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isModerator: boolean;
   isAuthLoading: boolean; // localStorage থেকে user load হওয়া পর্যন্ত true
   login: (identifier: string, pass: string) => Promise<{ success: boolean; message?: string }>;
   register: (name: string, email: string, pass: string, phone: string) => Promise<{ success: boolean; message?: string }>;
@@ -22,16 +24,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthLoading, setIsAuthLoading] = useState(true); // শুরুতে loading
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('bdneeds_user');
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
+    const initAuth = async () => {
+      try {
+        const session = await getSession();
+        if (session && (session as any).user?.dbUser) {
+          const dbUser = (session as any).user.dbUser;
+          setUser(dbUser);
+          localStorage.setItem('bdneeds_user', JSON.stringify(dbUser));
+        } else {
+          const savedUser = localStorage.getItem('bdneeds_user');
+          if (savedUser) {
+            setUser(JSON.parse(savedUser));
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load user', e);
+      } finally {
+        setIsAuthLoading(false); // localStorage/session check শেষ
       }
-    } catch (e) {
-      console.error('Failed to load user', e);
-    } finally {
-      setIsAuthLoading(false); // localStorage check শেষ
-    }
+    };
+    initAuth();
   }, []);
 
   const login = async (identifier: string, pass: string) => {
@@ -76,6 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     localStorage.removeItem('bdneeds_user');
     fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+    nextAuthSignOut({ redirect: false });
   };
 
   const updateAvatar = async (avatarUrl: string) => {
@@ -132,6 +145,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         isAuthenticated: !!user,
         isAdmin: user?.role === 'ADMIN',
+        isModerator: user?.role === 'MODERATOR',
         isAuthLoading,
         login,
         register,

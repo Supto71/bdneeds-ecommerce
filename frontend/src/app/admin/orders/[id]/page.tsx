@@ -4,6 +4,7 @@ import React, { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import {
   ChevronLeft,
   Truck,
@@ -23,6 +24,7 @@ export default function AdminOrderDetailPage(props: {
   const { id } = use(props.params);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
+  const { isAdmin } = useAuth();
 
   // Status Form State
   const router = useRouter();
@@ -342,15 +344,17 @@ export default function AdminOrderDetailPage(props: {
               </button>
 
               <div className="pt-4 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={handleDeleteOrder}
-                  disabled={deleting}
-                  className="w-full py-3 bg-red-50 hover:bg-red-100 disabled:opacity-50 text-red-600 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 border border-red-200"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  {deleting ? 'Deleting...' : 'Delete Order'}
-                </button>
+                {isAdmin && (
+                  <button
+                    type="button"
+                    onClick={handleDeleteOrder}
+                    disabled={deleting}
+                    className="w-full py-3 bg-red-50 hover:bg-red-100 disabled:opacity-50 text-red-600 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 border border-red-200"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    {deleting ? 'Deleting...' : 'Delete Order'}
+                  </button>
+                )}
               </div>
             </form>
           </div>

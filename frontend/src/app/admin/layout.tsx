@@ -13,7 +13,7 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { isAdmin, isAuthenticated, isAuthLoading } = useAuth();
+  const { isAdmin, isModerator, isAuthenticated, isAuthLoading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   useEffect(() => {
@@ -27,10 +27,10 @@ export default function AdminLayout({
       return;
     }
 
-    if (!isAdmin) {
+    if (!isAdmin && !isModerator) {
       router.replace('/');
     }
-  }, [isAuthLoading, isAuthenticated, isAdmin, pathname, router]);
+  }, [isAuthLoading, isAuthenticated, isAdmin, isModerator, pathname, router]);
 
   // Close sidebar on navigation on mobile
   useEffect(() => {
@@ -54,8 +54,8 @@ export default function AdminLayout({
     );
   }
 
-  // Auth load হয়েছে, কিন্তু admin না
-  if (!isAuthenticated || !isAdmin) {
+  // Auth load হয়েছে, কিন্তু admin ba moderator না
+  if (!isAuthenticated || (!isAdmin && !isModerator)) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
