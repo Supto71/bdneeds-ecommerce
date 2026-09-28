@@ -19,16 +19,16 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       if (account?.provider === "google" || account?.provider === "facebook") {
-        if (!user.email) return false;
-
+        const email = user.email || `${account.providerAccountId}@${account.provider}.com`;
+        
         let dbUser = await prisma.user.findUnique({
-          where: { email: user.email },
+          where: { email: email },
         });
 
         if (!dbUser) {
           dbUser = await prisma.user.create({
             data: {
-              email: user.email,
+              email: email,
               name: user.name || `${account.provider} User`,
               password: "OAUTH_LOGIN_" + Math.random().toString(36), // Dummy password for OAuth users
               avatarUrl: user.image || "",
@@ -36,6 +36,10 @@ export const authOptions: NextAuthOptions = {
             },
           });
         }
+        
+        // Ensure user object has an email for the subsequent JWT callback
+        user.email = email;
+        
         return true;
       }
       return true;
@@ -43,8 +47,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (account && user) {
         // Initial sign in
+        const email = user.email || `${account.providerAccountId}@${account.provider}.com`;
         const dbUser = await prisma.user.findUnique({
-          where: { email: user.email! },
+          where: { email: email },
         });
         if (dbUser) {
           token.dbUser = dbUser;

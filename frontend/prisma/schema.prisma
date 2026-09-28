@@ -15,17 +15,10 @@ model User {
   role      Role     @default(CUSTOMER)
   phone     String   @default("")
   avatarUrl String?
-  isFraud   Boolean  @default(false)
   createdAt DateTime @default(now())
-
-  orders  Order[]
-  reviews Review[]
-}
-
-enum Role {
-  CUSTOMER
-  ADMIN
-  MODERATOR
+  isFraud   Boolean  @default(false)
+  orders    Order[]
+  reviews   Review[]
 }
 
 model Category {
@@ -39,44 +32,42 @@ model Category {
   isActive     Boolean   @default(true)
   isFeatured   Boolean   @default(false)
   order        Int       @default(0)
-
-  products Product[]
+  products     Product[]
 }
 
 model Product {
-  id               String   @id @default(cuid())
-  name             String
-  slug             String   @unique
-  brand            String
-  categoryId       String
-  categoryName     String
-  subcategoryId    String?
-  subcategoryName  String?
-  basePrice        Float
-  originalPrice    Float
-  discount         Float    @default(0)
-  stock            Int      @default(0)
-  sku              String   @unique
-  shortDescription String
-  description      String
-  features         Json
-  specifications   Json
-  images           Json
-  tags             Json
-  rating           Float    @default(0)
-  reviewCount      Int      @default(0)
-  salesCount       Int      @default(0)
-  isFeatured       Boolean  @default(false)
-  isBestSeller     Boolean  @default(false)
-  isNew            Boolean  @default(false)
-  isPublished      Boolean  @default(true)
-  lowStockThreshold Int     @default(5)
-  createdAt        DateTime @default(now())
-
-  category Category       @relation(fields: [categoryId], references: [id])
-  variants ProductVariant[]
-  reviews  Review[]
-  orderItems OrderItem[]
+  id                String           @id @default(cuid())
+  name              String
+  slug              String           @unique
+  brand             String
+  categoryId        String
+  categoryName      String
+  subcategoryId     String?
+  subcategoryName   String?
+  basePrice         Float
+  originalPrice     Float
+  discount          Float            @default(0)
+  stock             Int              @default(0)
+  sku               String           @unique
+  shortDescription  String
+  description       String
+  features          Json
+  specifications    Json
+  images            Json
+  tags              Json
+  rating            Float            @default(0)
+  reviewCount       Int              @default(0)
+  salesCount        Int              @default(0)
+  isFeatured        Boolean          @default(false)
+  isBestSeller      Boolean          @default(false)
+  isNew             Boolean          @default(false)
+  isPublished       Boolean          @default(true)
+  createdAt         DateTime         @default(now())
+  lowStockThreshold Int              @default(5)
+  orderItems        OrderItem[]
+  category          Category         @relation(fields: [categoryId], references: [id])
+  variants          ProductVariant[]
+  reviews           Review[]
 }
 
 model ProductVariant {
@@ -92,32 +83,25 @@ model ProductVariant {
   stock             Int     @default(0)
   lowStockThreshold Int     @default(5)
   images            Json
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product           Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Banner {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
   subtitle    String
   badge       String
   description String
   price       Float
-  discount    Float     @default(0)
+  discount    Float      @default(0)
   image       String
   ctaText     String
   ctaLink     String
-  isActive    Boolean   @default(true)
-  order       Int       @default(0)
+  isActive    Boolean    @default(true)
+  order       Int        @default(0)
   startDate   DateTime?
   endDate     DateTime?
   type        BannerType @default(HERO)
-}
-
-enum BannerType {
-  HERO
-  CAMPAIGN
-  ANNOUNCEMENT
 }
 
 model Coupon {
@@ -131,11 +115,6 @@ model Coupon {
   usageLimit    Int          @default(100)
   usedCount     Int          @default(0)
   isActive      Boolean      @default(true)
-}
-
-enum DiscountType {
-  PERCENTAGE
-  FIXED
 }
 
 model Order {
@@ -159,9 +138,82 @@ model Order {
   trackingNumber  String
   timeline        Json
   createdAt       DateTime      @default(now())
+  user            User?         @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+}
 
-  user  User?       @relation(fields: [userId], references: [id])
-  items OrderItem[]
+model OrderItem {
+  id             String  @id @default(cuid())
+  orderId        String
+  productId      String
+  productName    String
+  productSlug    String
+  productImage   String
+  variantId      String?
+  variantSku     String?
+  variantColor   String?
+  variantSize    String?
+  variantStorage String?
+  price          Float
+  quantity       Int
+  total          Float
+  order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product        Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id                 String   @id @default(cuid())
+  productId          String
+  userId             String?
+  customerName       String
+  customerAvatar     String?
+  rating             Int
+  title              String
+  comment            String
+  images             Json
+  isVerifiedPurchase Boolean  @default(false)
+  isApproved         Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  product            Product  @relation(fields: [productId], references: [id])
+  user               User?    @relation(fields: [userId], references: [id])
+}
+
+model Settings {
+  id                      Int    @id @default(autoincrement())
+  storeName               String @default("BdNeeds")
+  currency                String @default("BDT")
+  freeShippingThreshold   Float  @default(5000)
+  taxRate                 Float  @default(0)
+  contactEmail            String @default("contact@bdneeds.com")
+  contactPhone            String @default("01811277828")
+  shippingFeeInsideDhaka  Float  @default(70)
+  shippingFeeOutsideDhaka Float  @default(130)
+}
+
+model RecycleBin {
+  id           String   @id @default(cuid())
+  entityType   String
+  entityId     String
+  entityTitle  String
+  originalData Json
+  deletedAt    DateTime @default(now())
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+  MODERATOR
+}
+
+enum BannerType {
+  HERO
+  CAMPAIGN
+  ANNOUNCEMENT
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
 }
 
 enum PaymentMethod {
@@ -186,63 +238,4 @@ enum OrderStatus {
   DELIVERED
   CANCELLED
   REFUNDED
-}
-
-model OrderItem {
-  id             String  @id @default(cuid())
-  orderId        String
-  productId      String
-  productName    String
-  productSlug    String
-  productImage   String
-  variantId      String?
-  variantSku     String?
-  variantColor   String?
-  variantSize    String?
-  variantStorage String?
-  price          Float
-  quantity       Int
-  total          Float
-
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id])
-}
-
-model Review {
-  id                String   @id @default(cuid())
-  productId         String
-  userId            String?
-  customerName      String
-  customerAvatar    String?
-  rating            Int
-  title             String
-  comment           String
-  images            Json
-  isVerifiedPurchase Boolean @default(false)
-  isApproved        Boolean  @default(true)
-  createdAt         DateTime @default(now())
-
-  product Product @relation(fields: [productId], references: [id])
-  user    User?   @relation(fields: [userId], references: [id])
-}
-
-model Settings {
-  id                      Int    @id @default(autoincrement())
-  storeName               String @default("BdNeeds")
-  currency                String @default("BDT")
-  shippingFeeInsideDhaka  Float  @default(70)
-  shippingFeeOutsideDhaka Float  @default(130)
-  freeShippingThreshold   Float  @default(5000)
-  taxRate                 Float  @default(0)
-  contactEmail            String @default("contact@bdneeds.com")
-  contactPhone            String @default("01811277828")
-}
-
-model RecycleBin {
-  id           String   @id @default(cuid())
-  entityType   String   // 'Order', 'Product', 'Category', 'User'
-  entityId     String
-  entityTitle  String
-  originalData Json
-  deletedAt    DateTime @default(now())
 }
