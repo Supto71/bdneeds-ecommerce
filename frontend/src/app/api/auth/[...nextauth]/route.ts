@@ -54,6 +54,7 @@ export const authOptions: NextAuthOptions = {
           const email = user.email || `${account.providerAccountId}@${account.provider}.com`;
           const dbUser = await prisma.user.findUnique({
             where: { email: email },
+            select: { id: true, name: true, email: true, role: true, isFraud: true, phone: true }
           });
           if (dbUser) {
             token.dbUser = dbUser;
@@ -72,6 +73,7 @@ export const authOptions: NextAuthOptions = {
         } else if (session?.user?.email) {
           const dbUser = await prisma.user.findUnique({
             where: { email: session.user.email },
+            select: { id: true, name: true, email: true, role: true, isFraud: true, phone: true }
           });
           if (dbUser) {
             (session as any).user.dbUser = dbUser;
