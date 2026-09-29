@@ -221,6 +221,7 @@ enum PaymentMethod {
   CARD
   BKASH
   NAGAD
+  ONLINE
 }
 
 enum PaymentStatus {

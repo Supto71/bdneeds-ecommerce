@@ -49,6 +49,42 @@ export async function POST(request: Request) {
       paymentMethod: body.paymentMethod || 'COD',
     });
 
+    if (body.paymentMethod === 'ONLINE') {
+      const uddoktaPayApiKey = process.env.UDDOKTAPAY_API_KEY;
+      const uddoktaPayBaseUrl = process.env.UDDOKTAPAY_BASE_URL;
+
+      if (uddoktaPayApiKey && uddoktaPayBaseUrl) {
+        const origin = request.headers.get('origin') || process.env.NEXTAUTH_URL || 'http://localhost:3000';
+        const paymentData = {
+          full_name: body.customerName,
+          email: body.customerEmail,
+          amount: order.finalAmount, // using finalAmount from DB, it's safer
+          metadata: { order_id: order.id },
+          redirect_url: `${origin}/order-success?orderId=${order.id}`,
+          cancel_url: `${origin}/checkout`,
+          webhook_url: `${origin}/api/uddoktapay/webhook`,
+        };
+
+        try {
+          const upRes = await fetch(`${uddoktaPayBaseUrl}/api/checkout-v2`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'RT-UDDOKTAPAY-API-KEY': uddoktaPayApiKey,
+            },
+            body: JSON.stringify(paymentData),
+          });
+
+          const upData = await upRes.json();
+          if (upData.status && upData.payment_url) {
+            return NextResponse.json({ ...order, paymentUrl: upData.payment_url }, { status: 201 });
+          }
+        } catch (err) {
+          console.error('UddoktaPay creation error:', err);
+        }
+      }
+    }
+
     return NextResponse.json(order, { status: 201 });
   } catch (error: any) {
     console.error('Order creation error:', error);

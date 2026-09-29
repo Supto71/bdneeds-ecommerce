@@ -232,7 +232,11 @@ function CheckoutContent() {
         clearCart();
       }
 
-      router.push(`/order-success?orderId=${data.id}`);
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl;
+      } else {
+        router.push(`/order-success?orderId=${data.id}`);
+      }
     } catch (err: any) {
       setErrorMessage(err.message || 'An unexpected error occurred during checkout.');
     } finally {
@@ -497,7 +501,7 @@ function CheckoutContent() {
 
                   <label
                     className={`p-4 rounded-2xl border cursor-pointer flex items-start gap-3 transition-all ${
-                      paymentMethod === 'CARD'
+                      paymentMethod === 'ONLINE'
                         ? 'border-blue-600 bg-blue-50/40'
                         : 'border-slate-200 hover:border-slate-300'
                     }`}
@@ -505,73 +509,19 @@ function CheckoutContent() {
                     <input
                       type="radio"
                       name="payment"
-                      checked={paymentMethod === 'CARD'}
-                      onChange={() => setPaymentMethod('CARD')}
+                      checked={paymentMethod === 'ONLINE'}
+                      onChange={() => setPaymentMethod('ONLINE')}
                       className="mt-1 text-blue-600"
                     />
                     <div>
                       <div className="flex items-center gap-2">
                         <CreditCard className="w-4 h-4 text-blue-600" />
                         <span className="text-xs font-bold text-slate-800">
-                          {t('creditCard')}
+                          Pay Online (UddoktaPay)
                         </span>
                       </div>
                       <p className="text-[11px] text-slate-500 mt-1">
-                        Visa, Mastercard, Amex secured instant authorization.
-                      </p>
-                    </div>
-                  </label>
-
-                  <label
-                    className={`p-4 rounded-2xl border cursor-pointer flex items-start gap-3 transition-all ${
-                      paymentMethod === 'BKASH'
-                        ? 'border-[#E2136E] bg-pink-50/40'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      checked={paymentMethod === 'BKASH'}
-                      onChange={() => setPaymentMethod('BKASH')}
-                      className="mt-1 text-[#E2136E]"
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <Image src="/images/bkash-logo.png" alt="bKash" width={40} height={20} className="object-contain" />
-                        <span className="text-xs font-bold text-slate-800">
-                          bKash (বিকাশ)
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 mt-1">
-                        Direct digital settlement via bKash mobile financial wallet.
-                      </p>
-                    </div>
-                  </label>
-
-                  <label
-                    className={`p-4 rounded-2xl border cursor-pointer flex items-start gap-3 transition-all ${
-                      paymentMethod === 'NAGAD'
-                        ? 'border-[#F7941D] bg-orange-50/40'
-                        : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      checked={paymentMethod === 'NAGAD'}
-                      onChange={() => setPaymentMethod('NAGAD')}
-                      className="mt-1 text-[#F7941D]"
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <Image src="/images/nagad-logo.png" alt="Nagad" width={40} height={20} className="object-contain" />
-                        <span className="text-xs font-bold text-slate-800">
-                          Nagad (নগদ)
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 mt-1">
-                        Instant checkout using your Nagad account.
+                        bKash, Nagad, Rocket, Cards securely processed via UddoktaPay.
                       </p>
                     </div>
                   </label>
