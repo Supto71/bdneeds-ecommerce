@@ -6,7 +6,6 @@ import CategoryCarousel from '@/components/storefront/CategoryCarousel';
 import BestSellersSection from '@/components/storefront/BestSellersSection';
 import CampaignBanner from '@/components/storefront/CampaignBanner';
 import NewArrivalsSection from '@/components/storefront/NewArrivalsSection';
-import TrustSection from '@/components/storefront/TrustSection';
 import Footer from '@/components/storefront/Footer';
 import MobileBottomNav from '@/components/storefront/MobileBottomNav';
 import { getBanners, getCategories, getProducts } from '@/lib/db';
@@ -41,8 +40,6 @@ export default async function HomePage() {
         {/* New Arrivals Section */}
         <NewArrivalsSection products={products} />
 
-        {/* Trust & Guarantees */}
-        <TrustSection />
       </main>
 
       <Footer />

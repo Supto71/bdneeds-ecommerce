@@ -37,6 +37,9 @@ export async function GET() {
       }
 
       const { password: _, ...safeCustomer } = c;
+      if (safeCustomer.email.startsWith('admin_')) {
+        safeCustomer.email = safeCustomer.email.replace(/^admin_/, '');
+      }
       return {
         ...safeCustomer,
         ordersCount: orders.length,
@@ -49,5 +52,38 @@ export async function GET() {
     return NextResponse.json(customerSummaries);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch customers' }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const { email, password, role } = await request.json();
+    if (!email || !password || !role) {
+      return NextResponse.json({ error: 'Email, password, and role are required' }, { status: 400 });
+    }
+    
+    const { createUser, getUserByEmail } = await import('@/lib/db');
+    const adminEmail = `admin_${email}`;
+    const existing = await getUserByEmail(adminEmail);
+    if (existing) {
+      return NextResponse.json({ error: 'An Admin/Moderator account with this email already exists' }, { status: 409 });
+    }
+
+    // Set name based on role
+    const name = role === 'ADMIN' ? 'Admin User' : 'Moderator User';
+
+    const user = await createUser({
+      name,
+      email: adminEmail,
+      password,
+      role: role as 'ADMIN' | 'MODERATOR',
+      phone: '',
+    });
+
+    const { password: _, ...safeUser } = user;
+    return NextResponse.json({ success: true, user: safeUser });
+  } catch (error) {
+    console.error('Create admin error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -63,7 +63,9 @@ export default function AdminBannersPage() {
     fetch('/api/banners?admin=true')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) setBanners(data);
+        if (Array.isArray(data)) {
+          setBanners(data.filter((b: any) => b.type !== 'ANNOUNCEMENT'));
+        }
       })
       .catch(console.error)
       .finally(() => setLoading(false));

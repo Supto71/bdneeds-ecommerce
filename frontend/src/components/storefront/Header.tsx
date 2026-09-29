@@ -192,28 +192,6 @@ export default function Header() {
                       </Link>
                     ))}
                   </div>
-
-                  {/* Mega Menu Promo Area */}
-                  <div className="bg-gradient-to-br from-[#0B132B] to-[#1C2541] rounded-xl p-5 text-white flex flex-col justify-between">
-                    <div>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold tracking-wider px-2 py-0.5 rounded bg-blue-500/30 text-blue-300 uppercase">
-                        <Sparkles className="w-3 h-3" /> Staff Pick
-                      </span>
-                      <h4 className="text-base font-bold mt-2 leading-snug">
-                        Master the Sound with Nova Pro
-                      </h4>
-                      <p className="text-xs text-slate-300 mt-1 line-clamp-2">
-                        Studio acoustics tuned with 40mm titanium biomembrane drivers.
-                      </p>
-                    </div>
-                    <Link
-                      href="/product/nova-pro-wireless-headphones"
-                      onClick={() => setShowMegaMenu(false)}
-                      className="mt-4 inline-block text-xs font-semibold py-2 px-3 bg-white text-[#0B132B] hover:bg-blue-600 hover:text-white rounded-lg text-center transition-colors shadow-sm"
-                    >
-                      {t('exploreCollection')}
-                    </Link>
-                  </div>
                 </div>
               )}
             </div>

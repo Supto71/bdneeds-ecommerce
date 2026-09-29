@@ -6,17 +6,26 @@ import {
   ShoppingBag,
   Users,
   AlertTriangle,
-  ArrowUpRight,
   TrendingUp,
   Package,
   ArrowRight,
-  Clock,
-  CheckCircle2,
+  Calendar,
+  Store,
 } from 'lucide-react';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { Order } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
 import { useAuth } from '@/context/AuthContext';
+
+type Period = 'today' | 'week' | 'month' | 'year' | 'all';
+
+const PERIOD_LABELS: Record<Period, string> = {
+  today: 'Today',
+  week: 'Last 7 Days',
+  month: 'This Month',
+  year: 'This Year',
+  all: 'All Time',
+};
 
 export default function AdminDashboardPage() {
   const { t } = useLanguage();
@@ -24,21 +33,21 @@ export default function AdminDashboardPage() {
   const [analytics, setAnalytics] = useState<any>(null);
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState<Period>('today');
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/analytics').then((r) => r.json()),
-      fetch('/api/orders').then((r) => r.json()),
-    ])
-      .then(([analyticsData, ordersData]) => {
-        setAnalytics(analyticsData);
-        if (Array.isArray(ordersData)) {
-          setRecentOrders(ordersData.slice(0, 5));
+    setLoading(true);
+    fetch(`/api/analytics?period=${period}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setAnalytics(data);
+        if (Array.isArray(data.recentOrders)) {
+          setRecentOrders(data.recentOrders.slice(0, 8));
         }
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+  }, [period]);
 
   if (loading || !analytics) {
     return (
@@ -50,7 +59,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
+      {/* Header + Period Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#0B132B]">
@@ -60,70 +69,94 @@ export default function AdminDashboardPage() {
             {t('adminDashboardSubtitle')}
           </p>
         </div>
-
         {isAdmin && (
           <div className="flex items-center gap-3">
-            <Link
-              href="/admin/products/new"
-              className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
-            >
+            <Link href="/admin/products/new" className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs">
               {t('adminCreateProduct')}
             </Link>
-            <Link
-              href="/admin/banners"
-              className="px-4 py-2.5 bg-[#0B132B] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors shadow-xs"
-            >
+            <Link href="/admin/banners" className="px-4 py-2.5 bg-[#0B132B] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors shadow-xs">
               {t('adminManageBanners')}
             </Link>
           </div>
         )}
       </div>
 
+      {/* Time Period Filter */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-500 mr-2">
+          <Calendar className="w-3.5 h-3.5" />
+          Period:
+        </div>
+        {(Object.keys(PERIOD_LABELS) as Period[]).map((p) => (
+          <button
+            key={p}
+            onClick={() => setPeriod(p)}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              period === p
+                ? 'bg-[#0B132B] text-white shadow-xs'
+                : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-400'
+            }`}
+          >
+            {PERIOD_LABELS[p]}
+          </button>
+        ))}
+      </div>
+
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Total Revenue */}
+        {/* Period Revenue */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-xs font-bold uppercase tracking-wider">
-              {t('adminTotalRevenue')}
-            </span>
+            <span className="text-xs font-bold uppercase tracking-wider">Revenue ({PERIOD_LABELS[period]})</span>
             <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <span className="text-lg font-bold">৳</span>
             </div>
           </div>
           <div className="text-2xl sm:text-3xl font-black text-[#0B132B]">
-            {formatPrice(analytics.totalRevenue)}
+            {formatPrice(analytics.periodRevenue)}
           </div>
           <div className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
             <TrendingUp className="w-3.5 h-3.5" />
-            +18.4% vs last period
+            {analytics.periodOrders} orders in period
           </div>
         </div>
 
-        {/* Total Orders */}
+        {/* Period Orders */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-xs font-bold uppercase tracking-wider">
-              {t('adminTotalOrders')}
-            </span>
+            <span className="text-xs font-bold uppercase tracking-wider">Orders ({PERIOD_LABELS[period]})</span>
             <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
               <ShoppingBag className="w-5 h-5" />
             </div>
           </div>
           <div className="text-2xl sm:text-3xl font-black text-[#0B132B]">
-            {analytics.totalOrders}
+            {analytics.periodOrders}
           </div>
           <div className="text-xs text-slate-500 font-medium">
             <span className="text-amber-600 font-bold">{analytics.pendingOrders} pending</span> / {analytics.completedOrders} delivered
           </div>
         </div>
 
-        {/* Total Customers */}
+        {/* Active Products */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between text-slate-400">
-            <span className="text-xs font-bold uppercase tracking-wider">
-              {t('adminActiveCustomers')}
-            </span>
+            <span className="text-xs font-bold uppercase tracking-wider">Active Products</span>
+            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <Store className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="text-2xl sm:text-3xl font-black text-[#0B132B]">
+            {analytics.activeProducts}
+          </div>
+          <Link href="/admin/products" className="text-xs text-indigo-600 font-bold hover:underline inline-flex items-center gap-1">
+            Manage Products →
+          </Link>
+        </div>
+
+        {/* Regular Customers */}
+        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
+          <div className="flex items-center justify-between text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider">Regular Customers</span>
             <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
               <Users className="w-5 h-5" />
             </div>
@@ -132,29 +165,8 @@ export default function AdminDashboardPage() {
             {analytics.totalCustomers}
           </div>
           <div className="text-xs text-slate-500 font-medium">
-            Client retention: 94.2%
+            <span className="text-rose-600 font-bold">{analytics.lowStockCount} low stock</span> products
           </div>
-        </div>
-
-        {/* Low Stock Alerts */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
-          <div className="flex items-center justify-between text-slate-400">
-            <span className="text-xs font-bold uppercase tracking-wider">
-              {t('adminLowStockAlerts')}
-            </span>
-            <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
-              <AlertTriangle className="w-5 h-5" />
-            </div>
-          </div>
-          <div className="text-2xl sm:text-3xl font-black text-[#0B132B]">
-            {analytics.lowStockCount}
-          </div>
-          <Link
-            href="/admin/inventory"
-            className="text-xs text-rose-600 font-bold hover:underline inline-flex items-center gap-1"
-          >
-            {t('adminReviewInventoryLedger')}
-          </Link>
         </div>
       </div>
 

@@ -3,7 +3,7 @@ import { getUserByIdentifier } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
-    const { identifier, password } = await request.json();
+    const { identifier, password, loginType } = await request.json();
 
     if (!identifier || !password) {
       return NextResponse.json(
@@ -12,7 +12,17 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = await getUserByIdentifier(identifier);
+    let user = null;
+    
+    if (loginType === 'ADMIN') {
+      user = await getUserByIdentifier(`admin_${identifier}`);
+      if (!user) {
+        user = await getUserByIdentifier(identifier);
+      }
+    } else {
+      user = await getUserByIdentifier(identifier);
+    }
+
     if (!user || user.password !== password) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
@@ -20,7 +30,17 @@ export async function POST(request: Request) {
       );
     }
 
+    if (loginType === 'ADMIN' && user.role === 'CUSTOMER') {
+      return NextResponse.json(
+        { error: 'Invalid administrator credentials' },
+        { status: 401 }
+      );
+    }
+
     const { password: _, ...safeUser } = user;
+    if (safeUser.email.startsWith('admin_')) {
+      safeUser.email = safeUser.email.replace(/^admin_/, '');
+    }
     const response = NextResponse.json({ success: true, user: safeUser });
 
     // Set HTTP-only cookie for session tracking

@@ -53,35 +53,36 @@ export default function ContactPage() {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">Headquarters</strong>
-                      500 Innovation Parkway, Suite 800<br />
-                      Silicon District, WA 98101
+                      <strong className="text-white block mb-0.5">সদর দফতর</strong>
+                      ৪৫, গুলশান এভিনিউ, গুলশান-২<br />
+                      ঢাকা – ১২১২, বাংলাদেশ
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
                     <Phone className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">Toll-Free Phone</strong>
-                      +1 (800) 555-NOVA / +1 (555) 019-2831
+                      <strong className="text-white block mb-0.5">ফোন / হোয়াটসঅ্যাপ</strong>
+                      +880 1700-000000<br />
+                      +880 1800-000000
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
                     <Mail className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">Electronic Mail</strong>
-                      concierge@bdneeds.com<br />
-                      press@bdneeds.com
+                      <strong className="text-white block mb-0.5">ইমেইল</strong>
+                      support@bdneeds.com<br />
+                      info@bdneeds.com
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">Operating Hours</strong>
-                      Mon – Fri: 08:00 – 20:00 EST<br />
-                      Sat – Sun: 09:00 – 17:00 EST
+                      <strong className="text-white block mb-0.5">অফিস সময়</strong>
+                      শনি – বৃহস্পতি: সকাল ৯:০০ – রাত ৯:০০<br />
+                      শুক্রবার: বন্ধ
                     </div>
                   </div>
                 </div>
@@ -121,7 +122,7 @@ export default function ContactPage() {
                         required
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="Marcus Vance"
+                        placeholder="যেমন: রাহেলা বেগম"
                         className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                       />
                     </div>
@@ -135,7 +136,7 @@ export default function ContactPage() {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="marcus@example.com"
+                        placeholder="rahela@example.com"
                         className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                       />
                     </div>
@@ -149,7 +150,7 @@ export default function ContactPage() {
                       type="text"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
-                      placeholder="Order Inquiry, Warranty Claim, or Bespoke Request"
+                      placeholder="যেমন: অর্ডার সংক্রান্ত সমস্যা, পণ্য ফেরত, অথবা অন্য কোনো বিষয়"
                       className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                     />
                   </div>
@@ -163,7 +164,7 @@ export default function ContactPage() {
                       rows={5}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Detail your request or query..."
+                      placeholder="আপনার বার্তা বা সমস্যার বিস্তারিত লিখুন..."
                       className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                     />
                   </div>
@@ -173,7 +174,7 @@ export default function ContactPage() {
                     className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
                   >
                     <Send className="w-4 h-4" />
-                    Dispatch Message to Concierge
+                    মেসেজ পাঠান
                   </button>
                 </form>
               )}

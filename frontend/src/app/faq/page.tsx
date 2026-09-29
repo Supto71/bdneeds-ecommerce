@@ -68,7 +68,7 @@ export default function FAQPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100 overflow-hidden shadow-xs">
+          <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100 overflow-hidden shadow-xs mb-12">
             {faqs.map((faq, idx) => {
               const isOpen = openIndex === idx;
               const Icon = faq.icon;
@@ -101,6 +101,40 @@ export default function FAQPage() {
                 </div>
               );
             })}
+          </div>
+
+          <div id="terms" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs mb-8 scroll-mt-24">
+            <h2 className="text-xl sm:text-2xl font-black text-[#0B132B] mb-4 flex items-center gap-3">
+              <ShieldCheck className="w-6 h-6 text-blue-600" />
+              Terms & Conditions
+            </h2>
+            <div className="prose prose-sm max-w-none text-slate-600 space-y-4">
+              <p>By using bdneeds and its services, you agree to our general terms and conditions. We reserve the right to update or modify these terms at any time without prior notice.</p>
+              <h3 className="font-bold text-[#0B132B] text-base mt-6 mb-2">Privacy & Data Security</h3>
+              <p>All customer personal data (such as name, phone number, and address) is kept strictly confidential and is never shared with third parties for marketing purposes. Your data is used exclusively for processing and delivering your orders.</p>
+              <h3 className="font-bold text-[#0B132B] text-base mt-6 mb-2">Pricing & Availability</h3>
+              <p>All prices are subject to change. We make every effort to ensure our inventory is accurate, but in rare cases where an item is out of stock after an order is placed, we will notify you immediately and offer a full refund or an alternative product.</p>
+            </div>
+          </div>
+
+          <div id="returns" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs scroll-mt-24">
+            <h2 className="text-xl sm:text-2xl font-black text-[#0B132B] mb-4 flex items-center gap-3">
+              <RefreshCw className="w-6 h-6 text-blue-600" />
+              Return & Refund Policy
+            </h2>
+            <div className="prose prose-sm max-w-none text-slate-600 space-y-4">
+              <h3 className="font-bold text-[#0B132B] text-base mt-4 mb-2">Return Conditions</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Products can be returned within a maximum of 7 days of delivery.</li>
+                <li>The product must be unused, undamaged, and in its original condition.</li>
+                <li>Original packaging, tags, and invoice must be provided with the return.</li>
+                <li>Used products, customized items, and specific discounted promotional items are non-returnable.</li>
+              </ul>
+              
+              <h3 className="font-bold text-[#0B132B] text-base mt-6 mb-2">Refund Process</h3>
+              <p>Once the returned product reaches our warehouse and passes our quality check, the refund will be processed within 7 to 10 working days.</p>
+              <p>Refunds are issued through the original payment method (bKash, card, or bank account). For Cash on Delivery (COD) orders, valid bank account or mobile wallet details must be provided by the customer.</p>
+            </div>
           </div>
         </div>
       </main>

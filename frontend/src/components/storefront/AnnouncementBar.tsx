@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Truck, Globe } from 'lucide-react';
 import { useLanguage, LanguageSwitcher } from '@/context/LanguageContext';
@@ -9,9 +9,10 @@ import { Banner } from '@/types';
 export default function AnnouncementBar() {
   const { t } = useLanguage();
   const [announcement, setAnnouncement] = useState<Banner | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    fetch('/api/banners')
+    fetch('/api/banners', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -19,8 +20,13 @@ export default function AnnouncementBar() {
           if (banner) setAnnouncement(banner);
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setIsLoaded(true));
   }, []);
+
+  if (!isLoaded) {
+    return <div className="bg-[#0B132B] h-[34px] border-b border-white/10" />;
+  }
 
   return (
     <div className="bg-[#0B132B] text-white text-xs font-medium py-1.5 px-4 border-b border-white/10 select-none">

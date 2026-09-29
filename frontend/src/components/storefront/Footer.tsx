@@ -43,24 +43,7 @@ export default function Footer() {
               {t('footerAboutDesc')}
             </p>
 
-            <div className="space-y-2 text-xs text-slate-300 pt-2">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>{t('footerAddress')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>+880 1811-277828</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>contact@bdneeds.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-400 shrink-0" />
-                <span>{t('footerTime')}</span>
-              </div>
-            </div>
+
           </div>
 
           {/* Quick Links */}
@@ -128,52 +111,36 @@ export default function Footer() {
                   {t('aboutUs')}
                 </Link>
               </li>
-
             </ul>
           </div>
 
-          {/* Newsletter Subscription */}
+          {/* Contact Information */}
           <div className="space-y-4">
             <h4 className="text-sm font-bold tracking-wider uppercase text-white mb-2">
-              {t('subscribeNewsletter')}
+              Contact Us
             </h4>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              {t('newsletterDesc')}
-            </p>
-
-            {subscribed ? (
-              <div className="flex items-center gap-2 p-3 bg-emerald-950/60 border border-emerald-500/30 rounded-xl text-emerald-300 text-xs font-medium">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>{t('subscribedThankYou')}</span>
+            <div className="space-y-3 text-xs text-slate-300">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <span>Dhaka, Bangladesh</span>
               </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="space-y-2">
-                <div className="relative">
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t('enterYourEmail')}
-                    className="w-full pl-3 pr-10 py-2.5 text-xs bg-white/10 border border-white/15 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white/15 text-white placeholder-slate-400 transition-all"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors"
-                    aria-label="Subscribe"
-                  >
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-                <span className="text-[10px] text-slate-400">{t('footerSpam')}</span>
-              </form>
-            )}
-
-            {/* Social Links */}
-            <div className="pt-2">
-              <span className="text-xs font-semibold text-slate-400 block mb-2">{t('footerFollow')}</span>
-              <div className="flex items-center space-x-3 text-xs text-slate-300">
-                <a href="https://www.facebook.com/profile.php?id=61589093341884" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Facebook</a>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-blue-400 shrink-0" />
+                <span>+880 1811-277828</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-blue-400 shrink-0" />
+                <span>contact@bdneeds.com</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Clock className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <span>Sat – Thu: 09:00 – 21:00 BST | 24/7 Online Support</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <a href="https://www.facebook.com/profile.php?id=61589093341884" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white transition-colors">
+                  <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" /></svg>
+                  <span>BdNeeds</span>
+                </a>
               </div>
             </div>
           </div>
@@ -185,8 +152,8 @@ export default function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8">
             <p>© {new Date().getFullYear()} {t('allRightsReserved')}</p>
             <div className="flex items-center gap-4 border-l border-r border-slate-700 px-4">
-              <Link href="/terms" className="hover:text-blue-400 transition-colors">{t('footerTerms')}</Link>
-              <Link href="/return-policy" className="hover:text-blue-400 transition-colors">{t('footerRefund')}</Link>
+              <Link href="/faq#terms" className="hover:text-blue-400 transition-colors">{t('footerTerms')}</Link>
+              <Link href="/faq#returns" className="hover:text-blue-400 transition-colors">{t('footerRefund')}</Link>
             </div>
             <p className="font-semibold text-slate-300">DBID: <span className="text-white">Pending</span></p>
           </div>

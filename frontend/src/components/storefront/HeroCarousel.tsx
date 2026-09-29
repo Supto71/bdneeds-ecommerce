@@ -140,11 +140,11 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
             {activeBanners.map((banner, idx) => (
               <div
                 key={banner.id || idx}
-                className="w-full shrink-0 flex-none relative z-10 flex flex-row items-center justify-between p-3.5 sm:p-5 md:grid md:grid-cols-12 md:gap-8 md:p-12 lg:p-16"
+                className="w-full shrink-0 flex-none relative z-10 flex flex-row items-center justify-between py-2.5 pr-2.5 pl-4 sm:py-4 sm:pr-4 sm:pl-6 md:grid md:grid-cols-12 md:gap-8 md:p-12 lg:p-16"
                 aria-hidden={currentIndex !== idx}
               >
                 {/* Left Copy Info */}
-                <div className="w-[58%] sm:w-[60%] md:w-auto md:col-span-7 flex flex-col justify-center space-y-1 sm:space-y-1.5 md:space-y-5 pr-1.5 sm:pr-2 md:pr-0">
+                <div className="w-[52%] sm:w-[55%] md:w-auto md:col-span-7 flex flex-col justify-center space-y-1 sm:space-y-1.5 md:space-y-5 pr-1.5 sm:pr-2 md:pr-0">
                   {/* Premium Luxury Eyebrow Tag without icons */}
                   <div className="inline-flex items-center px-2 sm:px-2.5 md:px-4 py-0.5 sm:py-1 md:py-1.5 rounded-full bg-white/[0.07] backdrop-blur-md border border-white/20 shadow-xs md:shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:border-white/30 self-start">
                     <span className="text-[8px] sm:text-[10px] md:text-xs font-bold tracking-[0.16em] sm:tracking-[0.22em] uppercase bg-gradient-to-r from-white via-sky-100 to-blue-200 bg-clip-text text-transparent">
@@ -199,8 +199,8 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
                 </div>
 
                 {/* Right Product 3D Hero Render Presentation */}
-                <div className="w-[42%] sm:w-[40%] md:w-auto md:col-span-5 flex items-center justify-center relative shrink-0 pl-1 sm:pl-2 md:pl-0">
-                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-xl md:rounded-2xl overflow-hidden shadow-md md:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group-hover:scale-102 transition-transform duration-500">
+                <div className="w-[48%] sm:w-[45%] md:w-auto md:col-span-5 flex items-center justify-center relative shrink-0 pl-1 sm:pl-2 md:pl-0">
+                  <div className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-xl md:rounded-2xl overflow-hidden shadow-md md:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group-hover:scale-102 transition-transform duration-500">
                     <Image
                       src={banner.image}
                       alt={banner.title}

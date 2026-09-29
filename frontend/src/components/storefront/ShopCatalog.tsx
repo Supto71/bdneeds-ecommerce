@@ -196,7 +196,11 @@ export default function ShopCatalog({
   ]);
 
   const resetFilters = () => {
-    setSelectedCategory('');
+    if (initialCategorySlug) {
+      setSelectedCategory(initialCategorySlug);
+    } else {
+      setSelectedCategory('');
+    }
     setSelectedBrand('');
     setPriceRange([0, 200000]);
     setMinRating(0);
@@ -204,6 +208,9 @@ export default function ShopCatalog({
     setSelectedColor('');
     setSearchQuery('');
     setSortBy('featured');
+    if (searchParams.toString()) {
+      router.push(window.location.pathname);
+    }
   };
 
   const activeFilterCount =
@@ -282,7 +289,13 @@ export default function ShopCatalog({
             {selectedCategory && (
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
                 {categories.find((c) => c.id === selectedCategory || c.slug === selectedCategory)?.name || 'Category'}
-                <button onClick={() => setSelectedCategory('')}>
+                <button onClick={() => {
+                  if (initialCategorySlug) {
+                    router.push('/shop');
+                  } else {
+                    setSelectedCategory('');
+                  }
+                }}>
                   <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
                 </button>
               </span>
@@ -306,12 +319,14 @@ export default function ShopCatalog({
               </span>
             )}
 
-            <button
-              onClick={resetFilters}
-              className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1 ml-2"
-            >
-              <RotateCcw className="w-3 h-3" /> {t('resetFilters')}
-            </button>
+            {(activeFilterCount > (selectedCategory && selectedCategory === initialCategorySlug ? 1 : 0)) && (
+              <button
+                onClick={resetFilters}
+                className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1 ml-2"
+              >
+                <RotateCcw className="w-3 h-3" /> {t('resetFilters')}
+              </button>
+            )}
           </div>
         )}
 

@@ -10,7 +10,7 @@ interface AuthContextType {
   isAdmin: boolean;
   isModerator: boolean;
   isAuthLoading: boolean; // localStorage থেকে user load হওয়া পর্যন্ত true
-  login: (identifier: string, pass: string) => Promise<{ success: boolean; message?: string }>;
+  login: (identifier: string, pass: string, loginType?: 'ADMIN' | 'CUSTOMER') => Promise<{ success: boolean; message?: string }>;
   register: (name: string, email: string, pass: string, phone: string) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   updateAvatar: (avatarUrl: string) => Promise<{ success: boolean; message?: string }>;
@@ -46,12 +46,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     initAuth();
   }, []);
 
-  const login = async (identifier: string, pass: string) => {
+  const login = async (identifier: string, pass: string, loginType?: 'ADMIN' | 'CUSTOMER') => {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifier, password: pass }),
+        body: JSON.stringify({ identifier, password: pass, loginType }),
       });
       const data = await res.json();
       if (!res.ok) {

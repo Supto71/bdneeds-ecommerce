@@ -35,9 +35,13 @@ export function middleware(request: NextRequest) {
       try {
         const user = JSON.parse(decodeURIComponent(userCookie.value));
         if (user?.role === 'MODERATOR') {
-          // Allow PATCH /api/orders/[id] for moderators
+          // Allow specific mutations for moderators
           const isOrderUpdate = pathname.startsWith('/api/orders/') && request.method === 'PATCH';
-          if (!isOrderUpdate) {
+          const isCustomerFraudUpdate = pathname.startsWith('/api/customers/') && request.method === 'PATCH';
+          const isAvatarUpdate = pathname === '/api/user/update-avatar' && request.method === 'POST';
+          const isAuthRoute = pathname.startsWith('/api/auth/');
+          
+          if (!isOrderUpdate && !isCustomerFraudUpdate && !isAvatarUpdate && !isAuthRoute) {
             return NextResponse.json({ error: 'Moderators are not allowed to perform this action' }, { status: 403 });
           }
         }
