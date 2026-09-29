@@ -62,7 +62,6 @@ export default function CategoryCarousel({ categories }: CategoryCarouselProps) 
           </div>
         </div>
 
-        {/* Scrollable Circular Items Track */}
         <div
           ref={scrollContainerRef}
           className="flex items-center gap-3.5 sm:gap-5 md:gap-8 overflow-x-auto no-scrollbar scroll-smooth pb-1 md:pb-4"

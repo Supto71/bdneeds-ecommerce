@@ -43,6 +43,9 @@ export default function ShopCatalog({
   const [selectedBrand, setSelectedBrand] = useState<string>(
     searchParams.get('brand') || ''
   );
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>(
+    searchParams.get('subcategory') || ''
+  );
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 200000]);
   const [minRating, setMinRating] = useState<number>(0);
   const [inStockOnly, setInStockOnly] = useState<boolean>(false);
@@ -57,6 +60,12 @@ export default function ShopCatalog({
   const brands = useMemo(() => {
     const set = new Set<string>();
     initialProducts.forEach((p) => p.brand && set.add(p.brand));
+    return Array.from(set);
+  }, [initialProducts]);
+
+  const subcategories = useMemo(() => {
+    const set = new Set<string>();
+    initialProducts.forEach((p) => p.subcategoryName && set.add(p.subcategoryName));
     return Array.from(set);
   }, [initialProducts]);
 
@@ -135,6 +144,10 @@ export default function ShopCatalog({
       list = list.filter((p) => p.brand === selectedBrand);
     }
 
+    if (selectedSubcategory) {
+      list = list.filter((p) => p.subcategoryName === selectedSubcategory);
+    }
+
     list = list.filter(
       (p) => p.basePrice >= priceRange[0] && p.basePrice <= priceRange[1]
     );
@@ -186,6 +199,7 @@ export default function ShopCatalog({
     initialProducts,
     searchQuery,
     selectedCategory,
+    selectedSubcategory,
     selectedBrand,
     priceRange,
     minRating,
@@ -201,6 +215,7 @@ export default function ShopCatalog({
     } else {
       setSelectedCategory('');
     }
+    setSelectedSubcategory('');
     setSelectedBrand('');
     setPriceRange([0, 200000]);
     setMinRating(0);
@@ -215,6 +230,7 @@ export default function ShopCatalog({
 
   const activeFilterCount =
     (selectedCategory ? 1 : 0) +
+    (selectedSubcategory ? 1 : 0) +
     (selectedBrand ? 1 : 0) +
     (priceRange[0] > 0 || priceRange[1] < 200000 ? 1 : 0) +
     (minRating > 0 ? 1 : 0) +
@@ -233,6 +249,35 @@ export default function ShopCatalog({
           <p className="text-sm text-slate-500 mt-1 max-w-2xl">
             {subtitle || t('exploreDepartmentsDesc')}
           </p>
+
+          {/* Subcategory Cards */}
+          {subcategories.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                onClick={() => setSelectedSubcategory('')}
+                className={`px-5 py-2.5 rounded-xl text-sm font-bold border transition-all ${
+                  !selectedSubcategory
+                    ? 'bg-[#0B132B] text-white border-[#0B132B] shadow-md'
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                All Products
+              </button>
+              {subcategories.map((sub) => (
+                <button
+                  key={sub}
+                  onClick={() => setSelectedSubcategory(sub)}
+                  className={`px-5 py-2.5 rounded-xl text-sm font-bold border transition-all ${
+                    selectedSubcategory === sub
+                      ? 'bg-[#0B132B] text-white border-[#0B132B] shadow-md'
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                  }`}
+                >
+                  {sub}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Action Controls Bar (Mobile Filters Button, Count, Sorting) */}
@@ -305,6 +350,15 @@ export default function ShopCatalog({
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
                 Brand: {selectedBrand}
                 <button onClick={() => setSelectedBrand('')}>
+                  <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
+                </button>
+              </span>
+            )}
+
+            {selectedSubcategory && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
+                {selectedSubcategory}
+                <button onClick={() => setSelectedSubcategory('')}>
                   <X className="w-3 h-3 text-slate-400 hover:text-slate-700" />
                 </button>
               </span>
@@ -406,6 +460,33 @@ export default function ShopCatalog({
                 </div>
               </div>
             </div>
+
+            {/* Subcategories */}
+            {subcategories.length > 0 && (
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                  Sub-Categories
+                </h4>
+                <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                  {subcategories.map((sub) => (
+                    <label
+                      key={sub}
+                      className="flex items-center gap-2 text-xs text-slate-600 hover:text-slate-900 cursor-pointer py-1"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedSubcategory === sub}
+                        onChange={() =>
+                          setSelectedSubcategory(selectedSubcategory === sub ? '' : sub)
+                        }
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span>{sub}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Brands */}
             {brands.length > 0 && (
@@ -571,6 +652,33 @@ export default function ShopCatalog({
                   </div>
                 </div>
               </div>
+
+              {/* Subcategories */}
+              {subcategories.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                    Sub-Categories
+                  </h4>
+                  <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                    {subcategories.map((sub) => (
+                      <label
+                        key={sub}
+                        className="flex items-center gap-3 text-sm text-slate-600 hover:text-slate-900 cursor-pointer py-1"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedSubcategory === sub}
+                          onChange={() =>
+                            setSelectedSubcategory(selectedSubcategory === sub ? '' : sub)
+                          }
+                          className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                        />
+                        <span>{sub}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Brands */}
               {brands.length > 0 && (

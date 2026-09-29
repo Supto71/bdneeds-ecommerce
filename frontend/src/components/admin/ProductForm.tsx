@@ -188,15 +188,13 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
         id: v.id,
         productId: v.productId,
         sku: v.sku,
-        colorName: v.colorName || undefined,
-        colorHex: v.colorHex || undefined,
-        size: v.size || undefined,
+        colorName: v.colorName || '',
+        colorHex: v.colorHex || '',
+        size: v.size || null,
         price: Number(originalPrice),
         stock: Number(v.stock),
         lowStockThreshold: v.lowStockThreshold,
         images: v.images,
-        features: v.variantFeatures || [],
-        specifications: specMap,
       };
     });
     const payload = {
@@ -344,11 +342,11 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                         <div className="p-5 space-y-5 bg-white">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                              <label className={LABEL_CLS}>Color Name</label>
+                              <label className={LABEL_CLS}>Color Name (optional)</label>
                               <input type="text" value={v.colorName} onChange={(e) => updateVariant(idx, { colorName: e.target.value })} placeholder="e.g. Space Black" className={INPUT_CLS} />
                             </div>
                             <div>
-                              <label className={LABEL_CLS}>Color Hex{!v.colorName ? ' (optional)' : ' *'}</label>
+                              <label className={LABEL_CLS}>Color Hex (optional)</label>
                               <div className="flex gap-2">
                                 <input type="text" value={v.colorHex} onChange={(e) => updateVariant(idx, { colorHex: e.target.value })} placeholder="#1E1E24" className={INPUT_CLS + ' font-mono'} />
                                 {v.colorHex && <span className="w-10 h-10 rounded-xl border border-slate-200 shrink-0" style={{ backgroundColor: v.colorHex }} />}
@@ -357,7 +355,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                           </div>
 
                           <div>
-                            <label className={LABEL_CLS}>Size</label>
+                            <label className={LABEL_CLS}>Size (optional)</label>
                             <input type="text" value={v.size || ''} onChange={(e) => updateVariant(idx, { size: e.target.value })} placeholder="e.g. S / M / XL or 256GB" className={INPUT_CLS} />
                           </div>
 
@@ -381,7 +379,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                                 </div>
                               )}
                               <div className="flex-1 space-y-2">
-                                <input type="url" value={v.images?.[0] || ''} onChange={(e) => updateVariant(idx, { images: [e.target.value] })} placeholder="https://... or upload below" className={INPUT_CLS} />
+                                <input type="text" value={v.images?.[0] || ''} onChange={(e) => updateVariant(idx, { images: [e.target.value] })} placeholder="https://... or upload below" className={INPUT_CLS} />
                                 <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B132B] text-white text-xs font-bold rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
                                   {uploadingVariantImage === idx ? 'Uploading...' : 'Upload Image'}
                                   <input type="file" accept="image/*" onChange={(e) => handleVariantImageUpload(e, idx)} className="hidden" disabled={uploadingVariantImage !== null} />

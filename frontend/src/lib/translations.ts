@@ -63,10 +63,17 @@ export const translations = {
     accessories: 'Watches & Accessories',
     electronics: 'Electronics & Audio',
     fashion: 'Luxury & Apparel',
-    footwear: 'Footwear & Sneakers',
+    footwear: 'Footwear',
     'home-appliances': 'Smart Living & Climate',
     beauty: 'Grooming & Skincare',
     'smart-devices': 'Smart Devices & IoT',
+    groceries: 'Groceries',
+    'health-and-medical': 'Health & Medical',
+    'toys-and-kids': 'Toys & Kids',
+    'sports-equipments': 'Sports Equipments',
+    'clothing-and-apparel': 'Clothing & Apparel',
+    'electronics-and-lighting': 'Electronics & Lighting',
+    'beauty-and-personal-care': 'Beauty & Personal Care',
 
     // Section Titles
     shopByDepartment: 'Shop by Category',
@@ -99,6 +106,7 @@ export const translations = {
 
     // Product Detail View
     color: 'Color',
+    description: 'Description',
     storageSize: 'Size / Spec',
     quantity: 'Quantity',
     buyNow: 'Buy Now',
@@ -361,10 +369,17 @@ export const translations = {
     accessories: 'ঘড়ি ও এক্সেসরিজ',
     electronics: 'ইলেকট্রনিক্স ও অডিও',
     fashion: 'লাক্সারি ও পোশাক',
-    footwear: 'জুতো ও স্নিকার্স',
+    footwear: 'জুতা',
     'home-appliances': 'স্মার্ট লিভিং ও ক্লাইমেট',
     beauty: 'গ্রুমিং ও স্কিনকেয়ার',
     'smart-devices': 'স্মার্ট ডিভাইসেস ও আইওটি',
+    groceries: 'মুদি ও নিত্যপ্রয়োজনীয়',
+    'health-and-medical': 'স্বাস্থ্য ও চিকিৎসা',
+    'toys-and-kids': 'খেলনা ও শিশু',
+    'sports-equipments': 'খেলাধুলার সামগ্রী',
+    'clothing-and-apparel': 'পোশাক ও পরিচ্ছদ',
+    'electronics-and-lighting': 'ইলেকট্রনিক্স ও লাইটিং',
+    'beauty-and-personal-care': 'রূপচর্চা ও ব্যক্তিগত যত্ন',
 
     // Section Titles
     shopByDepartment: 'ক্যাটাগরি অনুযায়ী কিনুন',
@@ -397,6 +412,7 @@ export const translations = {
 
     // Product Detail View
     color: 'কালার',
+    description: 'বিবরণ',
     storageSize: 'সাইজ / ভ্যারিয়েন্ট',
     quantity: 'পরিমাণ',
     buyNow: 'সরাসরি কিনুন',

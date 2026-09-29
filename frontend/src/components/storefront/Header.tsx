@@ -163,31 +163,20 @@ export default function Header() {
 
               {/* Mega Menu Dropdown */}
               {showMegaMenu && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] xl:w-[840px] bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 pt-5 grid grid-cols-3 gap-6 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="col-span-2 grid grid-cols-2 gap-4">
-                    {categories.slice(0, 8).map((cat) => (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] xl:w-[840px] bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6">
+                    {categories.map((cat) => (
                       <Link
                         key={cat.id}
                         href={`/category/${cat.slug}`}
                         onClick={() => setShowMegaMenu(false)}
-                        className="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors"
+                        className="group flex flex-col items-start p-2 -m-2 rounded-xl hover:bg-slate-50 transition-colors"
                       >
-                        <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-slate-100 shrink-0">
-                          <Image
-                            src={cat.image}
-                            alt={cat.name}
-                            fill
-                            className="object-cover group-hover:scale-110 transition-transform duration-300"
-                            sizes="48px"
-                          />
+                        <div className="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+                          {t(cat.slug as any, cat.name)}
                         </div>
-                        <div>
-                          <div className="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-                            {t(cat.slug as any, cat.name)}
-                          </div>
-                          <div className="text-xs text-slate-400">
-                            {cat.productCount} {t('productsCount')}
-                          </div>
+                        <div className="text-xs text-slate-400 mt-1">
+                          {cat.productCount} {t('productsCount')}
                         </div>
                       </Link>
                     ))}

@@ -58,7 +58,7 @@ export async function POST(request: Request) {
         const paymentData = {
           full_name: body.customerName,
           email: body.customerEmail,
-          amount: order.finalAmount, // using finalAmount from DB, it's safer
+          amount: order.total, // using total from DB, it's safer
           metadata: { order_id: order.id },
           redirect_url: `${origin}/order-success?orderId=${order.id}`,
           cancel_url: `${origin}/checkout`,

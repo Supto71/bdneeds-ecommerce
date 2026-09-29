@@ -146,7 +146,7 @@ export interface OrderItem {
   total: number;
 }
 
-export type PaymentMethod = 'COD' | 'CARD' | 'BKASH' | 'NAGAD';
+export type PaymentMethod = 'COD' | 'CARD' | 'BKASH' | 'NAGAD' | 'ONLINE';
 export type PaymentStatus = 'PENDING' | 'PAID' | 'FAILED';
 export type OrderStatus =
   | 'PENDING'
