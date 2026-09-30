@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getOrderById, updateOrderStatus, deleteOrder } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   request: Request,
   context: { params: Promise<{ id: string }> }

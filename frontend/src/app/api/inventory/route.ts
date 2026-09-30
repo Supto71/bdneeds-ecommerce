@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getInventoryStatus, updateStock } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const inventory = await getInventoryStatus();

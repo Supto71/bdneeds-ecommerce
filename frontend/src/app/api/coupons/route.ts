@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getCoupons, createCoupon, deleteCoupon, updateCoupon } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const coupons = await getCoupons();
