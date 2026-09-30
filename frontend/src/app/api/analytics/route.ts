@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
 export const dynamic = 'force-dynamic';
@@ -22,31 +22,18 @@ export async function GET(request: Request) {
       startDate = new Date(0);
     }
 
-    const [
-      periodRevenueResult,
-      periodOrderCount,
-      totalOrders,
-      activeProductCount,
-      regularCustomerCount,
-      recentOrders,
-      allPaidOrders,
-      categoryItems,
-      lowStockCount,
-      pendingOrders,
-      completedOrders,
-    ] = await Promise.all([
-      prisma.order.aggregate({ _sum: { total: true }, where: { paymentStatus: "PAID", createdAt: { gte: startDate } } }),
-      prisma.order.count({ where: { createdAt: { gte: startDate } } }),
-      prisma.order.count(),
-      prisma.product.count({ where: { isPublished: true } }),
-      prisma.user.count({ where: { role: "CUSTOMER" } }),
-      prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 10, include: { items: true } }),
-      prisma.order.findMany({ where: { paymentStatus: "PAID" }, select: { createdAt: true, total: true } }),
-      prisma.orderItem.findMany({ include: { product: { select: { categoryName: true } } } }),
-      prisma.product.count({ where: { stock: { lte: 5, gt: 0 } } }),
-      prisma.order.count({ where: { orderStatus: "PENDING" } }),
-      prisma.order.count({ where: { orderStatus: "DELIVERED" } }),
-    ]);
+        // Run queries sequentially to prevent database connection pool exhaustion on serverless environments
+    const periodRevenueResult = await prisma.order.aggregate({ _sum: { total: true }, where: { paymentStatus: "PAID", createdAt: { gte: startDate } } });
+    const periodOrderCount = await prisma.order.count({ where: { createdAt: { gte: startDate } } });
+    const totalOrders = await prisma.order.count();
+    const activeProductCount = await prisma.product.count({ where: { isPublished: true } });
+    const regularCustomerCount = await prisma.user.count({ where: { role: "CUSTOMER" } });
+    const recentOrders = await prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 10, include: { items: true } });
+    const allPaidOrders = await prisma.order.findMany({ where: { paymentStatus: "PAID" }, select: { createdAt: true, total: true } });
+    const categoryItems = await prisma.orderItem.findMany({ include: { product: { select: { categoryName: true } } } });
+    const lowStockCount = await prisma.product.count({ where: { stock: { lte: 5, gt: 0 } } });
+    const pendingOrders = await prisma.order.count({ where: { orderStatus: "PENDING" } });
+    const completedOrders = await prisma.order.count({ where: { orderStatus: "DELIVERED" } });
 
     const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     const monthlyMap: Record<string, number> = {};
@@ -82,3 +69,4 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Failed to fetch analytics" }, { status: 500 });
   }
 }
+
