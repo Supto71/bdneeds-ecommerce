@@ -33,6 +33,16 @@ model Category {
   isFeatured   Boolean   @default(false)
   order        Int       @default(0)
   products     Product[]
+  subcategories Subcategory[]
+}
+
+model Subcategory {
+  id           String    @id @default(cuid())
+  categoryId   String
+  category     Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name         String
+  slug         String    @unique
+  isActive     Boolean   @default(true)
 }
 
 model Product {

@@ -154,32 +154,37 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <div className="pt-3 mt-2 border-t border-slate-50 flex flex-col gap-2">
           {/* Color Swatches */}
-          {product.variants && product.variants.length > 1 && (
-            <div className="flex items-center gap-1.5 py-0.5">
-              {product.variants.slice(0, 5).map((variant) => (
-                <button
-                  key={variant.id}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSelectedVariant(variant);
-                  }}
-                  title={variant.colorName}
-                  className={`w-3.5 h-3.5 rounded-full border transition-all ${
-                    selectedVariant?.id === variant.id
-                      ? 'ring-2 ring-blue-600 ring-offset-1 border-white scale-110'
-                      : 'border-slate-300 hover:scale-110'
-                  }`}
-                  style={{ backgroundColor: variant.colorHex || '#000' }}
-                  aria-label={variant.colorName}
-                />
-              ))}
-              {product.variants.length > 5 && (
-                <span className="text-[10px] text-slate-400 font-medium">
-                  +{product.variants.length - 5}
-                </span>
-              )}
-            </div>
-          )}
+          {(() => {
+            const colorVariants = product.variants?.filter((v) => v.colorHex && v.colorHex.trim() !== '') || [];
+            if (colorVariants.length < 1) return null;
+            return (
+              <div className="flex items-center gap-1.5 py-0.5">
+                {colorVariants.slice(0, 5).map((variant) => (
+                  <button
+                    key={variant.id}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setSelectedVariant(variant);
+                    }}
+                    title={variant.colorName}
+                    className={`w-3.5 h-3.5 rounded-full border transition-all ${
+                      selectedVariant?.id === variant.id
+                        ? 'ring-2 ring-blue-600 ring-offset-1 border-white scale-110'
+                        : 'border-slate-300 hover:scale-110'
+                    }`}
+                    style={{ backgroundColor: variant.colorHex || '#000' }}
+                    aria-label={variant.colorName}
+                  />
+                ))}
+                {colorVariants.length > 5 && (
+                  <span className="text-[10px] text-slate-400 font-medium">
+                    +{colorVariants.length - 5}
+                  </span>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Price & Mobile Add Button */}
           <div className="flex items-center justify-between">

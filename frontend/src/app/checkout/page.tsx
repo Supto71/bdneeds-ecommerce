@@ -403,11 +403,10 @@ function CheckoutContent() {
                   </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1">
-                      {t('postalCode')} *
+                      {t('postalCode')} (Optional)
                     </label>
                     <input
                       type="text"
-                      required
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
                       placeholder="1213"

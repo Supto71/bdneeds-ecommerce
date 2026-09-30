@@ -34,6 +34,7 @@ export interface Category {
   isActive: boolean;
   isFeatured: boolean;
   order: number;
+  subcategories?: Subcategory[];
 }
 
 export interface Subcategory {

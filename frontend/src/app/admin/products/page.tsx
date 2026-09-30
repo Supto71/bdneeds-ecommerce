@@ -23,6 +23,7 @@ export default function AdminProductsPage() {
   const { t } = useLanguage();
   const { isAdmin } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,12 @@ export default function AdminProductsPage() {
 
   useEffect(() => {
     fetchProducts();
+    fetch('/api/categories?admin=true')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setCategories(data);
+      })
+      .catch(console.error);
   }, []);
 
   const handleDelete = async (id: string, name: string) => {
@@ -113,13 +120,11 @@ export default function AdminProductsPage() {
             className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none"
           >
             <option value="">{t('allCategories')}</option>
-            <option value="cat-electronics">Electronics & Audio</option>
-            <option value="cat-fashion">Luxury & Apparel</option>
-            <option value="cat-footwear">Footwear & Sneakers</option>
-            <option value="cat-accessories">Watches & Horology</option>
-            <option value="cat-gaming">Gaming & Workstation</option>
-            <option value="cat-home">Smart Living</option>
-            <option value="cat-beauty">Grooming & Skincare</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>

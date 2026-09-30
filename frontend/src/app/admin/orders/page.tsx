@@ -22,13 +22,13 @@ export default function AdminOrdersPage() {
     if (filter === 'All') return true;
     const date = new Date(dateStr);
     const now = new Date();
-    
+
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const startOfDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    
+
     const diffTime = startOfToday.getTime() - startOfDate.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (filter === 'Daily') return diffDays === 0;
     if (filter === 'Weekly') return diffDays <= 7;
     if (filter === 'Monthly') {
@@ -38,7 +38,7 @@ export default function AdminOrdersPage() {
     if (filter === 'Yearly') {
       return date.getFullYear() === parseInt(selectedYear);
     }
-    
+
     return true;
   };
 
@@ -84,7 +84,7 @@ export default function AdminOrdersPage() {
 
   const exportToCSV = () => {
     if (filtered.length === 0) return;
-    
+
     const headers = [
       'Order ID',
       'Date',
@@ -97,9 +97,9 @@ export default function AdminOrdersPage() {
       'Order Status',
       'Products Details'
     ];
-    
+
     const csvRows = [headers.join(',')];
-    
+
     filtered.forEach(order => {
       const itemsDetail = order.items.map(item => `${item.productName} (Qty: ${item.quantity})`).join('; ');
       const row = [
@@ -116,7 +116,7 @@ export default function AdminOrdersPage() {
       ];
       csvRows.push(row.join(','));
     });
-    
+
     const csvString = csvRows.join('\n');
     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -245,7 +245,7 @@ export default function AdminOrdersPage() {
             <option value="CANCELLED">Cancelled</option>
             <option value="REFUNDED">Returned</option>
           </select>
-          
+
           <button
             onClick={exportToCSV}
             disabled={filtered.length === 0}

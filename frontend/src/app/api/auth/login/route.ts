@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getUserByIdentifier } from '@/lib/db';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
   try {
@@ -23,7 +24,16 @@ export async function POST(request: Request) {
       user = await getUserByIdentifier(identifier);
     }
 
-    if (!user || user.password !== password) {
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Invalid credentials' },
+        { status: 401 }
+      );
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password) || user.password === password;
+
+    if (!isValidPassword) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }

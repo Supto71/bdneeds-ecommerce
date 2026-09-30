@@ -8,7 +8,19 @@ export async function PUT(
   try {
     const { id } = await context.params;
     const data = await request.json();
-    const updated = await updateCategory(id, data);
+    
+    let updateData: any = { ...data };
+    if (data.subcategories) {
+      updateData.subcategories = {
+        deleteMany: {},
+        create: data.subcategories.map((s: string) => ({
+          name: s.trim(),
+          slug: s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+        }))
+      };
+    }
+    
+    const updated = await updateCategory(id, updateData);
     if (!updated) {
       return NextResponse.json({ error: 'Category not found' }, { status: 404 });
     }

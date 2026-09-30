@@ -40,6 +40,12 @@ export async function POST(request: Request) {
       isActive: data.isActive ?? true,
       isFeatured: data.isFeatured ?? false,
       order: data.order ?? 99,
+      subcategories: data.subcategories && data.subcategories.length > 0 ? {
+        create: data.subcategories.map((s: string) => ({
+          name: s.trim(),
+          slug: s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+        }))
+      } : undefined,
     });
 
     return NextResponse.json(newCategory, { status: 201 });

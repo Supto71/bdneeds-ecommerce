@@ -19,6 +19,7 @@ export default function AdminCategoriesPage() {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState('');
   const [isActive, setIsActive] = useState(true);
+  const [subcategoriesText, setSubcategoriesText] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,6 +72,7 @@ export default function AdminCategoriesPage() {
     setDescription('');
     setImage('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80');
     setIsActive(true);
+    setSubcategoriesText('');
     setModalOpen(true);
   };
 
@@ -81,6 +83,7 @@ export default function AdminCategoriesPage() {
     setDescription(cat.description);
     setImage(cat.image);
     setIsActive(cat.isActive);
+    setSubcategoriesText((cat as any).subcategories?.map((s: any) => s.name).join(', ') || '');
     setModalOpen(true);
   };
 
@@ -94,6 +97,7 @@ export default function AdminCategoriesPage() {
       description,
       image,
       isActive,
+      subcategories: subcategoriesText.split(',').map(s => s.trim()).filter(s => s),
     };
 
     try {
@@ -271,6 +275,19 @@ export default function AdminCategoriesPage() {
                     />
                   </label>
                 </div>
+              </div>
+              
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Subcategories (Comma Separated)
+                </label>
+                <input
+                  type="text"
+                  value={subcategoriesText}
+                  onChange={(e) => setSubcategoriesText(e.target.value)}
+                  placeholder="e.g. Men, Women, Kids"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-semibold"
+                />
               </div>
 
               <div>

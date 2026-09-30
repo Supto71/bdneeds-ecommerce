@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import {
@@ -39,16 +39,7 @@ const INPUT_CLS =
 
 const LABEL_CLS = 'block text-xs font-bold text-slate-700 mb-1';
 
-const CATEGORIES = [
-  { id: 'cat-electronics', name: 'Electronics & Audio' },
-  { id: 'cat-fashion', name: 'Luxury & Apparel' },
-  { id: 'cat-footwear', name: 'Footwear & Sneakers' },
-  { id: 'cat-accessories', name: 'Watches & Accessories' },
-  { id: 'cat-gaming', name: 'Gaming & Workstation' },
-  { id: 'cat-home', name: 'Smart Living & Climate' },
-  { id: 'cat-beauty', name: 'Grooming & Skincare' },
-  { id: 'cat-smart-devices', name: 'Smart Devices & IoT' },
-];
+// Dynamic categories will be fetched from the API
 
 export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
   const router = useRouter();
@@ -56,8 +47,26 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
 
   const [name, setName] = useState(initialData?.name || '');
   const [brand, setBrand] = useState(initialData?.brand || '');
-  const [categoryId, setCategoryId] = useState(initialData?.categoryId || 'cat-electronics');
-  const [categoryName, setCategoryName] = useState(initialData?.categoryName || 'Electronics & Audio');
+  const [categoryId, setCategoryId] = useState(initialData?.categoryId || '');
+  const [categoryName, setCategoryName] = useState(initialData?.categoryName || '');
+  const [subcategoryId, setSubcategoryId] = useState(initialData?.subcategoryId || '');
+  const [subcategoryName, setSubcategoryName] = useState(initialData?.subcategoryName || '');
+  const [categories, setCategories] = useState<{id: string, name: string, subcategories?: {id: string, name: string}[]}[]>([]);
+
+  useEffect(() => {
+    fetch('/api/categories')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setCategories(data);
+          if (!initialData?.categoryId && data.length > 0) {
+            setCategoryId(data[0].id);
+            setCategoryName(data[0].name);
+          }
+        }
+      })
+      .catch((err) => console.error('Failed to fetch categories:', err));
+  }, [initialData]);
   const [shortDescription, setShortDescription] = useState(initialData?.shortDescription || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [originalPrice, setOriginalPrice] = useState(initialData?.originalPrice?.toString() || '');
@@ -198,7 +207,10 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
       };
     });
     const payload = {
-      name, brand, categoryId, categoryName, shortDescription, description,
+      name, brand, categoryId, categoryName, 
+      subcategoryId: subcategoryId || undefined,
+      subcategoryName: subcategoryName || undefined,
+      shortDescription, description,
       basePrice: Number(originalPrice),
       originalPrice: Number(originalPrice),
       stock: Number(stock), sku, isPublished, isFeatured,
@@ -264,10 +276,47 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
               </div>
               <div>
                 <label className={LABEL_CLS}>Category / Department *</label>
-                <select required value={categoryId} onChange={(e) => { setCategoryId(e.target.value); setCategoryName(e.target.options[e.target.selectedIndex].text); }} className={INPUT_CLS}>
-                  {CATEGORIES.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                <select required value={categoryId} onChange={(e) => { 
+                  const sel = categories.find((c) => c.id === e.target.value);
+                  setCategoryId(e.target.value); 
+                  setCategoryName(sel?.name || ''); 
+                  setSubcategoryId('');
+                  setSubcategoryName('');
+                }} className={INPUT_CLS}>
+                  {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
+              
+              {/* Subcategory Select - Always shown so user knows it exists */}
+              {(() => {
+                const selectedCat = categories.find(c => c.id === categoryId);
+                const hasSubcats = selectedCat && selectedCat.subcategories && selectedCat.subcategories.length > 0;
+                
+                return (
+                  <div>
+                    <label className={LABEL_CLS}>Subcategory</label>
+                    <select 
+                      value={subcategoryId} 
+                      onChange={(e) => {
+                        const selSub = selectedCat?.subcategories?.find(s => s.id === e.target.value);
+                        setSubcategoryId(e.target.value);
+                        setSubcategoryName(selSub?.name || '');
+                      }} 
+                      className={INPUT_CLS}
+                      disabled={!hasSubcats}
+                    >
+                      {!hasSubcats ? (
+                        <option value="">No subcategories available</option>
+                      ) : (
+                        <>
+                          <option value="">-- Select Subcategory --</option>
+                          {selectedCat.subcategories!.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                        </>
+                      )}
+                    </select>
+                  </div>
+                );
+              })()}
             </div>
             <div>
               <label className={LABEL_CLS}>Short Description *</label>

@@ -242,6 +242,7 @@ export async function getCategories() {
     where: { isActive: true },
     orderBy: { order: 'asc' },
     include: {
+      subcategories: true,
       _count: {
         select: { products: true }
       }
@@ -257,6 +258,7 @@ export async function getAllCategoriesAdmin() {
   const categories = await prisma.category.findMany({
     orderBy: { order: 'asc' },
     include: {
+      subcategories: true,
       _count: {
         select: { products: true }
       }

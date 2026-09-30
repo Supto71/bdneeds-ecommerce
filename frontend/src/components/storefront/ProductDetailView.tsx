@@ -322,52 +322,56 @@ export default function ProductDetailView({
           </div>
 
           {/* Color Selection Cards (Natural Pebble Layout) */}
-          {product.variants && product.variants.length > 0 && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-extrabold text-slate-900">
-                  {t('color')}:{' '}
-                  <span className="text-blue-600 font-bold">{selectedVariant?.colorName}</span>
-                </span>
+          {(() => {
+            const colorVariants = product.variants?.filter((v) => v.colorHex && v.colorHex.trim() !== '') || [];
+            if (colorVariants.length === 0) return null;
+            return (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-extrabold text-slate-900">
+                    {t('color')}:{' '}
+                    <span className="text-blue-600 font-bold">{selectedVariant?.colorName}</span>
+                  </span>
+                </div>
+                <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
+                  {colorVariants.map((v) => {
+                    const isSelected = selectedVariant?.id === v.id;
+                    const thumb = v.images?.[0] || product.images[0];
+                    return (
+                      <button
+                        key={v.id}
+                        onClick={() => setSelectedVariant(v)}
+                        className={`relative w-18 h-18 rounded-2xl border-2 shrink-0 overflow-hidden bg-white transition-all p-1.5 flex flex-col items-center justify-between ${
+                          isSelected
+                            ? 'border-blue-600 ring-4 ring-blue-500/15 shadow-md scale-102'
+                            : 'border-slate-200/80 hover:border-slate-300 opacity-85 hover:opacity-100'
+                        }`}
+                      >
+                        <div className="relative w-full h-9 rounded-xl overflow-hidden bg-slate-50">
+                          <Image
+                            src={thumb}
+                            alt={v.colorName}
+                            fill
+                            className="object-contain"
+                            sizes="72px"
+                          />
+                        </div>
+                        <div className="flex items-center gap-1 w-full justify-center">
+                          <span
+                            className="w-2 h-2 rounded-full border border-black/10 shrink-0"
+                            style={{ backgroundColor: v.colorHex }}
+                          />
+                          <span className="text-[9px] font-extrabold text-slate-700 truncate">
+                            {v.colorName}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
-                {product.variants.map((v) => {
-                  const isSelected = selectedVariant?.id === v.id;
-                  const thumb = v.images?.[0] || product.images[0];
-                  return (
-                    <button
-                      key={v.id}
-                      onClick={() => setSelectedVariant(v)}
-                      className={`relative w-18 h-18 rounded-2xl border-2 shrink-0 overflow-hidden bg-white transition-all p-1.5 flex flex-col items-center justify-between ${
-                        isSelected
-                          ? 'border-blue-600 ring-4 ring-blue-500/15 shadow-md scale-102'
-                          : 'border-slate-200/80 hover:border-slate-300 opacity-85 hover:opacity-100'
-                      }`}
-                    >
-                      <div className="relative w-full h-9 rounded-xl overflow-hidden bg-slate-50">
-                        <Image
-                          src={thumb}
-                          alt={v.colorName}
-                          fill
-                          className="object-contain"
-                          sizes="72px"
-                        />
-                      </div>
-                      <div className="flex items-center gap-1 w-full justify-center">
-                        <span
-                          className="w-2 h-2 rounded-full border border-black/10 shrink-0"
-                          style={{ backgroundColor: v.colorHex }}
-                        />
-                        <span className="text-[9px] font-extrabold text-slate-700 truncate">
-                          {v.colorName}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Size Pills (Natural Rounded) */}
           {availableSizes.length > 0 && (
@@ -821,7 +825,11 @@ export default function ProductDetailView({
                 </p>
 
                 {/* Color Variants Switcher */}
-                {product.variants && product.variants.length > 0 && (
+                {(() => {
+                const colorVariants = product.variants?.filter((v) => v.colorHex && v.colorHex.trim() !== '') || [];
+                if (colorVariants.length === 0) return null;
+                return (
+                  <div>
                   <div className="mt-6">
                     <div className="flex items-center justify-between text-xs mb-2.5">
                       <span className="font-extrabold text-slate-800">
@@ -832,7 +840,7 @@ export default function ProductDetailView({
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-3">
-                      {product.variants.map((v) => (
+                      {colorVariants.map((v) => (
                         <button
                           key={v.id}
                           onClick={() => setSelectedVariant(v)}
@@ -851,7 +859,9 @@ export default function ProductDetailView({
                       ))}
                     </div>
                   </div>
-                )}
+                    </div>
+                  );
+                })()}
 
                 {/* Size Selector if available */}
                 {availableSizes.length > 0 && (

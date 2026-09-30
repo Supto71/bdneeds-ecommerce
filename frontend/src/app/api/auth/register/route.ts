@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createUser, getUserByEmail } from '@/lib/db';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
   try {
@@ -20,10 +21,12 @@ export async function POST(request: Request) {
       );
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await createUser({
       name,
       email,
-      password,
+      password: hashedPassword,
       role: 'CUSTOMER',
       phone: phone || '',
     });

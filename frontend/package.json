@@ -10,6 +10,7 @@
     "postinstall": "prisma generate || exit 0"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "canvas-confetti": "^1.9.4",
     "clsx": "^2.1.1",
     "lucide-react": "^1.45.0",
@@ -23,6 +24,7 @@
     "@netlify/plugin-nextjs": "^5.16.0",
     "@prisma/client": "^5.22.0",
     "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
