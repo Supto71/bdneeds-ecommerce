@@ -447,9 +447,13 @@ export async function createOrder(input: any) {
   const total = Number((taxableAmount + shippingFee + tax).toFixed(2));
 
   // Step 3: Build userId relation safely
-  const userConnect = input.userId
-    ? { user: { connect: { id: input.userId } } }
-    : {};
+  let userConnect = {};
+  if (input.userId) {
+    const userExists = await prisma.user.findUnique({ where: { id: input.userId } });
+    if (userExists) {
+      userConnect = { user: { connect: { id: input.userId } } };
+    }
+  }
 
   const order = await prisma.order.create({
     data: {

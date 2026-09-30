@@ -35,6 +35,12 @@ export async function POST(
     
     if (item.entityType === 'Order') {
       const { items, user, ...orderData } = cleanData;
+      if (orderData.userId) {
+        const userExists = await prisma.user.findUnique({ where: { id: orderData.userId } });
+        if (!userExists) {
+          orderData.userId = null;
+        }
+      }
       await prisma.order.create({
         data: {
           ...orderData,
