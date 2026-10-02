@@ -74,7 +74,7 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
       <span
         className={`px-2 py-0.5 rounded-md transition-all ${
           language === 'en'
-            ? 'bg-[#0B132B] text-white shadow-xs'
+            ? 'bg-[#0B132B] text-[#ffffff] shadow-xs'
             : 'text-slate-600 hover:text-slate-900'
         }`}
         title="English"
@@ -84,7 +84,7 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
       <span
         className={`px-2 py-0.5 rounded-md transition-all ${
           language === 'bn'
-            ? 'bg-blue-600 text-white shadow-xs'
+            ? 'bg-blue-600 text-[#ffffff] shadow-xs'
             : 'text-slate-600 hover:text-slate-900'
         }`}
         title="বাংলা (Bengali)"

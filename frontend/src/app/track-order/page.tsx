@@ -85,7 +85,7 @@ function TrackOrderContent() {
         </div>
 
         {/* Search Bar */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs max-w-2xl mx-auto mb-10">
+        <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs max-w-2xl mx-auto mb-10">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -107,7 +107,7 @@ function TrackOrderContent() {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-[#0B132B] hover:bg-blue-600 disabled:opacity-50 text-white rounded-xl text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2"
+              className="px-6 py-3 bg-[#0B132B] hover:bg-blue-600 disabled:opacity-50 text-[#ffffff] rounded-xl text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2"
             >
               {loading ? (
                 '...'
@@ -132,7 +132,7 @@ function TrackOrderContent() {
         {order && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
             {/* Status Header Banner */}
-            <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+            <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
                 <div>
                   <span className="text-xs text-slate-400 font-semibold">
@@ -182,8 +182,8 @@ function TrackOrderContent() {
                         <div
                           className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm transition-all ${
                             isPassed
-                              ? 'bg-blue-600 text-white shadow-md'
-                              : 'bg-white border-2 border-slate-200 text-slate-400'
+                              ? 'bg-blue-600 text-[#ffffff] shadow-md'
+                              : 'bg-[#ffffff] border-2 border-slate-200 text-slate-400'
                           } ${isCurrent ? 'ring-4 ring-blue-100 scale-110' : ''}`}
                         >
                           {isPassed ? <CheckCircle2 className="w-5 h-5" /> : idx + 1}
@@ -205,7 +205,7 @@ function TrackOrderContent() {
             {/* Granular Timeline & Courier Notes */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Left Timeline Log */}
-              <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="lg:col-span-7 bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
                 <h4 className="text-sm font-bold text-[#0B132B]">
                   Activity History & Checkpoints
                 </h4>
@@ -213,7 +213,7 @@ function TrackOrderContent() {
                 <div className="relative pl-6 border-l-2 border-slate-200 space-y-6">
                   {order.timeline?.map((event, idx) => (
                     <div key={idx} className="relative group">
-                      <div className="absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-white shadow-xs" />
+                      <div className="absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-[#ffffff] shadow-xs" />
                       <div>
                         <span className="text-[11px] text-slate-400">
                           {formatDate(event.timestamp)}
@@ -232,7 +232,7 @@ function TrackOrderContent() {
 
               {/* Right Order Items & Recipient info */}
               <div className="lg:col-span-5 space-y-6">
-                <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+                <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
                     {t('shippingAddress')}
                   </h4>
@@ -248,7 +248,7 @@ function TrackOrderContent() {
                   </div>
                 </div>
 
-                <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+                <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
                     {t('orderSummary')} ({order.items.length})
                   </h4>

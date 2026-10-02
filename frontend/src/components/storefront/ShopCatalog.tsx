@@ -64,10 +64,20 @@ export default function ShopCatalog({
   }, [initialProducts]);
 
   const subcategories = useMemo(() => {
+    if (selectedCategory) {
+      const cat = categories.find((c) => c.slug === selectedCategory || c.id === selectedCategory);
+      if (cat?.subcategories && cat.subcategories.length > 0) {
+        return cat.subcategories.map((s) => s.name);
+      }
+    }
     const set = new Set<string>();
-    initialProducts.forEach((p) => p.subcategoryName && set.add(p.subcategoryName));
+    categories.forEach((c) => {
+      c.subcategories?.forEach((s) => {
+        if (s.isFeatured) set.add(s.name);
+      });
+    });
     return Array.from(set);
-  }, [initialProducts]);
+  }, [categories, selectedCategory]);
 
   const colors = useMemo(() => {
     const map = new Map<string, string>();
@@ -239,7 +249,7 @@ export default function ShopCatalog({
     (searchQuery ? 1 : 0);
 
   return (
-    <div className="bg-white min-h-screen py-8 sm:py-12">
+    <div className="bg-[#ffffff] min-h-screen py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Header & Context Title */}
         <div className="pb-8 border-b border-slate-100">
@@ -252,13 +262,13 @@ export default function ShopCatalog({
 
           {/* Subcategory Cards */}
           {subcategories.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-1.5 sm:gap-3">
               <button
                 onClick={() => setSelectedSubcategory('')}
-                className={`px-5 py-2.5 rounded-xl text-sm font-bold border transition-all ${
+                className={`px-2.5 py-1 sm:px-5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold border transition-all ${
                   !selectedSubcategory
-                    ? 'bg-[#0B132B] text-white border-[#0B132B] shadow-md'
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                    ? 'bg-[#0B132B] text-[#ffffff] border-[#0B132B] shadow-sm sm:shadow-md'
+                    : 'bg-[#ffffff] text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                 }`}
               >
                 All Products
@@ -267,10 +277,10 @@ export default function ShopCatalog({
                 <button
                   key={sub}
                   onClick={() => setSelectedSubcategory(sub)}
-                  className={`px-5 py-2.5 rounded-xl text-sm font-bold border transition-all ${
+                  className={`px-2.5 py-1 sm:px-5 sm:py-2.5 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold border transition-all ${
                     selectedSubcategory === sub
-                      ? 'bg-[#0B132B] text-white border-[#0B132B] shadow-md'
-                      : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                      ? 'bg-[#0B132B] text-[#ffffff] border-[#0B132B] shadow-sm sm:shadow-md'
+                      : 'bg-[#ffffff] text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   }`}
                 >
                   {sub}
@@ -291,7 +301,7 @@ export default function ShopCatalog({
               <SlidersHorizontal className="w-4 h-4 text-blue-600" />
               {t('filterBy')}
               {activeFilterCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-blue-600 text-white text-[10px] flex items-center justify-center font-bold">
+                <span className="w-4 h-4 rounded-full bg-blue-600 text-[#ffffff] text-[10px] flex items-center justify-center font-bold">
                   {activeFilterCount}
                 </span>
               )}
@@ -533,7 +543,7 @@ export default function ShopCatalog({
           <div className="lg:col-span-3">
             {filteredProducts.length === 0 ? (
               <div className="text-center py-20 bg-slate-50/50 rounded-3xl border border-slate-100 p-8">
-                <div className="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center text-slate-400 mx-auto mb-4">
+                <div className="w-16 h-16 rounded-full bg-[#ffffff] shadow-sm flex items-center justify-center text-slate-400 mx-auto mb-4">
                   <Search className="w-8 h-8" />
                 </div>
                 <h3 className="text-lg font-bold text-[#0B132B] mb-1">
@@ -544,13 +554,13 @@ export default function ShopCatalog({
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="px-6 py-2.5 bg-[#0B132B] text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors"
+                  className="px-6 py-2.5 bg-[#0B132B] text-[#ffffff] text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors"
                 >
                   {t('resetFilters')}
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+              <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-6">
                 {filteredProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -563,7 +573,7 @@ export default function ShopCatalog({
       {/* Mobile Filter Drawer */}
       {mobileFilterOpen && (
         <div className="fixed inset-0 z-50 flex bg-slate-900/50 backdrop-blur-sm transition-opacity lg:hidden">
-          <div className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl animate-in slide-in-from-right-full duration-300">
+          <div className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-[#ffffff] py-4 pb-12 shadow-xl animate-in slide-in-from-right-full duration-300">
             <div className="flex items-center justify-between px-4 pb-4 border-b border-slate-100">
               <h2 className="text-lg font-bold text-[#0B132B]">{t('filterBy')}</h2>
               <button
@@ -724,7 +734,7 @@ export default function ShopCatalog({
             <div className="mt-8 px-4">
                <button
                   onClick={() => setMobileFilterOpen(false)}
-                  className="w-full py-3 bg-[#0B132B] hover:bg-blue-600 text-white font-bold rounded-xl transition-colors shadow-md text-sm"
+                  className="w-full py-3 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] font-bold rounded-xl transition-colors shadow-md text-sm"
                 >
                   View Results ({filteredProducts.length})
                </button>

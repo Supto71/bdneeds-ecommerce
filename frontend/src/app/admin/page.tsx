@@ -71,10 +71,10 @@ export default function AdminDashboardPage() {
         </div>
         {isAdmin && (
           <div className="flex items-center gap-3">
-            <Link href="/admin/products/new" className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow-xs">
+            <Link href="/admin/products/new" className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors shadow-xs">
               {t('adminCreateProduct')}
             </Link>
-            <Link href="/admin/banners" className="px-4 py-2.5 bg-[#0B132B] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors shadow-xs">
+            <Link href="/admin/banners" className="px-4 py-2.5 bg-[#0B132B] hover:bg-slate-800 text-[#ffffff] rounded-xl text-xs font-bold transition-colors shadow-xs">
               {t('adminManageBanners')}
             </Link>
           </div>
@@ -93,8 +93,8 @@ export default function AdminDashboardPage() {
             onClick={() => setPeriod(p)}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
               period === p
-                ? 'bg-[#0B132B] text-white shadow-xs'
-                : 'bg-white border border-slate-200 text-slate-600 hover:border-slate-400'
+                ? 'bg-[#0B132B] text-[#ffffff] shadow-xs'
+                : 'bg-[#ffffff] border border-slate-200 text-slate-600 hover:border-slate-400'
             }`}
           >
             {PERIOD_LABELS[p]}
@@ -105,7 +105,7 @@ export default function AdminDashboardPage() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Period Revenue */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
+        <div className="bg-[#ffffff] rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Revenue ({PERIOD_LABELS[period]})</span>
             <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
@@ -122,7 +122,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Period Orders */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
+        <div className="bg-[#ffffff] rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Orders ({PERIOD_LABELS[period]})</span>
             <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
@@ -138,7 +138,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Active Products */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
+        <div className="bg-[#ffffff] rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Active Products</span>
             <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
@@ -154,7 +154,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Regular Customers */}
-        <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
+        <div className="bg-[#ffffff] rounded-3xl p-6 border border-slate-200 shadow-xs space-y-3">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Regular Customers</span>
             <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
@@ -173,7 +173,7 @@ export default function AdminDashboardPage() {
       {/* Analytics Visuals: Revenue Graph & Category Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Revenue Trends */}
-        <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="lg:col-span-8 bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-base font-bold text-[#0B132B]">{t('adminRevenueTrajectory')}</h3>
@@ -206,14 +206,17 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Category Breakdown */}
-        <div className="lg:col-span-4 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6 flex flex-col justify-between">
+        <div className="lg:col-span-4 bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-6 flex flex-col justify-between">
           <div>
             <h3 className="text-base font-bold text-[#0B132B]">{t('adminCategoryShare')}</h3>
             <p className="text-xs text-slate-500">{t('adminCategoryShareSub')}</p>
           </div>
 
           <div className="space-y-3">
-            {Object.entries(analytics.categorySales || {}).map(([cat, amount]: any) => {
+            {Object.entries(analytics.categorySales || {})
+              .sort(([, amountA]: any, [, amountB]: any) => amountB - amountA)
+              .slice(0, 5)
+              .map(([cat, amount]: any) => {
               const total = analytics.totalRevenue || 1;
               const pct = Math.min(100, Math.round((amount / total) * 100));
               return (
@@ -243,7 +246,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Recent Orders Table */}
-      <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
           <div>
             <h3 className="text-base font-bold text-[#0B132B]">{t('adminRecentOrders')}</h3>
@@ -308,7 +311,7 @@ export default function AdminDashboardPage() {
                   <td className="p-4 pr-6 text-right">
                     <Link
                       href={`/admin/orders/${ord.id}`}
-                      className="px-3 py-1.5 bg-slate-100 hover:bg-blue-600 hover:text-white rounded-lg text-slate-700 font-bold text-xs transition-colors inline-block"
+                      className="px-3 py-1.5 bg-slate-100 hover:bg-blue-600 hover:text-[#ffffff] rounded-lg text-slate-700 font-bold text-xs transition-colors inline-block"
                     >
                       {t('adminInspect')}
                     </Link>

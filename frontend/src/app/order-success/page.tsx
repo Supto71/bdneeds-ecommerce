@@ -57,7 +57,7 @@ function OrderSuccessContent() {
     <main className="flex-1 bg-slate-50/60 py-12 sm:py-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         {/* Celebration Header */}
-        <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-xs text-center space-y-4">
+        <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-xs text-center space-y-4">
           <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto shadow-xs">
             <CheckCircle2 className="w-9 h-9" />
           </div>
@@ -90,7 +90,7 @@ function OrderSuccessContent() {
             {order && (
               <Link
                 href={`/track-order?orderId=${order.orderNumber}`}
-                className="px-6 py-3 bg-[#0B132B] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-[#0B132B] hover:bg-slate-800 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2"
               >
                 <Truck className="w-4 h-4" />
                 {t('trackMyParcel')}
@@ -98,7 +98,7 @@ function OrderSuccessContent() {
             )}
             <Link
               href="/shop"
-              className="px-6 py-3 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold transition-colors"
+              className="px-6 py-3 border border-slate-200 bg-[#ffffff] hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold transition-colors"
             >
               {t('continueShopping')}
             </Link>
@@ -107,7 +107,7 @@ function OrderSuccessContent() {
 
         {/* Detailed Receipt */}
         {order && (
-          <div className="mt-8 bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="mt-8 bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-xs">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <h3 className="text-sm font-bold text-[#0B132B] flex items-center gap-2">
                 <PackageCheck className="w-4 h-4 text-blue-600" />

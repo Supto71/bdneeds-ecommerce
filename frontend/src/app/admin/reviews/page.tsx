@@ -68,7 +68,7 @@ export default function AdminReviewsPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
@@ -152,7 +152,7 @@ export default function AdminReviewsPage() {
                             ) : (
                               <button
                                 onClick={() => handleModerate(rev.id, true)}
-                                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-2xs"
+                                className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-[#ffffff] rounded-lg text-xs font-bold shadow-2xs"
                               >
                                 Approve
                               </button>

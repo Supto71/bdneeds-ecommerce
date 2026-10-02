@@ -31,7 +31,7 @@ export default function CartDrawer() {
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+        <div className="w-screen max-w-md bg-[#ffffff] shadow-2xl flex flex-col">
           {/* Header */}
           <div className="p-5 border-b border-slate-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ export default function CartDrawer() {
                 </p>
                 <button
                   onClick={closeCart}
-                  className="px-6 py-2.5 bg-[#0B132B] text-white text-sm font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+                  className="px-6 py-2.5 bg-[#0B132B] text-[#ffffff] text-sm font-semibold rounded-lg hover:bg-blue-600 transition-colors"
                 >
                   {t('continueShopping')}
                 </button>
@@ -183,14 +183,14 @@ export default function CartDrawer() {
                 <Link
                   href="/cart"
                   onClick={closeCart}
-                  className="w-full py-3 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-800 bg-white hover:bg-slate-50 text-center transition-colors"
+                  className="w-full py-3 px-4 border border-slate-200 rounded-lg text-sm font-semibold text-slate-800 bg-[#ffffff] hover:bg-slate-50 text-center transition-colors"
                 >
                   {t('shoppingBag')}
                 </Link>
                 <Link
                   href="/checkout"
                   onClick={closeCart}
-                  className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold text-center transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+                  className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-lg text-sm font-semibold text-center transition-colors flex items-center justify-center gap-1.5 shadow-sm"
                 >
                   {t('proceedToCheckout')}
                   <ArrowRight className="w-4 h-4" />

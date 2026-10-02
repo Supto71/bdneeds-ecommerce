@@ -117,7 +117,7 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
     >
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-4 md:py-16">
         <div
-          className="relative rounded-2xl md:rounded-3xl bg-[#0B132B] text-white overflow-hidden shadow-xl md:shadow-2xl min-h-[175px] sm:min-h-[200px] md:min-h-[520px] flex items-center select-none"
+          className="relative rounded-2xl md:rounded-3xl bg-[#0B132B] text-[#ffffff] overflow-hidden shadow-xl md:shadow-2xl min-h-[175px] sm:min-h-[200px] md:min-h-[520px] flex items-center select-none"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -146,8 +146,8 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
                 {/* Left Copy Info */}
                 <div className="w-[52%] sm:w-[55%] md:w-auto md:col-span-7 flex flex-col justify-center space-y-1 sm:space-y-1.5 md:space-y-5 pr-1.5 sm:pr-2 md:pr-0">
                   {/* Premium Luxury Eyebrow Tag without icons */}
-                  <div className="inline-flex items-center px-2 sm:px-2.5 md:px-4 py-0.5 sm:py-1 md:py-1.5 rounded-full bg-white/[0.07] backdrop-blur-md border border-white/20 shadow-xs md:shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:border-white/30 self-start">
-                    <span className="text-[8px] sm:text-[10px] md:text-xs font-bold tracking-[0.16em] sm:tracking-[0.22em] uppercase bg-gradient-to-r from-white via-sky-100 to-blue-200 bg-clip-text text-transparent">
+                  <div className="inline-flex items-center px-2 sm:px-2.5 md:px-4 py-0.5 sm:py-1 md:py-1.5 rounded-full bg-[#ffffff]/[0.07] backdrop-blur-md border border-[#ffffff]/20 shadow-xs md:shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:border-[#ffffff]/30 self-start">
+                    <span className="text-[9px] sm:text-[11px] md:text-xs font-bold tracking-[0.16em] sm:tracking-[0.22em] uppercase bg-gradient-to-r from-white via-sky-100 to-blue-200 bg-clip-text text-transparent">
                       {language === 'bn' && banner.badge === 'NEW FLAGSHIP RELEASE'
                         ? 'নতুন ফ্ল্যাগশিপ রিলিজ ২০২৬'
                         : language === 'bn' && banner.badge?.includes('FLASH SALE')
@@ -160,10 +160,10 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
 
                   {/* Title & Subtitle */}
                   <div className="space-y-0.5 sm:space-y-1 md:space-y-2">
-                    <p className="text-slate-400 font-semibold text-[9px] sm:text-xs md:text-base tracking-wide uppercase truncate">
+                    <p className="text-slate-400 font-semibold text-[10px] sm:text-sm md:text-base tracking-wide uppercase truncate">
                       {banner.subtitle}
                     </p>
-                    <h1 className="text-xs sm:text-base md:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight line-clamp-2 md:line-clamp-none">
+                    <h1 className="text-lg sm:text-2xl md:text-5xl lg:text-6xl font-black tracking-tight text-[#ffffff] leading-tight line-clamp-2 md:line-clamp-none">
                       {banner.title}
                     </h1>
                   </div>
@@ -177,11 +177,11 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
                   <div className="pt-0.5 sm:pt-1 md:pt-2 flex flex-wrap items-center gap-1.5 sm:gap-2.5 md:gap-5">
                     {banner.price > 0 && (
                       <div className="flex items-baseline gap-1 sm:gap-1.5 md:gap-2">
-                        <span className="text-xs sm:text-base md:text-3xl font-black text-white">
+                        <span className="text-base sm:text-xl md:text-3xl font-black text-[#ffffff]">
                           {formatPrice(banner.price)}
                         </span>
                         {banner.discount > 0 && (
-                          <span className="text-[8px] sm:text-[10px] md:text-sm font-semibold text-emerald-400 bg-emerald-950/60 px-1 sm:px-1.5 md:px-2 py-0.5 rounded border border-emerald-500/30">
+                          <span className="text-[9px] sm:text-[11px] md:text-sm font-semibold text-emerald-400 bg-emerald-950/60 px-1 sm:px-1.5 md:px-2 py-0.5 rounded border border-emerald-500/30">
                             Save {banner.discount}%
                           </span>
                         )}
@@ -190,7 +190,7 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
 
                     <Link
                       href={banner.ctaLink || '/shop'}
-                      className="px-2.5 sm:px-3.5 md:px-7 py-1 sm:py-1.5 md:py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] sm:text-xs md:text-sm rounded-lg md:rounded-xl transition-all shadow-md md:shadow-lg hover:shadow-blue-500/30 flex items-center gap-1 sm:gap-1.5 md:gap-2 group/cta"
+                      className="px-2.5 sm:px-3.5 md:px-7 py-1.5 sm:py-2 md:py-3.5 bg-blue-600 hover:bg-blue-500 text-[#ffffff] font-bold text-xs sm:text-sm rounded-lg md:rounded-xl transition-all shadow-md md:shadow-lg hover:shadow-blue-500/30 flex items-center gap-1 sm:gap-1.5 md:gap-2 group/cta"
                     >
                       {banner.ctaText || 'Shop Collection'}
                       <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover/cta:translate-x-1 transition-transform" />
@@ -199,8 +199,8 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
                 </div>
 
                 {/* Right Product 3D Hero Render Presentation */}
-                <div className="w-[48%] sm:w-[45%] md:w-auto md:col-span-5 flex items-center justify-center relative shrink-0 pl-1 sm:pl-2 md:pl-0">
-                  <div className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-xl md:rounded-2xl overflow-hidden shadow-md md:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 group-hover:scale-102 transition-transform duration-500">
+                <div className="w-[45%] sm:w-[45%] md:w-auto md:col-span-5 flex items-center justify-center relative shrink-0 pl-1">
+                  <div className="relative w-44 h-44 sm:w-52 sm:h-52 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-xl md:rounded-2xl overflow-hidden shadow-md md:shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[#ffffff]/10 group-hover:scale-102 transition-transform duration-500">
                     <Image
                       src={banner.image}
                       alt={banner.title}
@@ -220,14 +220,14 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
             <>
               <button
                 onClick={handlePrev}
-                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md items-center justify-center transition-colors focus:outline-none"
+                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#ffffff]/10 hover:bg-[#ffffff]/20 text-[#ffffff] backdrop-blur-md items-center justify-center transition-colors focus:outline-none"
                 aria-label="Previous slide"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={handleNext}
-                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md items-center justify-center transition-colors focus:outline-none"
+                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#ffffff]/10 hover:bg-[#ffffff]/20 text-[#ffffff] backdrop-blur-md items-center justify-center transition-colors focus:outline-none"
                 aria-label="Next slide"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -245,7 +245,7 @@ export default function HeroCarousel({ banners }: HeroCarouselProps) {
                   className={`h-1.5 md:h-2 rounded-full transition-all duration-300 focus:outline-none ${
                     currentIndex === idx
                       ? 'w-5 md:w-8 bg-blue-500'
-                      : 'w-1.5 md:w-2 bg-white/30 hover:bg-white/50'
+                      : 'w-1.5 md:w-2 bg-[#ffffff]/30 hover:bg-[#ffffff]/50'
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />

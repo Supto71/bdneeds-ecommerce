@@ -43,6 +43,7 @@ model Subcategory {
   name         String
   slug         String    @unique
   isActive     Boolean   @default(true)
+  isFeatured   Boolean   @default(false)
 }
 
 model Product {

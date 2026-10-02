@@ -110,7 +110,7 @@ export default function AdminInventoryPage() {
               {!isEditing ? (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
                 >
                   Edit Stock
                 </button>
@@ -130,7 +130,7 @@ export default function AdminInventoryPage() {
                   <button
                     onClick={handleSaveAll}
                     disabled={savingAll}
-                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 disabled:opacity-70"
+                    className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 disabled:opacity-70"
                   >
                     <Save className="w-3.5 h-3.5" />
                     {savingAll ? 'Saving...' : 'Save Changes'}
@@ -152,7 +152,7 @@ export default function AdminInventoryPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row gap-4 justify-between items-center">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div className="relative w-full sm:w-96">
           <input
             type="text"
@@ -178,7 +178,7 @@ export default function AdminInventoryPage() {
       </div>
 
       {/* Inventory Table */}
-      <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
@@ -243,7 +243,7 @@ export default function AdminInventoryPage() {
                               handleThresholdChange(key, parseInt(e.target.value) || 0)
                             }
                             disabled={savingAll}
-                            className="w-16 px-2 py-1 bg-white border border-blue-200 text-slate-900 rounded text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600/20"
+                            className="w-16 px-2 py-1 bg-[#ffffff] border border-blue-200 text-slate-900 rounded text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-600/20"
                           />
                         ) : (
                           <>{item.lowStockThreshold} units</>
@@ -276,7 +276,7 @@ export default function AdminInventoryPage() {
                             disabled={!isEditing || savingAll}
                             className={`w-20 px-2.5 py-1 border rounded-lg text-xs font-bold text-center focus:outline-none focus:ring-2 focus:ring-blue-600/20 ${
                               isEditing
-                                ? 'bg-white border-blue-200 text-slate-900'
+                                ? 'bg-[#ffffff] border-blue-200 text-slate-900'
                                 : 'bg-slate-50 border-transparent text-slate-500 cursor-not-allowed'
                             }`}
                           />

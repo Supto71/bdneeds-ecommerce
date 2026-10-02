@@ -49,11 +49,11 @@ export default function AdminLoginPage() {
 
           {/* Header */}
           <div className="text-center space-y-3">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-black text-xl mx-auto shadow-lg shadow-blue-900/50 mb-2 relative group">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 text-[#ffffff] font-black text-xl mx-auto shadow-lg shadow-blue-900/50 mb-2 relative group">
               <Shield className="w-8 h-8 relative z-10" />
               <div className="absolute inset-0 rounded-2xl bg-blue-500 blur-md opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tight">Admin Portal</h1>
+            <h1 className="text-3xl font-black text-[#ffffff] tracking-tight">Admin Portal</h1>
             <p className="text-sm text-slate-400 font-medium">
               Authorized management personnel only.
             </p>
@@ -79,7 +79,7 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your admin email"
-                  className="w-full pl-11 pr-4 py-3.5 text-sm bg-slate-950/50 border border-slate-700/80 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 font-medium transition-all duration-300 shadow-inner"
+                  className="w-full pl-11 pr-4 py-3.5 text-sm bg-slate-950/50 border border-slate-700/80 rounded-2xl text-[#ffffff] placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 font-medium transition-all duration-300 shadow-inner"
                 />
                 <Mail className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-blue-400 transition-colors" />
               </div>
@@ -96,7 +96,7 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-11 pr-11 py-3.5 text-sm bg-slate-950/50 border border-slate-700/80 rounded-2xl text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 font-medium transition-all duration-300 shadow-inner"
+                  className="w-full pl-11 pr-11 py-3.5 text-sm bg-slate-950/50 border border-slate-700/80 rounded-2xl text-[#ffffff] placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 font-medium transition-all duration-300 shadow-inner"
                 />
                 <Lock className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-blue-400 transition-colors" />
                 <button
@@ -116,7 +116,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed text-white rounded-2xl text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-900/50 hover:shadow-blue-500/25 active:scale-[0.98]"
+              className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed text-[#ffffff] rounded-2xl text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-900/50 hover:shadow-blue-500/25 active:scale-[0.98]"
             >
               {loading ? 'Authenticating Admin...' : 'Authenticate & Enter Console'}
               {!loading && <ArrowRight className="w-4 h-4" />}
@@ -126,7 +126,7 @@ export default function AdminLoginPage() {
           <div className="pt-6 text-center">
             <Link
               href="/"
-              className="text-xs font-semibold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-2"
+              className="text-xs font-semibold text-slate-400 hover:text-[#ffffff] transition-colors flex items-center justify-center gap-2"
             >
               <ArrowRight className="w-3 h-3 rotate-180" />
               Return to Customer Storefront

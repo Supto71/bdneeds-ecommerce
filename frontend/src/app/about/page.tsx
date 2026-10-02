@@ -9,13 +9,13 @@ import MobileBottomNav from '@/components/storefront/MobileBottomNav';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#ffffff]">
       <AnnouncementBar />
       <Header />
 
       <main className="flex-1">
         {/* Editorial Hero */}
-        <section className="relative bg-[#0B132B] text-white py-20 lg:py-32 overflow-hidden">
+        <section className="relative bg-[#0B132B] text-[#ffffff] py-20 lg:py-32 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center max-w-3xl">
             <span className="text-xs font-extrabold tracking-widest uppercase text-blue-400 mb-3 block">
               ABOUT BDNEEDS
@@ -43,7 +43,7 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
+              <div className="bg-[#ffffff] rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
@@ -53,7 +53,7 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
+              <div className="bg-[#ffffff] rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                   <Award className="w-6 h-6" />
                 </div>
@@ -63,7 +63,7 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
+              <div className="bg-[#ffffff] rounded-3xl p-8 border border-slate-100 shadow-2xs space-y-4">
                 <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
                   <Sparkles className="w-6 h-6" />
                 </div>
@@ -77,7 +77,7 @@ export default function AboutPage() {
         </section>
 
         {/* Action Banner */}
-        <section className="py-16 bg-white text-center">
+        <section className="py-16 bg-[#ffffff] text-center">
           <div className="max-w-2xl mx-auto px-4 space-y-6">
             <h2 className="text-2xl sm:text-3xl font-black text-[#0B132B]">
               Experience The Collection Firsthand
@@ -87,7 +87,7 @@ export default function AboutPage() {
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-md"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-md"
             >
               Explore Catalog Now
               <ArrowRight className="w-4 h-4" />

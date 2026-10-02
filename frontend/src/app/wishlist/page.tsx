@@ -48,7 +48,7 @@ export default function WishlistPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#ffffff]">
       <AnnouncementBar />
       <Header />
 
@@ -63,7 +63,7 @@ export default function WishlistPage() {
                 Items you have curated for future acquisitions.
               </p>
             </div>
-            <span className="text-xs font-bold text-slate-500 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
+            <span className="text-xs font-bold text-slate-500 bg-[#ffffff] px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
               {wishlistIds.length} {t('productsCount')}
             </span>
           </div>
@@ -73,7 +73,7 @@ export default function WishlistPage() {
               Loading wishlist...
             </div>
           ) : products.length === 0 ? (
-            <div className="py-24 text-center bg-white rounded-3xl border border-slate-100 shadow-xs max-w-lg mx-auto mt-8 p-8">
+            <div className="py-24 text-center bg-[#ffffff] rounded-3xl border border-slate-100 shadow-xs max-w-lg mx-auto mt-8 p-8">
               <div className="w-16 h-16 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-4">
                 <Heart className="w-8 h-8 fill-rose-500" />
               </div>
@@ -83,7 +83,7 @@ export default function WishlistPage() {
               </p>
               <Link
                 href="/shop"
-                className="px-8 py-3.5 bg-[#0B132B] hover:bg-blue-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm inline-flex items-center gap-2"
+                className="px-8 py-3.5 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm inline-flex items-center gap-2"
               >
                 {t('allProducts')}
                 <ArrowRight className="w-4 h-4" />
@@ -94,7 +94,7 @@ export default function WishlistPage() {
               {products.map((product) => (
                 <div
                   key={product.id}
-                  className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between"
+                  className="bg-[#ffffff] rounded-2xl border border-slate-200 overflow-hidden shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between"
                 >
                   <div>
                     <Link
@@ -146,7 +146,7 @@ export default function WishlistPage() {
                     <button
                       onClick={() => handleMoveToCart(product)}
                       disabled={product.stock <= 0}
-                      className="flex-1 py-2.5 px-3 bg-[#0B132B] hover:bg-blue-600 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+                      className="flex-1 py-2.5 px-3 bg-[#0B132B] hover:bg-blue-600 disabled:opacity-50 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                       {t('addToBag')}

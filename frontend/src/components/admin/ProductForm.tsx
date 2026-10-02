@@ -250,20 +250,20 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white rounded-2xl border border-slate-200 p-1.5 flex gap-1 shadow-2xs">
+        <div className="bg-[#ffffff] rounded-2xl border border-slate-200 p-1.5 flex gap-1 shadow-2xs">
           {[
             { id: 'general', label: '1. General Information', Icon: Info },
             { id: 'variants', label: '2. Variant Matrix & Specs', Icon: Layers },
           ].map((tab) => (
             <button key={tab.id} type="button" onClick={() => setActiveSection(tab.id as any)}
-              className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeSection === tab.id ? 'bg-[#0B132B] text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'}`}>
+              className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeSection === tab.id ? 'bg-[#0B132B] text-[#ffffff] shadow-xs' : 'text-slate-600 hover:bg-slate-100'}`}>
               <tab.Icon className="w-3.5 h-3.5" />{tab.label}
             </button>
           ))}
         </div>
 
         {activeSection === 'general' && (
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-xs">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-xs">
             <h3 className="text-base font-bold text-[#0B132B] pb-2 border-b border-slate-100">General Information</h3>
             <div>
               <label className={LABEL_CLS}>Product Title *</label>
@@ -354,13 +354,13 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
         )}
 
         {activeSection === 'variants' && (
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
             <div className="flex items-center justify-between mb-5 pb-2 border-b border-slate-100">
               <div>
                 <h3 className="text-base font-bold text-[#0B132B]">Variant Matrix & Specs</h3>
                 <p className="text-[11px] text-slate-500 mt-0.5">Each variant can have its own colour, size, image, bullets, and specs.</p>
               </div>
-              <button type="button" onClick={handleAddVariant} className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold hover:bg-blue-700 transition-colors flex items-center gap-1.5 shrink-0">
+              <button type="button" onClick={handleAddVariant} className="px-4 py-2 bg-blue-600 text-[#ffffff] rounded-xl text-xs font-bold hover:bg-blue-700 transition-colors flex items-center gap-1.5 shrink-0">
                 <Plus className="w-3.5 h-3.5" /> Add Variant
               </button>
             </div>
@@ -388,7 +388,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                       </div>
 
                       {isOpen && (
-                        <div className="p-5 space-y-5 bg-white">
+                        <div className="p-5 space-y-5 bg-[#ffffff]">
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                               <label className={LABEL_CLS}>Color Name (optional)</label>
@@ -429,7 +429,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                               )}
                               <div className="flex-1 space-y-2">
                                 <input type="text" value={v.images?.[0] || ''} onChange={(e) => updateVariant(idx, { images: [e.target.value] })} placeholder="https://... or upload below" className={INPUT_CLS} />
-                                <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B132B] text-white text-xs font-bold rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
+                                <label className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#0B132B] text-[#ffffff] text-xs font-bold rounded-lg hover:bg-blue-600 transition-colors cursor-pointer">
                                   {uploadingVariantImage === idx ? 'Uploading...' : 'Upload Image'}
                                   <input type="file" accept="image/*" onChange={(e) => handleVariantImageUpload(e, idx)} className="hidden" disabled={uploadingVariantImage !== null} />
                                 </label>
@@ -443,7 +443,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                               <input type="text" value={v.newFeatureInput || ''} onChange={(e) => updateVariant(idx, { newFeatureInput: e.target.value })}
                                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addVariantFeature(idx); } }}
                                 placeholder="e.g. 52-Hour battery life" className={INPUT_CLS} />
-                              <button type="button" onClick={() => addVariantFeature(idx)} className="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold hover:bg-slate-700 shrink-0">Add</button>
+                              <button type="button" onClick={() => addVariantFeature(idx)} className="px-4 py-2 bg-slate-800 text-[#ffffff] rounded-xl text-xs font-bold hover:bg-slate-700 shrink-0">Add</button>
                             </div>
                             {(v.variantFeatures || []).length > 0 && (
                               <ul className="space-y-1.5">
@@ -492,7 +492,7 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
 
         <div className="flex justify-end gap-3 pt-2">
           <button type="button" onClick={() => router.push('/admin/products')} className="px-6 py-3 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100">Cancel</button>
-          <button type="submit" disabled={loading} className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-md">
+          <button type="submit" disabled={loading} className="px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-md">
             <Save className="w-4 h-4" />
             {loading ? 'Saving...' : isEdit ? 'Save Changes' : 'Publish Product'}
           </button>

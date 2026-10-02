@@ -43,7 +43,7 @@ export default function RegisterPage() {
       <Header />
 
       <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6">
-        <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-8 shadow-xs space-y-6">
+        <div className="max-w-md w-full bg-[#ffffff] rounded-3xl border border-slate-200 p-8 shadow-xs space-y-6">
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-black text-[#0B132B]">Create BdNeeds Account</h1>
             <p className="text-xs text-slate-500">
@@ -144,7 +144,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
+              className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
             >
               {loading ? 'Creating Account...' : 'Create BdNeeds Account'}
               <ArrowRight className="w-4 h-4" />
@@ -153,7 +153,7 @@ export default function RegisterPage() {
 
             <div className="relative flex items-center justify-center pt-2">
               <div className="absolute border-t border-slate-200/60 w-full" />
-              <span className="bg-white px-4 text-xs font-semibold text-slate-500 relative">
+              <span className="bg-[#ffffff] px-4 text-xs font-semibold text-slate-500 relative">
                 Or sign up with
               </span>
             </div>
@@ -162,7 +162,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => signIn('google', { callbackUrl: '/account' })}
-                className="flex items-center justify-center gap-2 py-3 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-colors shadow-sm active:scale-[0.98]"
+                className="flex items-center justify-center gap-2 py-3 bg-[#ffffff] border border-slate-200 hover:bg-slate-50 rounded-xl text-xs font-bold text-slate-700 transition-colors shadow-sm active:scale-[0.98]"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -175,7 +175,7 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={() => signIn('facebook', { callbackUrl: '/account' })}
-                className="flex items-center justify-center gap-2 py-3 bg-[#1877F2] hover:bg-[#166FE5] text-white rounded-xl text-xs font-bold transition-colors shadow-sm shadow-blue-500/20 active:scale-[0.98]"
+                className="flex items-center justify-center gap-2 py-3 bg-[#1877F2] hover:bg-[#166FE5] text-[#ffffff] rounded-xl text-xs font-bold transition-colors shadow-sm shadow-blue-500/20 active:scale-[0.98]"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>

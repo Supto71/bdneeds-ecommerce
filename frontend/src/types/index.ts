@@ -43,6 +43,7 @@ export interface Subcategory {
   name: string;
   slug: string;
   isActive: boolean;
+  isFeatured?: boolean;
 }
 
 export interface Brand {

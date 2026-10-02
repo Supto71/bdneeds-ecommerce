@@ -43,7 +43,7 @@ export default function AdminSidebar() {
   ];
 
   return (
-    <aside className="w-64 bg-[#0B132B] text-white flex flex-col justify-between shrink-0 border-r border-slate-800 h-full">
+    <aside className="w-64 bg-[#0B132B] text-[#ffffff] flex flex-col justify-between shrink-0 border-r border-slate-800 h-full">
       <div>
         {/* Brand Header */}
         <div className="p-6 border-b border-slate-800 flex items-center justify-between">
@@ -74,8 +74,8 @@ export default function AdminSidebar() {
                 href={link.href}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
                   isActive
-                    ? 'bg-blue-600 text-white font-bold shadow-xs'
-                    : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+                    ? 'bg-blue-600 text-[#ffffff] font-bold shadow-xs'
+                    : 'text-slate-300 hover:bg-slate-800/60 hover:text-[#ffffff]'
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -90,7 +90,7 @@ export default function AdminSidebar() {
       <div className="p-4 border-t border-slate-800">
         <Link
           href="/"
-          className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors"
+          className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-[#ffffff] hover:bg-slate-800/60 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>{t('adminBackToStore')}</span>

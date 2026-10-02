@@ -45,7 +45,8 @@ export async function POST(request: Request) {
       subcategories: data.subcategories && data.subcategories.length > 0 ? {
         create: data.subcategories.map((s: string) => ({
           name: s.trim(),
-          slug: s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+          slug: s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+          isFeatured: (data.featuredSubcategories || []).includes(s.trim())
         }))
       } : undefined,
     });

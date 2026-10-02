@@ -162,7 +162,7 @@ export default function AdminOrderDetailPage(props: {
         {/* Left Column: Line Items & Customer Specs */}
         <div className="lg:col-span-8 space-y-6">
           {/* Line Items Details Card */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-4">
             <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
               <PackageCheck className="w-5 h-5 text-blue-600" />
               Purchased Line Items ({order.items.length})
@@ -234,7 +234,7 @@ export default function AdminOrderDetailPage(props: {
           </div>
 
           {/* Customer & Address Details */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs text-slate-600">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs text-slate-600">
             <div>
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
                 Customer Information
@@ -273,7 +273,7 @@ export default function AdminOrderDetailPage(props: {
 
         {/* Right Column: Status Transition Engine */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
             <h3 className="text-sm font-bold text-[#0B132B]">
               Update Fulfillment Workflow
             </h3>
@@ -337,7 +337,7 @@ export default function AdminOrderDetailPage(props: {
               <button
                 type="submit"
                 disabled={updating}
-                className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl font-bold transition-colors flex items-center justify-center gap-2 shadow-xs"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-[#ffffff] rounded-xl font-bold transition-colors flex items-center justify-center gap-2 shadow-xs"
               >
                 <Save className="w-4 h-4" />
                 {updating ? 'Updating...' : 'Commit Status Change'}
@@ -360,14 +360,14 @@ export default function AdminOrderDetailPage(props: {
           </div>
 
           {/* Timeline History */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Audit Milestones
             </h4>
             <div className="relative pl-5 border-l-2 border-slate-200 space-y-4 text-xs">
               {order.timeline?.map((ev, idx) => (
                 <div key={idx} className="relative">
-                  <div className="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-blue-600 border-2 border-white shadow-xs" />
+                  <div className="absolute -left-[27px] top-1 w-3 h-3 rounded-full bg-blue-600 border-2 border-[#ffffff] shadow-xs" />
                   <div>
                     <span className="text-[10px] text-slate-400">
                       {formatDate(ev.timestamp)}

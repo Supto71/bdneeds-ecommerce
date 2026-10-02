@@ -38,7 +38,7 @@ export default function AdminHeader({ onMenuClick }: { onMenuClick?: () => void 
   };
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between z-30">
+    <header className="h-16 bg-[#ffffff] border-b border-slate-200 px-6 flex items-center justify-between z-30">
       <div className="flex items-center gap-3">
         {/* Mobile Menu Toggle */}
         <button 
@@ -95,11 +95,11 @@ export default function AdminHeader({ onMenuClick }: { onMenuClick?: () => void 
               )}
               {/* Overlay for hover */}
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera className="w-3.5 h-3.5 text-white" />
+                <Camera className="w-3.5 h-3.5 text-[#ffffff]" />
               </div>
               {isUploading && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-3.5 h-3.5 border-2 border-[#ffffff] border-t-transparent rounded-full animate-spin" />
                 </div>
               )}
             </div>

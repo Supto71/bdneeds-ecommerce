@@ -139,7 +139,7 @@ export default function AdminSettingsPage() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
+        <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
           <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
             <Store className="w-4 h-4 text-blue-600" />
             Brand Identity & Channels
@@ -197,7 +197,7 @@ export default function AdminSettingsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
+        <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
           <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
             <Truck className="w-4 h-4 text-blue-600" />
             Shipping & Tax Rules
@@ -254,7 +254,7 @@ export default function AdminSettingsPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
+        <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-xs">
           <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
             <Globe className="w-4 h-4 text-blue-600" />
             Announcement Bar Settings
@@ -322,7 +322,7 @@ export default function AdminSettingsPage() {
           {isAdmin && (
             <button
               type="submit"
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-md"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-md"
             >
               <Save className="w-4 h-4" />
               Save Store Configuration

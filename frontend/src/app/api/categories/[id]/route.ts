@@ -15,10 +15,14 @@ export async function PUT(
         deleteMany: {},
         create: data.subcategories.map((s: string) => ({
           name: s.trim(),
-          slug: s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+          slug: s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
+          isFeatured: (data.featuredSubcategories || []).includes(s.trim())
         }))
       };
     }
+    
+    // Remove featuredSubcategories from updateData to prevent Prisma errors on Category model
+    delete updateData.featuredSubcategories;
     
     const updated = await updateCategory(id, updateData);
     if (!updated) {

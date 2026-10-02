@@ -126,7 +126,7 @@ export default function AdminCustomersPage() {
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs">
         <div className="relative max-w-md">
           <input
             type="text"
@@ -140,7 +140,7 @@ export default function AdminCustomersPage() {
       </div>
 
       {/* Customers Table */}
-      <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
@@ -270,7 +270,7 @@ export default function AdminCustomersPage() {
       {isAdmin && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Admin List */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
             <h2 className="text-lg font-black text-[#0B132B] mb-2">Administrators & Moderators</h2>
             <p className="text-xs text-slate-500 mb-6">
               Current team members with elevated access to the admin panel.
@@ -307,7 +307,7 @@ export default function AdminCustomersPage() {
           </div>
 
           {/* Add Admin Form */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
             <h2 className="text-lg font-black text-[#0B132B] mb-2">Add Admin / Moderator</h2>
             <p className="text-xs text-slate-500 mb-6">
               Create a new administrative or moderator account. These credentials are used exclusively for accessing the admin panel and are separated from storefront customer accounts.
@@ -366,7 +366,7 @@ export default function AdminCustomersPage() {
               <button
                 type="submit"
                 disabled={isAddingAdmin}
-                className="w-full py-2.5 px-4 bg-[#0B132B] hover:bg-[#1a233a] text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                className="w-full py-2.5 px-4 bg-[#0B132B] hover:bg-[#1a233a] text-[#ffffff] text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
               >
                 {isAddingAdmin ? 'Creating Account...' : 'Create Account'}
               </button>

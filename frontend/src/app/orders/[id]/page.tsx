@@ -37,7 +37,7 @@ export default async function OrderDetailPage(props: {
             Back to Orders
           </Link>
 
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-xs space-y-8">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-xs space-y-8">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
               <div>
@@ -55,7 +55,7 @@ export default async function OrderDetailPage(props: {
               <div className="flex items-center gap-3">
                 <Link
                   href={`/track-order?orderId=${order.orderNumber}`}
-                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-xs"
+                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shadow-xs"
                 >
                   <Truck className="w-4 h-4" />
                   Live GPS Tracking
@@ -71,7 +71,7 @@ export default async function OrderDetailPage(props: {
               <div className="relative pl-6 border-l-2 border-slate-200 space-y-6">
                 {(order.timeline as any[])?.map((ev, i) => (
                   <div key={i} className="relative">
-                    <div className="absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-white shadow-xs" />
+                    <div className="absolute -left-[31px] top-1 w-3.5 h-3.5 rounded-full bg-blue-600 border-2 border-[#ffffff] shadow-xs" />
                     <div>
                       <span className="text-[11px] text-slate-400">
                         {formatDate(ev.timestamp)}

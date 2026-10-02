@@ -20,7 +20,7 @@ export default async function SearchPage(props: {
   ]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#ffffff]">
       <AnnouncementBar />
       <Header />
       <main className="flex-1">

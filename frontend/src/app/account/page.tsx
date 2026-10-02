@@ -210,14 +210,14 @@ export default function AccountPage() {
         <AnnouncementBar />
         <Header />
         <main className="flex-1 flex items-center justify-center py-16 px-4">
-          <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-8 text-center space-y-4 shadow-xs">
+          <div className="max-w-md w-full bg-[#ffffff] rounded-3xl border border-slate-200 p-8 text-center space-y-4 shadow-xs">
             <UserIcon className="w-12 h-12 text-slate-400 mx-auto" />
             <h2 className="text-xl font-bold text-[#0B132B]">Account Access Required</h2>
             <p className="text-xs text-slate-500">
               Please sign in to access your personal profile, addresses, and order history.
             </p>
             <div className="pt-2 flex flex-col gap-2">
-              <Link href="/login" className="w-full py-3 bg-[#0B132B] hover:bg-blue-600 text-white font-bold text-xs rounded-xl transition-colors">
+              <Link href="/login" className="w-full py-3 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] font-bold text-xs rounded-xl transition-colors">
                 Sign In
               </Link>
               <Link href="/register" className="w-full py-3 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs rounded-xl transition-colors">
@@ -240,7 +240,7 @@ export default function AccountPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
           {/* ── Profile Card ── */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               {/* Avatar + name */}
               <div className="flex items-center gap-5">
@@ -257,11 +257,11 @@ export default function AccountPage() {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Camera className="w-5 h-5 text-white" />
+                      <Camera className="w-5 h-5 text-[#ffffff]" />
                     </div>
                     {isUploading && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-[#ffffff] border-t-transparent rounded-full animate-spin" />
                       </div>
                     )}
                   </div>
@@ -346,10 +346,10 @@ export default function AccountPage() {
                   <button
                     onClick={saveProfile}
                     disabled={profileSaving}
-                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 disabled:opacity-70"
+                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2 disabled:opacity-70"
                   >
                     {profileSaving ? (
-                      <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-3.5 h-3.5 border-2 border-[#ffffff] border-t-transparent rounded-full animate-spin" />
                     ) : profileSuccess ? (
                       <Check className="w-3.5 h-3.5" />
                     ) : null}
@@ -368,7 +368,7 @@ export default function AccountPage() {
 
           {/* ── Quick Nav ── */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <Link href="/orders" className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+            <Link href="/orders" className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Package className="w-6 h-6" />
@@ -381,7 +381,7 @@ export default function AccountPage() {
               </div>
             </Link>
 
-            <Link href="/wishlist" className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+            <Link href="/wishlist" className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Heart className="w-6 h-6" />
@@ -396,7 +396,7 @@ export default function AccountPage() {
               </div>
             </Link>
 
-            <Link href="/track-order" className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+            <Link href="/track-order" className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Truck className="w-6 h-6" />
@@ -411,7 +411,7 @@ export default function AccountPage() {
           </div>
 
           {/* ── Addresses ── */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-5">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs space-y-5">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-blue-600" /> Delivery Addresses
@@ -419,7 +419,7 @@ export default function AccountPage() {
               {!addingAddress && !editingAddressId && (
                 <button
                   onClick={startAddAddress}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-lg text-xs font-bold transition-colors"
                 >
                   <Plus className="w-3.5 h-3.5" /> Add New
                 </button>
@@ -438,7 +438,7 @@ export default function AccountPage() {
                     <select
                       value={addressForm.label}
                       onChange={(e) => setAddressForm((f) => ({ ...f, label: e.target.value }))}
-                      className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 bg-white"
+                      className="w-full px-3 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 bg-[#ffffff]"
                     >
                       <option>Home</option>
                       <option>Work</option>
@@ -514,7 +514,7 @@ export default function AccountPage() {
                 <div className="flex gap-3 pt-1">
                   <button
                     onClick={saveAddress}
-                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2"
+                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2"
                   >
                     <Check className="w-3.5 h-3.5" /> Save Address
                   </button>
@@ -548,7 +548,7 @@ export default function AccountPage() {
                     className={`p-4 rounded-2xl border-2 space-y-1 text-xs transition-all ${
                       addr.isDefault
                         ? 'border-blue-500 bg-blue-50/20'
-                        : 'border-slate-100 bg-white hover:border-slate-200'
+                        : 'border-slate-100 bg-[#ffffff] hover:border-slate-200'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">

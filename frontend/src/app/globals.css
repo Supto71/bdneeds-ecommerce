@@ -22,7 +22,7 @@
 }
 
 html {
-  font-size: 16px; /* Base size for mobile to prevent clutter */
+  font-size: 13px; /* Smaller base size for mobile to prevent clutter and large text */
 }
 
 @media (min-width: 768px) {

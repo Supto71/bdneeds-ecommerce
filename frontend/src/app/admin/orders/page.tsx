@@ -146,14 +146,14 @@ export default function AdminOrdersPage() {
               type="month"
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.target.value)}
-              className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-[#0B132B] focus:outline-none shadow-sm cursor-pointer"
+              className="px-3 py-2 bg-[#ffffff] border border-slate-200 rounded-xl text-sm font-bold text-[#0B132B] focus:outline-none shadow-sm cursor-pointer"
             />
           )}
           {timeFilter === 'Yearly' && (
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
-              className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-[#0B132B] focus:outline-none shadow-sm cursor-pointer"
+              className="px-3 py-2 bg-[#ffffff] border border-slate-200 rounded-xl text-sm font-bold text-[#0B132B] focus:outline-none shadow-sm cursor-pointer"
             >
               {Array.from(
                 { length: new Date().getFullYear() - 2023 },
@@ -164,7 +164,7 @@ export default function AdminOrdersPage() {
             </select>
           )}
 
-          <div className="flex items-center gap-3 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 bg-[#ffffff] p-1.5 rounded-2xl border border-slate-200 shadow-sm">
             <select
               value={timeFilter}
               onChange={(e) => setTimeFilter(e.target.value)}
@@ -182,7 +182,7 @@ export default function AdminOrdersPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
+        <div className="bg-[#ffffff] rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
             <Clock className="w-5 h-5 text-blue-600" />
           </div>
@@ -191,7 +191,7 @@ export default function AdminOrdersPage() {
             <p className="text-xl font-black text-slate-900">{processingOrders}</p>
           </div>
         </div>
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
+        <div className="bg-[#ffffff] rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
           <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
             <CheckCircle className="w-5 h-5 text-emerald-600" />
           </div>
@@ -200,7 +200,7 @@ export default function AdminOrdersPage() {
             <p className="text-xl font-black text-slate-900">{successfulOrders}</p>
           </div>
         </div>
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
+        <div className="bg-[#ffffff] rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
           <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
             <RotateCcw className="w-5 h-5 text-orange-600" />
           </div>
@@ -209,7 +209,7 @@ export default function AdminOrdersPage() {
             <p className="text-xl font-black text-slate-900">{returnedOrders}</p>
           </div>
         </div>
-        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
+        <div className="bg-[#ffffff] rounded-2xl border border-slate-200 p-4 shadow-sm flex items-center gap-4">
           <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
             <XCircle className="w-5 h-5 text-rose-600" />
           </div>
@@ -221,7 +221,7 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row gap-4 justify-between items-center">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div className="relative w-full sm:w-80">
           <input
             type="text"
@@ -249,7 +249,7 @@ export default function AdminOrdersPage() {
           <button
             onClick={exportToCSV}
             disabled={filtered.length === 0}
-            className="px-4 py-2 bg-[#0B132B] hover:bg-blue-600 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+            className="px-4 py-2 bg-[#0B132B] hover:bg-blue-600 disabled:opacity-50 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
           >
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
@@ -259,7 +259,7 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
@@ -344,7 +344,7 @@ export default function AdminOrdersPage() {
                         </Link>
                         <Link
                           href={`/admin/orders/${ord.id}`}
-                          className="px-3.5 py-1.5 bg-[#0B132B] hover:bg-blue-600 text-white rounded-xl font-bold text-xs transition-colors inline-block"
+                          className="px-3.5 py-1.5 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] rounded-xl font-bold text-xs transition-colors inline-block"
                         >
                           Details
                         </Link>

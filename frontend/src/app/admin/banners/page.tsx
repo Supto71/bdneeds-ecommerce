@@ -174,7 +174,7 @@ export default function AdminBannersPage() {
         {isAdmin && (
           <button
             onClick={openCreate}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
           >
             <Plus className="w-4 h-4" />
             Create Hero Slide
@@ -186,12 +186,12 @@ export default function AdminBannersPage() {
         {banners.map((b) => (
           <div
             key={b.id}
-            className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-between"
+            className="bg-[#ffffff] rounded-3xl border border-slate-200 overflow-hidden shadow-xs flex flex-col justify-between"
           >
             <div>
               <div className="relative aspect-video w-full bg-slate-900">
                 <Image src={b.image} alt={b.title} fill className="object-cover" />
-                <div className="absolute top-3 left-3 bg-[#0B132B]/80 backdrop-blur-xs text-white px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
+                <div className="absolute top-3 left-3 bg-[#0B132B]/80 backdrop-blur-xs text-[#ffffff] px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
                   {b.badge}
                 </div>
               </div>
@@ -245,7 +245,7 @@ export default function AdminBannersPage() {
       {modalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={() => setModalOpen(false)} />
-          <div className="relative bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl z-10 space-y-4">
+          <div className="relative bg-[#ffffff] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl z-10 space-y-4">
             <h3 className="text-lg font-bold text-[#0B132B]">
               {editBanner ? 'Edit Hero Banner' : 'Create Hero Slide'}
             </h3>
@@ -310,7 +310,7 @@ export default function AdminBannersPage() {
                       placeholder="https://images.unsplash.com/... or upload"
                       className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
                     />
-                    <label className="px-4 py-2 bg-[#0B132B] text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors cursor-pointer flex items-center justify-center">
+                    <label className="px-4 py-2 bg-[#0B132B] text-[#ffffff] text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors cursor-pointer flex items-center justify-center">
                       {uploadingImage ? 'Uploading...' : 'Upload Image'}
                       <input
                         type="file"
@@ -396,7 +396,7 @@ export default function AdminBannersPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-xs"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl font-bold shadow-xs"
                 >
                   Save Slide
                 </button>

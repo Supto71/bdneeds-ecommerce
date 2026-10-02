@@ -68,7 +68,7 @@ export default function FAQPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-3xl border border-slate-200 divide-y divide-slate-100 overflow-hidden shadow-xs mb-12">
+          <div className="bg-[#ffffff] rounded-3xl border border-slate-200 divide-y divide-slate-100 overflow-hidden shadow-xs mb-12">
             {faqs.map((faq, idx) => {
               const isOpen = openIndex === idx;
               const Icon = faq.icon;
@@ -103,7 +103,7 @@ export default function FAQPage() {
             })}
           </div>
 
-          <div id="terms" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs mb-8 scroll-mt-24">
+          <div id="terms" className="bg-[#ffffff] rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs mb-8 scroll-mt-24">
             <h2 className="text-xl sm:text-2xl font-black text-[#0B132B] mb-4 flex items-center gap-3">
               <ShieldCheck className="w-6 h-6 text-blue-600" />
               Terms & Conditions
@@ -117,7 +117,7 @@ export default function FAQPage() {
             </div>
           </div>
 
-          <div id="returns" className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs scroll-mt-24">
+          <div id="returns" className="bg-[#ffffff] rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs scroll-mt-24">
             <h2 className="text-xl sm:text-2xl font-black text-[#0B132B] mb-4 flex items-center gap-3">
               <RefreshCw className="w-6 h-6 text-blue-600" />
               Return & Refund Policy

@@ -40,7 +40,7 @@ export default function OrdersPage() {
   }, [user, isAuthLoading]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#ffffff]">
       <AnnouncementBar />
       <Header />
 
@@ -55,7 +55,7 @@ export default function OrdersPage() {
                 Track your active shipments, invoices, and past deliveries.
               </p>
             </div>
-            <span className="text-xs font-bold text-slate-500 bg-white px-3 py-1.5 rounded-full border border-slate-200">
+            <span className="text-xs font-bold text-slate-500 bg-[#ffffff] px-3 py-1.5 rounded-full border border-slate-200">
               {orders.length} {t('productsCount')}
             </span>
           </div>
@@ -65,7 +65,7 @@ export default function OrdersPage() {
               Loading your orders...
             </div>
           ) : orders.length === 0 ? (
-            <div className="py-24 text-center bg-white rounded-3xl border border-slate-100 shadow-xs max-w-lg mx-auto mt-8 p-8">
+            <div className="py-24 text-center bg-[#ffffff] rounded-3xl border border-slate-100 shadow-xs max-w-lg mx-auto mt-8 p-8">
               <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4">
                 <Package className="w-8 h-8" />
               </div>
@@ -75,7 +75,7 @@ export default function OrdersPage() {
               </p>
               <Link
                 href="/shop"
-                className="px-8 py-3.5 bg-[#0B132B] hover:bg-blue-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm inline-flex items-center gap-2"
+                className="px-8 py-3.5 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm inline-flex items-center gap-2"
               >
                 {t('continueShopping')}
                 <ArrowRight className="w-4 h-4" />
@@ -86,7 +86,7 @@ export default function OrdersPage() {
               {orders.map((order) => (
                 <div
                   key={order.id}
-                  className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs hover:shadow-md transition-shadow space-y-6"
+                  className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-xs hover:shadow-md transition-shadow space-y-6"
                 >
                   {/* Card Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
@@ -122,7 +122,7 @@ export default function OrdersPage() {
                       </Link>
                       <Link
                         href={`/orders/${order.id}`}
-                        className="px-4 py-2 bg-[#0B132B] hover:bg-blue-600 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
+                        className="px-4 py-2 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5"
                       >
                         {t('overview')}
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -137,7 +137,7 @@ export default function OrdersPage() {
                         key={item.id}
                         className="flex items-center gap-3 p-3 bg-slate-50/80 rounded-2xl border border-slate-100"
                       >
-                        <div className="relative w-12 h-12 rounded-xl bg-white overflow-hidden shrink-0 border border-slate-200">
+                        <div className="relative w-12 h-12 rounded-xl bg-[#ffffff] overflow-hidden shrink-0 border border-slate-200">
                           <Image
                             src={item.productImage}
                             alt={item.productName}

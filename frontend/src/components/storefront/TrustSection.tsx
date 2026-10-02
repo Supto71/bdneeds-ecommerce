@@ -39,7 +39,7 @@ export default function TrustSection() {
             return (
               <div
                 key={idx}
-                className="flex items-start gap-4 p-5 rounded-2xl bg-white border border-slate-100 shadow-2xs hover:shadow-md transition-shadow"
+                className="flex items-start gap-4 p-5 rounded-2xl bg-[#ffffff] border border-slate-100 shadow-2xs hover:shadow-md transition-shadow"
               >
                 <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
                   <Icon className="w-6 h-6 stroke-[2]" />

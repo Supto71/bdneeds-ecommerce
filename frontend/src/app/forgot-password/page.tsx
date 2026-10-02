@@ -24,7 +24,7 @@ export default function ForgotPasswordPage() {
       <Header />
 
       <main className="flex-1 flex items-center justify-center py-16 px-4 sm:px-6">
-        <div className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-8 shadow-xs space-y-6">
+        <div className="max-w-md w-full bg-[#ffffff] rounded-3xl border border-slate-200 p-8 shadow-xs space-y-6">
           <Link
             href="/login"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-blue-600 transition-colors"
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 bg-[#0B132B] hover:bg-blue-600 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2"
               >
                 Send Reset Link
                 <ArrowRight className="w-4 h-4" />

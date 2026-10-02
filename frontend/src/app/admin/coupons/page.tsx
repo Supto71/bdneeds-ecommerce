@@ -121,7 +121,7 @@ export default function AdminCouponsPage() {
         {isAdmin && (
           <button
             onClick={openCreateModal}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
           >
             <Plus className="w-4 h-4" />
             Create Promo Voucher
@@ -133,7 +133,7 @@ export default function AdminCouponsPage() {
         {coupons.map((coupon) => (
           <div
             key={coupon.id}
-            className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between space-y-4"
+            className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between space-y-4"
           >
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -192,7 +192,7 @@ export default function AdminCouponsPage() {
       {modalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
           <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={() => setModalOpen(false)} />
-          <div className="relative bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl z-10 space-y-4">
+          <div className="relative bg-[#ffffff] rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl z-10 space-y-4">
             <h3 className="text-lg font-bold text-[#0B132B]">
               {editingId ? 'Edit Promotional Coupon' : 'Create Promotional Coupon'}
             </h3>
@@ -287,7 +287,7 @@ export default function AdminCouponsPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-xs"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl font-bold shadow-xs"
                 >
                   {editingId ? 'Save Changes' : 'Activate Voucher'}
                 </button>

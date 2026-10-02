@@ -84,7 +84,7 @@ export default function ReviewSection({
   };
 
   return (
-    <section id="reviews-section" className="py-16 border-t border-slate-100 bg-white">
+    <section id="reviews-section" className="py-16 border-t border-slate-100 bg-[#ffffff]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-8 border-b border-slate-100 gap-4">
           <div>
@@ -98,7 +98,7 @@ export default function ReviewSection({
 
           <button
             onClick={() => setModalOpen(true)}
-            className="px-5 py-2.5 bg-[#0B132B] hover:bg-blue-600 text-white font-semibold text-xs rounded-xl transition-colors flex items-center gap-2 self-start sm:self-auto"
+            className="px-5 py-2.5 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] font-semibold text-xs rounded-xl transition-colors flex items-center gap-2 self-start sm:self-auto"
           >
             <MessageSquarePlus className="w-4 h-4" />
             {t('writeReview')}
@@ -244,7 +244,7 @@ export default function ReviewSection({
             className="fixed inset-0 bg-black/50 backdrop-blur-xs"
             onClick={() => setModalOpen(false)}
           />
-          <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 z-10 animate-in zoom-in-95">
+          <div className="relative bg-[#ffffff] rounded-2xl shadow-2xl max-w-lg w-full p-6 sm:p-8 z-10 animate-in zoom-in-95">
             <button
               onClick={() => setModalOpen(false)}
               className="absolute top-5 right-5 p-1 text-slate-400 hover:text-slate-700"
@@ -333,7 +333,7 @@ export default function ReviewSection({
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-colors shadow-sm"
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-[#ffffff] text-xs font-bold rounded-xl transition-colors shadow-sm"
                 >
                   {submitting ? t('submitting') : t('submitReview')}
                 </button>

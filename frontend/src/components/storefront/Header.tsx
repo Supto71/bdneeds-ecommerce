@@ -105,7 +105,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 transition-shadow">
+    <header className="sticky top-0 z-40 bg-[#ffffff]/95 backdrop-blur-md border-b border-slate-100 transition-shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20 gap-4">
           {/* Mobile Menu Trigger & Logo */}
@@ -163,7 +163,7 @@ export default function Header() {
 
               {/* Mega Menu Dropdown */}
               {showMegaMenu && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] xl:w-[840px] bg-white rounded-2xl shadow-2xl border border-slate-100 p-8 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 w-[720px] xl:w-[840px] bg-[#ffffff] rounded-2xl shadow-2xl border border-slate-100 p-8 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6">
                     {categories.map((cat) => (
                       <Link
@@ -211,7 +211,7 @@ export default function Header() {
                   }}
                   onFocus={() => setShowSearchDropdown(true)}
                   placeholder={t('searchPlaceholder')}
-                  className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-800 placeholder-slate-400"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 hover:bg-slate-100/80 focus:bg-[#ffffff] border border-slate-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-800 placeholder-slate-400"
                 />
                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               </div>
@@ -219,7 +219,7 @@ export default function Header() {
 
             {/* Live Search Autocomplete Dropdown */}
             {showSearchDropdown && searchQuery.trim() && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-[#ffffff] rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                 <div className="p-3 border-b border-slate-100 flex items-center justify-between text-xs text-slate-400 font-semibold uppercase tracking-wider">
                   <span>{t('shop')}</span>
                   {isSearching && <span className="animate-pulse">{t('searching')}</span>}
@@ -287,7 +287,7 @@ export default function Header() {
             >
               <Heart className="w-5 h-5" />
               {totalWishlist > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-[#ffffff] text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
                   {totalWishlist}
                 </span>
               )}
@@ -301,7 +301,7 @@ export default function Header() {
             >
               <ShoppingBag className="w-5 h-5" />
               {totalItems > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-blue-600 text-[#ffffff] text-[10px] font-bold flex items-center justify-center animate-in zoom-in-50">
                   {totalItems}
                 </span>
               )}
@@ -327,7 +327,7 @@ export default function Header() {
 
               {/* User Dropdown */}
               {showUserDropdown && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 mt-2 w-56 bg-[#ffffff] rounded-2xl shadow-2xl border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   {user ? (
                     <>
                       <div className="px-4 py-2 border-b border-slate-100">
@@ -386,7 +386,7 @@ export default function Header() {
                         <Link
                           href="/login"
                           onClick={() => setShowUserDropdown(false)}
-                          className="block w-full py-2 px-3 bg-[#0B132B] hover:bg-blue-600 text-white rounded-lg text-xs font-semibold transition-colors"
+                          className="block w-full py-2 px-3 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] rounded-lg text-xs font-semibold transition-colors"
                         >
                           {t('signIn')}
                         </Link>
@@ -420,7 +420,7 @@ export default function Header() {
                 }}
                 onFocus={() => setShowSearchDropdown(true)}
                 placeholder={t('searchPlaceholder')}
-                className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-800 placeholder-slate-400"
+                className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 hover:bg-slate-100/80 focus:bg-[#ffffff] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all text-slate-800 placeholder-slate-400"
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             </div>
@@ -430,7 +430,7 @@ export default function Header() {
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-100 bg-white px-4 pt-3 pb-6 space-y-3">
+        <div className="lg:hidden border-t border-slate-100 bg-[#ffffff] px-4 pt-3 pb-6 space-y-3">
 
 
 

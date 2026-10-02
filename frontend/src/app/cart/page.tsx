@@ -86,7 +86,7 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#ffffff]">
       <AnnouncementBar />
       <Header />
 
@@ -101,13 +101,13 @@ export default function CartPage() {
                 {t('cartEmptyDesc')}
               </p>
             </div>
-            <span className="text-xs font-bold text-slate-500 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
+            <span className="text-xs font-bold text-slate-500 bg-[#ffffff] px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
               {totalItems} {t('productsCount')}
             </span>
           </div>
 
           {items.length === 0 ? (
-            <div className="py-24 text-center bg-white rounded-3xl border border-slate-100 shadow-xs max-w-2xl mx-auto mt-8 p-8">
+            <div className="py-24 text-center bg-[#ffffff] rounded-3xl border border-slate-100 shadow-xs max-w-2xl mx-auto mt-8 p-8">
               <div className="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4">
                 <ShoppingBag className="w-8 h-8" />
               </div>
@@ -117,7 +117,7 @@ export default function CartPage() {
               </p>
               <Link
                 href="/shop"
-                className="px-8 py-3.5 bg-[#0B132B] hover:bg-blue-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm inline-flex items-center gap-2"
+                className="px-8 py-3.5 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] font-bold text-xs sm:text-sm rounded-xl transition-colors shadow-sm inline-flex items-center gap-2"
               >
                 {t('allProducts')}
                 <ArrowRight className="w-4 h-4" />
@@ -127,7 +127,7 @@ export default function CartPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mt-8">
               {/* Items List */}
               <div className="lg:col-span-8 space-y-4">
-                <div className="bg-white rounded-3xl border border-slate-100 shadow-xs divide-y divide-slate-100 overflow-hidden">
+                <div className="bg-[#ffffff] rounded-3xl border border-slate-100 shadow-xs divide-y divide-slate-100 overflow-hidden">
                   {items.map((item) => (
                     <div
                       key={item.id}
@@ -232,7 +232,7 @@ export default function CartPage() {
 
               {/* Order Summary & Coupon Card */}
               <div className="lg:col-span-4 space-y-6">
-                <div className="bg-white rounded-3xl border border-slate-100 shadow-xs p-6 space-y-6">
+                <div className="bg-[#ffffff] rounded-3xl border border-slate-100 shadow-xs p-6 space-y-6">
                   <h3 className="text-base font-bold text-[#0B132B] pb-3 border-b border-slate-100">
                     {t('orderSummary')}
                   </h3>
@@ -270,7 +270,7 @@ export default function CartPage() {
                           <button
                             type="submit"
                             disabled={validatingCoupon}
-                            className="px-4 py-2 bg-[#0B132B] hover:bg-blue-600 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                            className="px-4 py-2 bg-[#0B132B] hover:bg-blue-600 text-[#ffffff] text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
                           >
                             {validatingCoupon ? '...' : t('apply')}
                           </button>
@@ -335,7 +335,7 @@ export default function CartPage() {
                   {/* Proceed to Checkout CTA */}
                   <Link
                     href={`/checkout${appliedCoupon ? `?coupon=${appliedCoupon.code}` : ''}`}
-                    className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold text-center transition-all shadow-md hover:shadow-blue-500/20 flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-sm font-bold text-center transition-all shadow-md hover:shadow-blue-500/20 flex items-center justify-center gap-2"
                   >
                     {t('proceedToCheckout')}
                     <ArrowRight className="w-4 h-4" />

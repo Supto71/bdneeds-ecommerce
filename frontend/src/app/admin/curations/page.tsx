@@ -76,7 +76,7 @@ export default function CurationsPage() {
         </p>
       </div>
 
-      <div className="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs">
+      <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-xs">
         <div className="relative w-full sm:w-96 mb-6">
           <input
             type="text"

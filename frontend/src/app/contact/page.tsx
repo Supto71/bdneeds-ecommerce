@@ -43,7 +43,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             {/* Contact Details Card */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-[#0B132B] text-white rounded-3xl p-8 space-y-6 shadow-md">
+              <div className="bg-[#0B132B] text-[#ffffff] rounded-3xl p-8 space-y-6 shadow-md">
                 <h3 className="text-lg font-bold">Direct Channels</h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
                   Reach out via any of our official touchpoints or use the inquiry form for dedicated concierge support.
@@ -53,7 +53,7 @@ export default function ContactPage() {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">সদর দফতর</strong>
+                      <strong className="text-[#ffffff] block mb-0.5">সদর দফতর</strong>
                       ৪৫, গুলশান এভিনিউ, গুলশান-২<br />
                       ঢাকা – ১২১২, বাংলাদেশ
                     </div>
@@ -62,7 +62,7 @@ export default function ContactPage() {
                   <div className="flex items-start gap-3">
                     <Phone className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">ফোন / হোয়াটসঅ্যাপ</strong>
+                      <strong className="text-[#ffffff] block mb-0.5">ফোন / হোয়াটসঅ্যাপ</strong>
                       +880 1700-000000<br />
                       +880 1800-000000
                     </div>
@@ -71,7 +71,7 @@ export default function ContactPage() {
                   <div className="flex items-start gap-3">
                     <Mail className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">ইমেইল</strong>
+                      <strong className="text-[#ffffff] block mb-0.5">ইমেইল</strong>
                       support@bdneeds.com<br />
                       info@bdneeds.com
                     </div>
@@ -80,7 +80,7 @@ export default function ContactPage() {
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                     <div>
-                      <strong className="text-white block mb-0.5">অফিস সময়</strong>
+                      <strong className="text-[#ffffff] block mb-0.5">অফিস সময়</strong>
                       শনি – বৃহস্পতি: সকাল ৯:০০ – রাত ৯:০০<br />
                       শুক্রবার: বন্ধ
                     </div>
@@ -90,7 +90,7 @@ export default function ContactPage() {
             </div>
 
             {/* Inquiry Form */}
-            <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs">
+            <div className="lg:col-span-7 bg-[#ffffff] rounded-3xl border border-slate-200 p-8 sm:p-10 shadow-xs">
               <h3 className="text-lg font-bold text-[#0B132B] mb-2">Send an Inquiry</h3>
               <p className="text-xs text-slate-500 mb-6">
                 Expect a response within 4 hours during standard concierge operational windows.
@@ -171,7 +171,7 @@ export default function ContactPage() {
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
+                    className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
                   >
                     <Send className="w-4 h-4" />
                     মেসেজ পাঠান

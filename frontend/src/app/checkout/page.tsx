@@ -260,20 +260,20 @@ function CheckoutContent() {
               {t('checkoutTitle')}
             </h1>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 bg-white px-3 py-1.5 rounded-full border border-slate-200">
+          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 bg-[#ffffff] px-3 py-1.5 rounded-full border border-slate-200">
             <Lock className="w-3.5 h-3.5 text-emerald-600" />
             <span>256-Bit SSL Encrypted Checkout</span>
           </div>
         </div>
 
         {checkoutItems.length === 0 ? (
-          <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 max-w-lg mx-auto">
+          <div className="p-12 text-center bg-[#ffffff] rounded-3xl border border-slate-200 max-w-lg mx-auto">
             <p className="text-sm font-semibold text-slate-600 mb-4">
               {t('cartEmptyTitle')}
             </p>
             <Link
               href="/shop"
-              className="px-6 py-2.5 bg-[#0B132B] text-white rounded-xl text-xs font-bold"
+              className="px-6 py-2.5 bg-[#0B132B] text-[#ffffff] rounded-xl text-xs font-bold"
             >
               {t('continueShopping')}
             </Link>
@@ -283,9 +283,9 @@ function CheckoutContent() {
             {/* Left Column: Forms */}
             <div className="lg:col-span-7 space-y-6">
               {/* 1. Customer Information */}
-              <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
+              <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
                 <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">
+                  <span className="w-6 h-6 rounded-full bg-blue-600 text-[#ffffff] text-xs flex items-center justify-center font-bold">
                     1
                   </span>
                   {t('shippingAddress')}
@@ -337,9 +337,9 @@ function CheckoutContent() {
               </div>
 
               {/* 2. Delivery Address */}
-              <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
+              <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
                 <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">
+                  <span className="w-6 h-6 rounded-full bg-blue-600 text-[#ffffff] text-xs flex items-center justify-center font-bold">
                     2
                   </span>
                   {t('streetAddress')}
@@ -429,9 +429,9 @@ function CheckoutContent() {
               </div>
 
               {/* 3. Delivery Method */}
-              <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
+              <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
                 <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">
+                  <span className="w-6 h-6 rounded-full bg-blue-600 text-[#ffffff] text-xs flex items-center justify-center font-bold">
                     3
                   </span>
                   {t('deliveryMethod')}
@@ -462,9 +462,9 @@ function CheckoutContent() {
               </div>
 
               {/* 4. Payment Methods */}
-              <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
+              <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-4 shadow-2xs">
                 <h3 className="text-base font-bold text-[#0B132B] flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center font-bold">
+                  <span className="w-6 h-6 rounded-full bg-blue-600 text-[#ffffff] text-xs flex items-center justify-center font-bold">
                     4
                   </span>
                   {t('paymentMethod')}
@@ -530,7 +530,7 @@ function CheckoutContent() {
 
             {/* Right Column: Order Review Box & Place Order */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-xs sticky top-28">
+              <div className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-xs sticky top-28">
                 <h3 className="text-base font-bold text-[#0B132B] pb-3 border-b border-slate-100 flex items-center justify-between">
                   <span>{t('orderSummary')}</span>
                   <span className="text-xs font-normal text-slate-400">
@@ -583,7 +583,7 @@ function CheckoutContent() {
                       type="button"
                       onClick={handleApplyCoupon}
                       disabled={!couponCode || isApplyingCoupon}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
+                      className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-[#ffffff] text-xs font-bold rounded-xl transition-colors disabled:opacity-50"
                     >
                       {isApplyingCoupon ? 'Applying...' : 'Apply'}
                     </button>
@@ -639,7 +639,7 @@ function CheckoutContent() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-xl text-sm font-bold text-center transition-all shadow-md hover:shadow-blue-500/20 flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-[#ffffff] rounded-xl text-sm font-bold text-center transition-all shadow-md hover:shadow-blue-500/20 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <span className="animate-pulse">{t('processingOrder')}</span>

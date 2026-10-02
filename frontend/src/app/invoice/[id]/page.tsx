@@ -32,7 +32,7 @@ export default function InvoicePage(props: { params: Promise<{ id: string }> }) 
   if (loading || !order) return <div className="min-h-screen flex items-center justify-center text-slate-400 font-medium">Generating Invoice...</div>;
 
   return (
-    <div className="min-h-screen bg-white text-black p-4 sm:p-6 font-sans w-full max-w-[1000px] mx-auto">
+    <div className="min-h-screen bg-[#ffffff] text-black p-4 sm:p-6 font-sans w-full max-w-[1000px] mx-auto">
       {/* Print styles */}
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
@@ -78,7 +78,7 @@ export default function InvoicePage(props: { params: Promise<{ id: string }> }) 
       <div className="rounded-2xl border border-slate-200 overflow-hidden mb-8">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-[#0B132B] text-white">
+            <tr className="bg-[#0B132B] text-[#ffffff]">
               <th className="py-3.5 px-5 font-semibold text-xs tracking-wider uppercase">Item Description</th>
               <th className="py-3.5 px-5 font-semibold text-xs tracking-wider uppercase text-center w-24">Qty</th>
               <th className="py-3.5 px-5 font-semibold text-xs tracking-wider uppercase text-right w-32">Price</th>
@@ -87,7 +87,7 @@ export default function InvoicePage(props: { params: Promise<{ id: string }> }) 
           </thead>
           <tbody className="divide-y divide-slate-100">
             {order.items.map((item, i) => (
-              <tr key={i} className="bg-white">
+              <tr key={i} className="bg-[#ffffff]">
                 <td className="py-4 px-5">
                   <p className="font-bold text-slate-900">{item.productName}</p>
                   {item.variantName && <p className="text-xs text-slate-500 mt-1">Variant: {item.variantName}</p>}
@@ -139,7 +139,7 @@ export default function InvoicePage(props: { params: Promise<{ id: string }> }) 
       <div className="mt-12 text-center no-print">
         <button 
           onClick={() => window.print()} 
-          className="px-8 py-3 bg-[#0B132B] text-white rounded-full font-bold hover:bg-blue-600 shadow-xl shadow-blue-900/20 transition-all active:scale-95"
+          className="px-8 py-3 bg-[#0B132B] text-[#ffffff] rounded-full font-bold hover:bg-blue-600 shadow-xl shadow-blue-900/20 transition-all active:scale-95"
         >
           Print / Download PDF
         </button>

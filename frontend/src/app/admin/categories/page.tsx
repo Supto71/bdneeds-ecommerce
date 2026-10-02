@@ -20,6 +20,7 @@ export default function AdminCategoriesPage() {
   const [image, setImage] = useState('');
   const [isActive, setIsActive] = useState(true);
   const [subcategoriesText, setSubcategoriesText] = useState('');
+  const [featuredSubcategoriesText, setFeaturedSubcategoriesText] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +74,7 @@ export default function AdminCategoriesPage() {
     setImage('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80');
     setIsActive(true);
     setSubcategoriesText('');
+    setFeaturedSubcategoriesText('');
     setModalOpen(true);
   };
 
@@ -84,6 +86,7 @@ export default function AdminCategoriesPage() {
     setImage(cat.image);
     setIsActive(cat.isActive);
     setSubcategoriesText((cat as any).subcategories?.map((s: any) => s.name).join(', ') || '');
+    setFeaturedSubcategoriesText((cat as any).subcategories?.filter((s: any) => s.isFeatured).map((s: any) => s.name).join(', ') || '');
     setModalOpen(true);
   };
 
@@ -98,6 +101,7 @@ export default function AdminCategoriesPage() {
       image,
       isActive,
       subcategories: subcategoriesText.split(',').map(s => s.trim()).filter(s => s),
+      featuredSubcategories: featuredSubcategoriesText.split(',').map(s => s.trim()).filter(s => s),
     };
 
     try {
@@ -149,7 +153,7 @@ export default function AdminCategoriesPage() {
         {isAdmin && (
           <button
             onClick={openCreateModal}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
+            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto shadow-xs"
           >
             <Plus className="w-4 h-4" />
             Add Category
@@ -162,7 +166,7 @@ export default function AdminCategoriesPage() {
         {categories.map((cat) => (
           <div
             key={cat.id}
-            className="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between space-y-4"
+            className="bg-[#ffffff] rounded-3xl border border-slate-200 p-6 shadow-xs flex flex-col justify-between space-y-4"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -219,7 +223,7 @@ export default function AdminCategoriesPage() {
             className="fixed inset-0 bg-black/50 backdrop-blur-xs"
             onClick={() => setModalOpen(false)}
           />
-          <div className="relative bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl z-10 space-y-4">
+          <div className="relative bg-[#ffffff] rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl z-10 space-y-4">
             <h3 className="text-lg font-bold text-[#0B132B]">
               {editCategory ? 'Edit Category' : 'Create Category'}
             </h3>
@@ -264,7 +268,7 @@ export default function AdminCategoriesPage() {
                     placeholder="https://images.unsplash.com/..."
                     className="flex-1 px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl"
                   />
-                  <label className="px-4 py-2 bg-[#0B132B] text-white text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors cursor-pointer flex items-center justify-center">
+                  <label className="px-4 py-2 bg-[#0B132B] text-[#ffffff] text-xs font-bold rounded-xl hover:bg-blue-600 transition-colors cursor-pointer flex items-center justify-center">
                     {uploadingImage ? 'Uploading...' : 'Upload Image'}
                     <input
                       type="file"
@@ -288,6 +292,20 @@ export default function AdminCategoriesPage() {
                   placeholder="e.g. Men, Women, Kids"
                   className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  Featured Subcategories (Comma Separated)
+                </label>
+                <input
+                  type="text"
+                  value={featuredSubcategoriesText}
+                  onChange={(e) => setFeaturedSubcategoriesText(e.target.value)}
+                  placeholder="e.g. Men, Kids (must be part of subcategories above)"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl font-semibold text-blue-700"
+                />
+                <p className="text-[10px] text-slate-400 mt-1">These will appear on the storefront filter bar.</p>
               </div>
 
               <div>
@@ -323,7 +341,7 @@ export default function AdminCategoriesPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-[#ffffff] rounded-xl text-xs font-bold shadow-xs"
                 >
                   Save Category
                 </button>

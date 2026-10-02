@@ -30,10 +30,14 @@ export async function GET(request: Request) {
     const regularCustomerCount = await prisma.user.count({ where: { role: "CUSTOMER" } });
     const recentOrders = await prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 10, include: { items: true } });
     const allPaidOrders = await prisma.order.findMany({ where: { paymentStatus: "PAID" }, select: { createdAt: true, total: true } });
-    const categoryItems = await prisma.orderItem.findMany({ include: { product: { select: { categoryName: true } } } });
+    const allCategories = await prisma.category.findMany({ select: { name: true } });
+    const categoryItems = await prisma.orderItem.findMany({ 
+      where: { order: { paymentStatus: "PAID", createdAt: { gte: startDate } } },
+      include: { product: { select: { categoryName: true } } } 
+    });
     const lowStockCount = await prisma.product.count({ where: { stock: { lte: 5, gt: 0 } } });
-    const pendingOrders = await prisma.order.count({ where: { orderStatus: "PENDING" } });
-    const completedOrders = await prisma.order.count({ where: { orderStatus: "DELIVERED" } });
+    const pendingOrders = await prisma.order.count({ where: { orderStatus: "PENDING", createdAt: { gte: startDate } } });
+    const completedOrders = await prisma.order.count({ where: { orderStatus: "DELIVERED", createdAt: { gte: startDate } } });
 
     const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     const monthlyMap: Record<string, number> = {};
@@ -44,9 +48,11 @@ export async function GET(request: Request) {
     const revenueHistory = Object.entries(monthlyMap).map(([month, revenue]) => ({ month, revenue }));
 
     const catMap: Record<string, number> = {};
+    allCategories.forEach(c => { catMap[c.name] = 0; });
     categoryItems.forEach((item: any) => {
       const cat = item.product?.categoryName || "Other";
-      catMap[cat] = (catMap[cat] || 0) + Number(item.price || 0) * Number(item.quantity || 1);
+      if (catMap[cat] === undefined) catMap[cat] = 0;
+      catMap[cat] += Number(item.price || 0) * Number(item.quantity || 1);
     });
 
     return NextResponse.json({
