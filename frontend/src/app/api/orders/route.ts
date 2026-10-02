@@ -3,11 +3,28 @@ import { getOrders, createOrder } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/route";
+
 export async function GET(request: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('userId') || undefined;
-    const orders = await getOrders(userId);
+    const userIdParam = searchParams.get('userId') || undefined;
+    
+    // Normal users can only fetch their own orders
+    if (session.user.role !== 'ADMIN' && userIdParam && session.user.id !== userIdParam) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
+    // Determine whose orders to fetch
+    const effectiveUserId = session.user.role === 'ADMIN' ? userIdParam : session.user.id;
+
+    const orders = await getOrders(effectiveUserId);
     return NextResponse.json(orders);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });

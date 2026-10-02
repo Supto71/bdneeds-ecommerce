@@ -89,7 +89,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET || "fallback_secret_key_change_in_prod",
+  secret: process.env.NEXTAUTH_SECRET,
   debug: true,
 };
 

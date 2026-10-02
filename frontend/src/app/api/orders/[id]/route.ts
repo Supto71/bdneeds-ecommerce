@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getOrderById, updateOrderStatus, deleteOrder } from '@/lib/db';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export const dynamic = 'force-dynamic';
 
@@ -13,7 +15,31 @@ export async function GET(
     if (!order) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
-    return NextResponse.json(order);
+
+    const session = await getServerSession(authOptions);
+    const isAdmin = session?.user?.role === 'ADMIN';
+    const isOwner = session?.user?.id && order.userId === session?.user?.id;
+
+    if (isAdmin || isOwner) {
+      return NextResponse.json(order);
+    }
+
+    // Sanitize order for public tracking (guest)
+    const sanitizedOrder = {
+      ...order,
+      customerName: '***',
+      customerEmail: '***',
+      customerPhone: '***',
+      shippingAddress: {
+        ...order.shippingAddress,
+        fullName: '***',
+        phone: '***',
+        street: '***',
+        city: '***',
+      }
+    };
+
+    return NextResponse.json(sanitizedOrder);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch order' }, { status: 500 });
   }
@@ -24,6 +50,11 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const { id } = await context.params;
     const { status, note, paymentStatus } = await request.json();
 
@@ -46,6 +77,11 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.role !== 'ADMIN') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const { id } = await context.params;
     await deleteOrder(id);
     return NextResponse.json({ success: true });
