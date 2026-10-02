@@ -17,12 +17,12 @@ export async function GET(request: Request) {
     const userIdParam = searchParams.get('userId') || undefined;
     
     // Normal users can only fetch their own orders
-    if (session.user.role !== 'ADMIN' && userIdParam && session.user.id !== userIdParam) {
+    if ((session.user as any).role !== 'ADMIN' && userIdParam && (session.user as any).id !== userIdParam) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Determine whose orders to fetch
-    const effectiveUserId = session.user.role === 'ADMIN' ? userIdParam : session.user.id;
+    const effectiveUserId = (session.user as any).role === 'ADMIN' ? userIdParam : (session.user as any).id;
 
     const orders = await getOrders(effectiveUserId);
     return NextResponse.json(orders);

@@ -17,8 +17,8 @@ export async function GET(
     }
 
     const session = await getServerSession(authOptions);
-    const isAdmin = session?.user?.role === 'ADMIN';
-    const isOwner = session?.user?.id && order.userId === session?.user?.id;
+    const isAdmin = (session?.user as any)?.role === 'ADMIN';
+    const isOwner = (session?.user as any)?.id && order.userId === (session?.user as any)?.id;
 
     if (isAdmin || isOwner) {
       return NextResponse.json(order);
@@ -30,13 +30,13 @@ export async function GET(
       customerName: '***',
       customerEmail: '***',
       customerPhone: '***',
-      shippingAddress: {
-        ...order.shippingAddress,
+      shippingAddress: order.shippingAddress && typeof order.shippingAddress === 'object' ? {
+        ...(order.shippingAddress as any),
         fullName: '***',
         phone: '***',
         street: '***',
         city: '***',
-      }
+      } : null
     };
 
     return NextResponse.json(sanitizedOrder);
@@ -51,7 +51,7 @@ export async function PATCH(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (session?.user?.role !== 'ADMIN') {
+    if ((session?.user as any)?.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -78,7 +78,7 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (session?.user?.role !== 'ADMIN') {
+    if ((session?.user as any)?.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
