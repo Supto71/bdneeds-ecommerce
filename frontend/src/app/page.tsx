@@ -30,7 +30,7 @@ export default async function HomePage() {
         url: SITE_URL,
         logo: `${SITE_URL}/logo.png`,
         sameAs: [
-          'https://www.facebook.com/bdneeds', // Replace with your actual Facebook page URL
+          'https://www.facebook.com/profile.php?id=61589093341884',
         ],
       },
       {
