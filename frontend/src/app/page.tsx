@@ -28,6 +28,10 @@ export default async function HomePage() {
         '@id': `${SITE_URL}/#organization`,
         name: SITE_NAME,
         url: SITE_URL,
+        logo: `${SITE_URL}/logo.png`,
+        sameAs: [
+          'https://www.facebook.com/bdneeds', // Replace with your actual Facebook page URL
+        ],
       },
       {
         '@type': 'WebSite',
