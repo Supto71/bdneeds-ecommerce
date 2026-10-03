@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { CartItem } from '@/types';
 
 interface CartContextType {
@@ -36,11 +37,59 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setIsLoaded(true);
   }, []);
 
+  const { status } = useSession();
+  const [isSynced, setIsSynced] = useState(false);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    
+    // Auto-sync when user logs in
+    if (status === 'authenticated' && !isSynced) {
+      fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.items) {
+            // Map the enriched API items to frontend CartItem format
+            const syncedItems = data.items.map((apiItem: any) => ({
+              id: `${apiItem.productId}-${apiItem.variantId || 'base'}-${apiItem.size || ''}-${Date.now()}`,
+              productId: apiItem.productId,
+              name: apiItem.name,
+              slug: apiItem.slug,
+              price: apiItem.price,
+              quantity: apiItem.quantity,
+              image: apiItem.image,
+              variantId: apiItem.variantId,
+              color: apiItem.color,
+              size: apiItem.size,
+              storage: apiItem.storage,
+              maxStock: 99, // default fallback, could be fetched from DB
+            }));
+            setItems(syncedItems);
+            setIsSynced(true);
+          }
+        })
+        .catch((err) => console.error('Cart sync error:', err));
+    }
+  }, [status, isLoaded, isSynced]); // removed items from dependency to avoid infinite loops on every quantity change
+
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem('bdneeds_cart', JSON.stringify(items));
+      
+      // Real-time sync for logged-in users when items change
+      if (status === 'authenticated' && isSynced) {
+         fetch('/api/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items }),
+         }).catch(e => console.error('Silent cart update error', e));
+      }
     }
-  }, [items, isLoaded]);
+  }, [items, isLoaded, status, isSynced]);
 
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
