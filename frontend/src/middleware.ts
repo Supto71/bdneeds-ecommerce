@@ -1,7 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
-export function middleware(request: NextRequest) {
+const redis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+  ? new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    })
+  : null;
+
+const ratelimit = redis
+  ? new Ratelimit({
+      redis: redis,
+      limiter: Ratelimit.slidingWindow(10, '10 s'),
+      analytics: true,
+    })
+  : null;
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Rate Limiting Logic for Auth & Webhooks (Brute-force prevention)
+  if (
+    ratelimit &&
+    (pathname.startsWith('/api/auth') || pathname.startsWith('/api/uddoktapay/webhook'))
+  ) {
+    const ip = request.ip || request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const { success, limit, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
+    
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Too Many Requests', message: 'Rate limit exceeded, please try again later.' },
+        { 
+          status: 429, 
+          headers: { 
+            'X-RateLimit-Limit': limit.toString(), 
+            'X-RateLimit-Remaining': remaining.toString() 
+          } 
+        }
+      );
+    }
+  }
 
   // Shudhu /admin routes check korbo (login page bade)
   if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
