@@ -8,6 +8,19 @@ import { getProducts, getCategories } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata: import('next').Metadata = {
+  title: 'Best Sellers – Top Selling Products in Bangladesh',
+  description:
+    'Shop the top-selling products at BDNEEDS, loved by thousands of customers across Bangladesh. Best prices, genuine quality and Cash on Delivery.',
+  alternates: { canonical: '/best-sellers' },
+  openGraph: {
+    title: 'Best Sellers – Top Selling Products in Bangladesh | BDNEEDS',
+    description:
+      'Top-selling products loved by customers across Bangladesh. Cash on Delivery available.',
+    url: '/best-sellers',
+  },
+};
+
 export default async function BestSellersPage() {
   const [allProducts, categories] = await Promise.all([
     getProducts(),

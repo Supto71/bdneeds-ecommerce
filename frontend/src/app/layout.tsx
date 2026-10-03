@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
   title: {
-    template: '%s | BDNEEDS - Premium Multi-Category Shopping',
+    template: '%s | BDNEEDS',
     default: 'BDNEEDS | Premium Multi-Category E-Commerce Platform',
   },
   description:

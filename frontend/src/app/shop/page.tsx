@@ -8,6 +8,19 @@ import { getProducts, getCategories } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
+export const metadata: import('next').Metadata = {
+  title: 'Shop Online in Bangladesh – All Products',
+  description:
+    'Browse all products at BDNEEDS: electronics, fashion, footwear, beauty and more. Best prices in Bangladesh, Cash on Delivery and fast delivery.',
+  alternates: { canonical: '/shop' },
+  openGraph: {
+    title: 'Shop Online in Bangladesh – All Products | BDNEEDS',
+    description:
+      'Browse all products at BDNEEDS. Best prices in Bangladesh with Cash on Delivery.',
+    url: '/shop',
+  },
+};
+
 export default async function ShopPage() {
   const [products, categories] = await Promise.all([
     getProducts(),
