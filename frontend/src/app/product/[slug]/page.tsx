@@ -6,9 +6,9 @@ import Header from '@/components/storefront/Header';
 import Footer from '@/components/storefront/Footer';
 import MobileBottomNav from '@/components/storefront/MobileBottomNav';
 import ProductDetailView from '@/components/storefront/ProductDetailView';
-import { getProductBySlug, getReviews, getRelatedProducts } from '@/lib/db';
+import { getProductBySlug, getReviews, getRelatedProducts, getCategories } from '@/lib/db';
 import { SITE_URL } from '@/lib/site';
-import { getProductSeo } from '@/lib/seo';
+import { getProductSeo, breadcrumbJsonLd } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -58,9 +58,19 @@ export default async function ProductPage(props: {
     notFound();
   }
 
-  const [reviews, relatedProducts] = await Promise.all([
+  const [reviews, relatedProducts, categories] = await Promise.all([
     getReviews(product.id),
     getRelatedProducts(product.id, product.categoryId),
+    getCategories(),
+  ]);
+
+  const productCategory = categories.find((c) => c.id === product.categoryId);
+  const breadcrumb = breadcrumbJsonLd(SITE_URL, [
+    { name: 'Home', path: '/' },
+    ...(productCategory
+      ? [{ name: productCategory.name, path: `/category/${productCategory.slug}` }]
+      : []),
+    { name: product.name, path: `/product/${slug}` },
   ]);
 
   const seo = getProductSeo(product);
@@ -102,6 +112,12 @@ export default async function ProductPage(props: {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumb).replace(/</g, '\\u003c'),
         }}
       />
       <AnnouncementBar />

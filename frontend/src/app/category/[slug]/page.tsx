@@ -6,6 +6,8 @@ import Footer from '@/components/storefront/Footer';
 import MobileBottomNav from '@/components/storefront/MobileBottomNav';
 import ShopCatalog from '@/components/storefront/ShopCatalog';
 import { getProducts, getCategories, getCategoryBySlug } from '@/lib/db';
+import { SITE_URL } from '@/lib/site';
+import { breadcrumbJsonLd } from '@/lib/seo';
 
 export const dynamic = 'force-dynamic';
 
@@ -40,8 +42,19 @@ export default async function CategoryPage(props: {
     getCategories(),
   ]);
 
+  const breadcrumb = breadcrumbJsonLd(SITE_URL, [
+    { name: 'Home', path: '/' },
+    { name: category.name, path: `/category/${slug}` },
+  ]);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#ffffff]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumb).replace(/</g, '\\u003c'),
+        }}
+      />
       <AnnouncementBar />
       <Header />
       <main className="flex-1">
