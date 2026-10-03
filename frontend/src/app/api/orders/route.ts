@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getOrders, createOrder } from '@/lib/db';
+import { z } from 'zod';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,30 +32,43 @@ export async function GET(request: Request) {
   }
 }
 
+const orderSchema = z.object({
+  userId: z.string().optional().nullable(),
+  customerName: z.string().min(1, 'Customer name is required'),
+  customerEmail: z.string().email('Invalid email address'),
+  customerPhone: z.string().min(1, 'Phone number is required'),
+  shippingAddress: z.object({
+    fullName: z.string().min(1).optional(),
+    phone: z.string().min(1).optional(),
+    street: z.string().min(1, 'Street is required'),
+    city: z.string().min(1, 'City is required'),
+  }),
+  deliveryNote: z.string().optional().nullable(),
+  couponCode: z.string().optional().nullable(),
+  paymentMethod: z.enum(['COD', 'ONLINE']).optional().default('COD'),
+  items: z.array(
+    z.object({
+      productId: z.string().min(1),
+      variantId: z.string().optional().nullable(),
+      quantity: z.number().int().min(1, 'Quantity must be at least 1'),
+    })
+  ).min(1, 'Cart is empty, cannot place an empty order'),
+});
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-
-    if (!body.customerName || !body.customerEmail || !body.customerPhone) {
+    const jsonBody = await request.json();
+    
+    // Validate request body using Zod
+    const validationResult = orderSchema.safeParse(jsonBody);
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: 'Customer contact information is required' },
+        { error: 'Validation failed', details: validationResult.error.format() },
         { status: 400 }
       );
     }
-
-    if (!body.shippingAddress || !body.shippingAddress.street || !body.shippingAddress.city) {
-      return NextResponse.json(
-        { error: 'Valid shipping address is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!body.items || body.items.length === 0) {
-      return NextResponse.json(
-        { error: 'Cart is empty, cannot place an empty order' },
-        { status: 400 }
-      );
-    }
+    
+    const body = validationResult.data;
 
     const order = await createOrder({
       userId: body.userId,

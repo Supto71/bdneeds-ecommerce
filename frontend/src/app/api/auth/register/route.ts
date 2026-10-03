@@ -1,17 +1,28 @@
 import { NextResponse } from 'next/server';
 import { createUser, getUserByEmail } from '@/lib/db';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
+
+const registerSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  phone: z.string().optional().nullable(),
+});
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password, phone } = await request.json();
+    const jsonBody = await request.json();
 
-    if (!name || !email || !password) {
+    const validationResult = registerSchema.safeParse(jsonBody);
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: 'Name, email and password are required' },
+        { error: 'Validation failed', details: validationResult.error.format() },
         { status: 400 }
       );
     }
+
+    const { name, email, password, phone } = validationResult.data;
 
     const existing = await getUserByEmail(email);
     if (existing) {
