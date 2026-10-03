@@ -9,6 +9,7 @@ import NewArrivalsSection from '@/components/storefront/NewArrivalsSection';
 import Footer from '@/components/storefront/Footer';
 import MobileBottomNav from '@/components/storefront/MobileBottomNav';
 import { getBanners, getCategories, getProducts } from '@/lib/db';
+import { SITE_URL, SITE_NAME } from '@/lib/site';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,8 +20,42 @@ export default async function HomePage() {
     getProducts(),
   ]);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        url: SITE_URL,
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: SITE_NAME,
+        inLanguage: 'en-BD',
+        publisher: { '@id': `${SITE_URL}/#organization` },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
+          },
+          'query-input': 'required name=search_term_string',
+        },
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#ffffff]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
       <AnnouncementBar />
       <Header />
 
