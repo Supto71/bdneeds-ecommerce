@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Noto_Serif_Bengali, Anek_Bangla } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { Providers } from '@/context/Providers';
 import { SITE_URL, SITE_NAME } from '@/lib/site';
@@ -75,6 +76,22 @@ export default function RootLayout({
       className={`${inter.variable} ${notoSerifBengali.variable} ${anekBangla.variable} antialiased`}
     >
       <body className="min-h-screen flex flex-col bg-[#ffffff] text-[#0B132B]">
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
         <NavigationProgress />
         <Providers>{children}</Providers>
       </body>
