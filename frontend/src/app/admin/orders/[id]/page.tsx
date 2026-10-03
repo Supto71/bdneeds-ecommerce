@@ -14,6 +14,7 @@ import {
   Save,
   Clock,
   Trash2,
+  Printer,
 } from 'lucide-react';
 import { Order, OrderStatus, PaymentStatus } from '@/types';
 import { formatPrice, formatDate } from '@/lib/utils';
@@ -148,14 +149,23 @@ export default function AdminOrderDetailPage(props: {
           </p>
         </div>
 
-        <Link
-          href={`/track-order?orderId=${order.orderNumber}`}
-          target="_blank"
-          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 self-start sm:self-auto"
-        >
-          <Truck className="w-4 h-4 text-blue-600" />
-          Public Tracking View
-        </Link>
+        <div className="flex items-center gap-3 self-start sm:self-auto flex-wrap">
+          <Link
+            href={`/admin/orders/${order.id}/receipt`}
+            className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 border border-blue-200"
+          >
+            <Printer className="w-4 h-4" />
+            POS Receipt
+          </Link>
+          <Link
+            href={`/track-order?orderId=${order.orderNumber}`}
+            target="_blank"
+            className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors flex items-center gap-2"
+          >
+            <Truck className="w-4 h-4 text-blue-600" />
+            Tracking View
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

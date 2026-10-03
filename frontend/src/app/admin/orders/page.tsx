@@ -307,6 +307,16 @@ export default function AdminOrdersPage() {
                         )}
                       </div>
                       <div className="text-[11px] text-slate-400">{ord.customerEmail}</div>
+                      <div className="text-[11px] text-slate-500 mt-1 max-w-xs truncate">
+                        {ord.shippingAddress && typeof ord.shippingAddress === 'object' ? (
+                          <>
+                            {(ord.shippingAddress as any).street && `${(ord.shippingAddress as any).street}, `}
+                            {(ord.shippingAddress as any).area && `${(ord.shippingAddress as any).area}, `}
+                            {(ord.shippingAddress as any).city && `${(ord.shippingAddress as any).city} `}
+                            {(ord.shippingAddress as any).postalCode && `${(ord.shippingAddress as any).postalCode}`}
+                          </>
+                        ) : 'No address provided'}
+                      </div>
                     </td>
                     <td className="p-4">
                       <span className="font-semibold text-slate-800">

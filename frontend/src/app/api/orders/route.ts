@@ -7,10 +7,26 @@ export const dynamic = 'force-dynamic';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+import { cookies } from 'next/headers';
+
 export async function GET(request: Request) {
   try {
+    let sessionUser: any = null;
     const session = await getServerSession(authOptions);
-    if (!session || !session.user) {
+    
+    if (session && session.user) {
+      sessionUser = (session.user as any).dbUser || session.user;
+    } else {
+      const cookieStore = await cookies();
+      const sessionCookie = cookieStore.get('bdneeds_session');
+      if (sessionCookie?.value) {
+        try {
+          sessionUser = JSON.parse(decodeURIComponent(sessionCookie.value));
+        } catch (e) {}
+      }
+    }
+
+    if (!sessionUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -18,16 +34,17 @@ export async function GET(request: Request) {
     const userIdParam = searchParams.get('userId') || undefined;
     
     // Normal users can only fetch their own orders
-    if ((session.user as any).role !== 'ADMIN' && userIdParam && (session.user as any).id !== userIdParam) {
+    if (sessionUser.role !== 'ADMIN' && userIdParam && sessionUser.id !== userIdParam) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Determine whose orders to fetch
-    const effectiveUserId = (session.user as any).role === 'ADMIN' ? userIdParam : (session.user as any).id;
+    const effectiveUserId = sessionUser.role === 'ADMIN' ? userIdParam : sessionUser.id;
 
     const orders = await getOrders(effectiveUserId);
     return NextResponse.json(orders);
   } catch (error) {
+    console.error("API ORDERS ERROR:", error);
     return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
   }
 }

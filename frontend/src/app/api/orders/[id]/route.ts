@@ -5,6 +5,25 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const dynamic = 'force-dynamic';
 
+import { cookies } from 'next/headers';
+
+async function getSessionUser() {
+  const session = await getServerSession(authOptions);
+  let sessionUser: any = null;
+  if (session && session.user) {
+    sessionUser = (session.user as any).dbUser || session.user;
+  } else {
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get('bdneeds_session');
+    if (sessionCookie?.value) {
+      try {
+        sessionUser = JSON.parse(decodeURIComponent(sessionCookie.value));
+      } catch (e) {}
+    }
+  }
+  return sessionUser;
+}
+
 export async function GET(
   request: Request,
   context: { params: Promise<{ id: string }> }
@@ -16,9 +35,9 @@ export async function GET(
       return NextResponse.json({ error: 'Order not found' }, { status: 404 });
     }
 
-    const session = await getServerSession(authOptions);
-    const isAdmin = (session?.user as any)?.role === 'ADMIN';
-    const isOwner = (session?.user as any)?.id && order.userId === (session?.user as any)?.id;
+    const sessionUser = await getSessionUser();
+    const isAdmin = sessionUser?.role === 'ADMIN';
+    const isOwner = sessionUser?.id && order.userId === sessionUser.id;
 
     if (isAdmin || isOwner) {
       return NextResponse.json(order);
@@ -50,8 +69,8 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if ((session?.user as any)?.role !== 'ADMIN') {
+    const sessionUser = await getSessionUser();
+    if (sessionUser?.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -77,8 +96,8 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if ((session?.user as any)?.role !== 'ADMIN') {
+    const sessionUser = await getSessionUser();
+    if (sessionUser?.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
