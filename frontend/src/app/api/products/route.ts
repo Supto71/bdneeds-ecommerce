@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getProducts, getAllProductsAdmin, createProduct } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -63,6 +64,8 @@ export async function POST(request: Request) {
       images: data.images?.length > 0 ? data.images : ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80'],
       tags: data.tags || [],
     });
+
+    revalidatePath('/', 'layout');
 
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {

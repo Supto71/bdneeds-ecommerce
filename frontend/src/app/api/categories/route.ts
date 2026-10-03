@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getCategories, getAllCategoriesAdmin, createCategory } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,6 +51,8 @@ export async function POST(request: Request) {
         }))
       } : undefined,
     });
+
+    revalidatePath('/', 'layout');
 
     return NextResponse.json(newCategory, { status: 201 });
   } catch (error) {

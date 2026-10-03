@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getProductById, updateProduct, deleteProduct } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,6 +31,7 @@ export async function PUT(
     if (!updated) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
+    revalidatePath('/', 'layout');
     return NextResponse.json(updated);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
@@ -46,6 +48,7 @@ export async function DELETE(
     if (!success) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 });

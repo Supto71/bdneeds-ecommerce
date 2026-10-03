@@ -362,136 +362,175 @@ export async function createOrder(input: any) {
   const orderNumber = `NC-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
   const trackingNumber = `NV-${Math.floor(10000000 + Math.random() * 90000000)}-US`;
 
-  // Step 1: Fetch real prices and product details from DB
-  const enrichedItems = await Promise.all(
-    input.items.map(async (item: any) => {
-      const product = await prisma.product.findUnique({
-        where: { id: item.productId },
-        include: { variants: true },
-      });
+  return await prisma.$transaction(async (tx) => {
+    // Step 1: Fetch real prices, lock rows, and deduct stock
+    const enrichedItems = await Promise.all(
+      input.items.map(async (item: any) => {
+        // Row-level lock on Product to prevent race conditions
+        const productsRaw = await tx.$queryRaw`SELECT * FROM "Product" WHERE id = ${item.productId} FOR UPDATE`;
+        const productLocked = (productsRaw as any)[0];
+        if (!productLocked) throw new Error(`Product not found: ${item.productId}`);
 
-      if (!product) throw new Error(`Product not found: ${item.productId}`);
+        const product = await tx.product.findUnique({
+          where: { id: item.productId },
+          include: { variants: true },
+        });
+        if (!product) throw new Error(`Product not found: ${item.productId}`);
 
-      let price = product.basePrice;
-      let variantSku: string | null = null;
-      let variantColor: string | null = null;
-      let variantSize: string | null = null;
-      let variantStorage: string | null = null;
+        let price = product.basePrice;
+        let variantSku: string | null = null;
+        let variantColor: string | null = null;
+        let variantSize: string | null = null;
+        let variantStorage: string | null = null;
 
-      if (item.variantId) {
-        const variant = product.variants.find((v) => v.id === item.variantId);
-        if (variant) {
-          price = variant.price;
-          variantSku = variant.sku;
-          variantColor = variant.colorName;
-          variantSize = variant.size ?? null;
-          variantStorage = variant.storage ?? null;
+        if (item.variantId) {
+          // Row-level lock on ProductVariant
+          const variantsRaw = await tx.$queryRaw`SELECT * FROM "ProductVariant" WHERE id = ${item.variantId} FOR UPDATE`;
+          const variantLocked = (variantsRaw as any)[0];
+          if (!variantLocked) throw new Error(`Variant not found: ${item.variantId}`);
+
+          const variant = product.variants.find((v) => v.id === item.variantId);
+          if (variant) {
+            if (variant.stock < item.quantity) {
+              throw new Error(`Insufficient stock for variant of ${product.name}`);
+            }
+            price = variant.price;
+            variantSku = variant.sku;
+            variantColor = variant.colorName;
+            variantSize = variant.size ?? null;
+            variantStorage = variant.storage ?? null;
+
+            // Deduct stock safely
+            await tx.productVariant.update({
+              where: { id: variant.id },
+              data: { stock: variant.stock - item.quantity },
+            });
+          }
+        } else {
+          if (product.stock < item.quantity) {
+            throw new Error(`Insufficient stock for ${product.name}`);
+          }
+          // Deduct stock safely
+          await tx.product.update({
+            where: { id: product.id },
+            data: { stock: product.stock - item.quantity },
+          });
+        }
+
+        const productImages = product.images as string[];
+        const productImage = Array.isArray(productImages) && productImages.length > 0
+          ? productImages[0]
+          : '';
+
+        // Also increment sales count
+        await tx.product.update({
+          where: { id: product.id },
+          data: { salesCount: product.salesCount + item.quantity },
+        });
+
+        return {
+          productId: product.id,
+          productName: product.name,
+          productSlug: product.slug,
+          productImage,
+          variantId: item.variantId || null,
+          variantSku,
+          variantColor,
+          variantSize,
+          variantStorage,
+          price,
+          quantity: item.quantity,
+          total: price * item.quantity,
+        };
+      })
+    );
+
+    // Step 2: Calculate financials
+    const subtotal = enrichedItems.reduce((acc, item) => acc + item.total, 0);
+
+    // Apply coupon discount
+    let discount = 0;
+    let couponCode: string | null = null;
+    if (input.couponCode) {
+      const couponRaw = await tx.$queryRaw`SELECT * FROM "Coupon" WHERE code = ${input.couponCode} FOR UPDATE`;
+      const couponLocked = (couponRaw as any)[0];
+      if (couponLocked) {
+        const coupon = await tx.coupon.findUnique({ where: { code: input.couponCode } });
+        if (coupon && coupon.isActive && coupon.usedCount < coupon.usageLimit) {
+          couponCode = coupon.code;
+          if (coupon.discountType === 'PERCENTAGE') {
+            discount = Math.min(subtotal * (coupon.discountValue / 100), coupon.maxDiscount ?? Infinity);
+          } else {
+            discount = coupon.discountValue;
+          }
+          discount = Math.round(discount * 100) / 100;
+          // Increment usage
+          await tx.coupon.update({ where: { id: coupon.id }, data: { usedCount: coupon.usedCount + 1 } });
         }
       }
+    }
 
-      const productImages = product.images as string[];
-      const productImage = Array.isArray(productImages) && productImages.length > 0
-        ? productImages[0]
-        : '';
+    // Fetch Store Settings for Shipping rules
+    const settings = await tx.settings.findFirst();
+    const feeInside = settings?.shippingFeeInsideDhaka ?? 70;
+    const feeOutside = settings?.shippingFeeOutsideDhaka ?? 130;
+    const freeThreshold = settings?.freeShippingThreshold ?? 5000;
 
-      return {
-        productId: product.id,
-        productName: product.name,
-        productSlug: product.slug,
-        productImage,
-        variantId: item.variantId || null,
-        variantSku,
-        variantColor,
-        variantSize,
-        variantStorage,
-        price,
-        quantity: item.quantity,
-        total: price * item.quantity,
-      };
-    })
-  );
+    // Shipping logic
+    const city: string = (input.shippingAddress?.city || '').toLowerCase();
+    const isDhaka = city === 'dhaka';
+    let shippingFee = isDhaka ? feeInside : feeOutside;
+    if (subtotal >= freeThreshold) shippingFee = 0;
 
-  // Step 2: Calculate financials
-  const subtotal = enrichedItems.reduce((acc, item) => acc + item.total, 0);
+    const taxableAmount = Math.max(0, subtotal - discount);
+    const tax = 0; // Number((taxableAmount * 0.05).toFixed(2));
+    const total = Number((taxableAmount + shippingFee + tax).toFixed(2));
 
-  // Apply coupon discount
-  let discount = 0;
-  let couponCode: string | null = null;
-  if (input.couponCode) {
-    const coupon = await prisma.coupon.findUnique({ where: { code: input.couponCode } });
-    if (coupon && coupon.isActive && coupon.usedCount < coupon.usageLimit) {
-      couponCode = coupon.code;
-      if (coupon.discountType === 'PERCENTAGE') {
-        discount = Math.min(subtotal * (coupon.discountValue / 100), coupon.maxDiscount ?? Infinity);
-      } else {
-        discount = coupon.discountValue;
+    // Step 3: Build userId relation safely
+    let userConnect = {};
+    if (input.userId) {
+      const userExists = await tx.user.findUnique({ where: { id: input.userId } });
+      if (userExists) {
+        userConnect = { user: { connect: { id: input.userId } } };
       }
-      discount = Math.round(discount * 100) / 100;
-      // Increment usage
-      await prisma.coupon.update({ where: { id: coupon.id }, data: { usedCount: coupon.usedCount + 1 } });
     }
-  }
 
-  // Fetch Store Settings for Shipping rules
-  const settings = await prisma.settings.findFirst();
-  const feeInside = settings?.shippingFeeInsideDhaka ?? 70;
-  const feeOutside = settings?.shippingFeeOutsideDhaka ?? 130;
-  const freeThreshold = settings?.freeShippingThreshold ?? 5000;
-
-  // Shipping logic
-  const city: string = (input.shippingAddress?.city || '').toLowerCase();
-  const isDhaka = city === 'dhaka';
-  let shippingFee = isDhaka ? feeInside : feeOutside;
-  if (subtotal >= freeThreshold) shippingFee = 0;
-
-  const taxableAmount = Math.max(0, subtotal - discount);
-  const tax = 0; // Number((taxableAmount * 0.05).toFixed(2));
-  const total = Number((taxableAmount + shippingFee + tax).toFixed(2));
-
-  // Step 3: Build userId relation safely
-  let userConnect = {};
-  if (input.userId) {
-    const userExists = await prisma.user.findUnique({ where: { id: input.userId } });
-    if (userExists) {
-      userConnect = { user: { connect: { id: input.userId } } };
-    }
-  }
-
-  const order = await prisma.order.create({
-    data: {
-      orderNumber,
-      ...userConnect,
-      customerName: input.customerName,
-      customerEmail: input.customerEmail,
-      customerPhone: input.customerPhone,
-      shippingAddress: input.shippingAddress,
-      deliveryNote: input.deliveryNote || '',
-      subtotal,
-      discount,
-      couponCode,
-      shippingFee,
-      tax,
-      total,
-      paymentMethod: input.paymentMethod,
-      paymentStatus: input.paymentMethod === 'COD' ? 'PENDING' : 'PAID',
-      orderStatus: 'PENDING',
-      trackingNumber,
-      timeline: [
-        {
-          status: 'PENDING',
-          title: 'Order Placed',
-          timestamp: new Date().toISOString(),
-          note: `Order registered successfully via ${input.paymentMethod}.`,
+    const order = await tx.order.create({
+      data: {
+        orderNumber,
+        ...userConnect,
+        customerName: input.customerName,
+        customerEmail: input.customerEmail,
+        customerPhone: input.customerPhone,
+        shippingAddress: input.shippingAddress,
+        deliveryNote: input.deliveryNote || '',
+        subtotal,
+        discount,
+        couponCode,
+        shippingFee,
+        tax,
+        total,
+        paymentMethod: input.paymentMethod,
+        paymentStatus: input.paymentMethod === 'COD' ? 'PENDING' : 'PAID',
+        orderStatus: 'PENDING',
+        trackingNumber,
+        timeline: [
+          {
+            status: 'PENDING',
+            title: 'Order Placed',
+            timestamp: new Date().toISOString(),
+            note: `Order registered successfully via ${input.paymentMethod}.`,
+          },
+        ],
+        items: {
+          create: enrichedItems,
         },
-      ],
-      items: {
-        create: enrichedItems,
       },
-    },
-    include: { items: true },
-  });
+      include: { items: true },
+    });
 
-  return order;
+    return order;
+  });
 }
 
 export async function deleteOrder(id: string) {
