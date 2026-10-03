@@ -42,7 +42,8 @@ ${extraImages}
 <g:availability>${availability}</g:availability>
 <g:price>${price}</g:price>
 <g:condition>new</g:condition>
-${p.brand ? `<g:brand>${esc(p.brand)}</g:brand>` : '<g:identifier_exists>no</g:identifier_exists>'}
+${p.brand ? `<g:brand>${esc(p.brand)}</g:brand>` : ''}
+<g:identifier_exists>no</g:identifier_exists>
 <g:product_type>${esc(p.categoryName)}</g:product_type>
 </item>`;
       })
