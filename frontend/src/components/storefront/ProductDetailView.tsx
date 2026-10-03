@@ -182,7 +182,7 @@ export default function ProductDetailView({
             <Image
               key={`full-bg-${activeImage}`}
               src={activeImage}
-              alt={product.name}
+              alt={product.imageAlt?.trim() || `${product.name}${product.brand ? ` - ${product.brand}` : ''} price in Bangladesh`}
               fill
               priority
               className="object-cover object-center transform transition-all duration-500 scale-100 hover:scale-105"
@@ -657,7 +657,7 @@ export default function ProductDetailView({
                 <Image
                   key={`desktop-img-${activeImage}`}
                   src={activeImage}
-                  alt={product.name}
+                  alt={product.imageAlt?.trim() || `${product.name}${product.brand ? ` - ${product.brand}` : ''} price in Bangladesh`}
                   fill
                   priority
                   className="object-cover object-center transform transition-all duration-700 group-hover:scale-105"

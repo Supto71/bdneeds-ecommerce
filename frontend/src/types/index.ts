@@ -98,6 +98,10 @@ export interface Product {
   isNew: boolean;
   isPublished: boolean;
   createdAt: string;
+  updatedAt?: string;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  imageAlt?: string | null;
 }
 
 export interface Banner {

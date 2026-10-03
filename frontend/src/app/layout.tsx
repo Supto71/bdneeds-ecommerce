@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Noto_Serif_Bengali, Anek_Bangla } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/context/Providers';
+import { SITE_URL, SITE_NAME } from '@/lib/site';
 import NavigationProgress from '@/components/NavigationProgress';
 
 const inter = Inter({
@@ -25,6 +26,25 @@ const anekBangla = Anek_Bangla({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    locale: 'en_BD',
+    title: 'BDNEEDS | Premium Multi-Category E-Commerce Platform',
+    description:
+      'Explore curated collections across electronics, luxury fashion, footwear, beauty, accessories, and modern living.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'BDNEEDS | Premium Multi-Category E-Commerce Platform',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
   title: {
     template: '%s | BDNEEDS - Premium Multi-Category Shopping',
     default: 'BDNEEDS | Premium Multi-Category E-Commerce Platform',

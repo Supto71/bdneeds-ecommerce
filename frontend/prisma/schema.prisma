@@ -75,6 +75,10 @@ model Product {
   isNew             Boolean          @default(false)
   isPublished       Boolean          @default(true)
   createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @default(now()) @updatedAt
+  seoTitle          String?
+  seoDescription    String?
+  imageAlt          String?
   lowStockThreshold Int              @default(5)
   orderItems        OrderItem[]
   category          Category         @relation(fields: [categoryId], references: [id])

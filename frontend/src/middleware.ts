@@ -25,7 +25,7 @@ export async function middleware(request: NextRequest) {
     ratelimit &&
     (pathname.startsWith('/api/auth') || pathname.startsWith('/api/uddoktapay/webhook'))
   ) {
-    const ip = request.ip || request.headers.get('x-forwarded-for') || '127.0.0.1';
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || '127.0.0.1';
     const { success, limit, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
     
     if (!success) {

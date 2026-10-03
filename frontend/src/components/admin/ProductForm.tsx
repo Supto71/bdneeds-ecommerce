@@ -74,6 +74,9 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
   const [sku, setSku] = useState(initialData?.sku || '');
   const [isPublished, setIsPublished] = useState(initialData?.isPublished ?? true);
   const [isFeatured, setIsFeatured] = useState(initialData?.isFeatured ?? false);
+  const [seoTitle, setSeoTitle] = useState(initialData?.seoTitle || '');
+  const [seoDescription, setSeoDescription] = useState(initialData?.seoDescription || '');
+  const [imageAlt, setImageAlt] = useState(initialData?.imageAlt || '');
 
   const [variants, setVariants] = useState<RichVariant[]>(() => {
     if (!initialData?.variants?.length) return [];
@@ -214,6 +217,9 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
       basePrice: Number(originalPrice),
       originalPrice: Number(originalPrice),
       stock: Number(stock), sku, isPublished, isFeatured,
+      seoTitle: seoTitle.trim() || null,
+      seoDescription: seoDescription.trim() || null,
+      imageAlt: imageAlt.trim() || null,
       isBestSeller: false, isNew: false,
       images: variants.flatMap((v) => v.images || []),
       variants: serialisedVariants,
@@ -349,6 +355,30 @@ export default function ProductForm({ initialData, isEdit }: ProductFormProps) {
                 <input type="checkbox" checked={isFeatured} onChange={(e) => setIsFeatured(e.target.checked)} className="w-4 h-4 rounded text-blue-600" />
                 Featured Product
               </label>
+            </div>
+            <div className="border-t border-slate-100 pt-5 space-y-4">
+              <div>
+                <h4 className="text-sm font-bold text-[#0B132B]">SEO (Google Search)</h4>
+                <p className="text-[11px] text-slate-500 mt-0.5">Optional. Khali rakhle auto-generate hobe: "{name || 'Product'} Price in Bangladesh".</p>
+              </div>
+              <div>
+                <label className={LABEL_CLS}>SEO Title <span className={`font-normal ${seoTitle.length > 60 ? 'text-rose-600' : 'text-slate-400'}`}>({seoTitle.length}/60)</span></label>
+                <input type="text" value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} placeholder={`${name || 'Product Name'} Price in Bangladesh`} className={INPUT_CLS} />
+              </div>
+              <div>
+                <label className={LABEL_CLS}>SEO Description <span className={`font-normal ${seoDescription.length > 160 ? 'text-rose-600' : 'text-slate-400'}`}>({seoDescription.length}/160)</span></label>
+                <textarea rows={3} value={seoDescription} onChange={(e) => setSeoDescription(e.target.value)} placeholder="Keyword, benefit ar CTA likhun. e.g. Buy ... at best price in BD. Cash on Delivery." className={INPUT_CLS + ' resize-y'} />
+              </div>
+              <div>
+                <label className={LABEL_CLS}>Main Image Alt Text</label>
+                <input type="text" value={imageAlt} onChange={(e) => setImageAlt(e.target.value)} placeholder="e.g. Samsung Galaxy A15 black front view" className={INPUT_CLS} />
+              </div>
+              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                <p className="text-[10px] font-bold text-slate-400 uppercase mb-1.5">Google preview</p>
+                <p className="text-[#1a0dab] text-base leading-tight truncate">{(seoTitle || `${name || 'Product Name'} Price in Bangladesh`)} | BDNEEDS</p>
+                <p className="text-[12px] text-emerald-700 mt-0.5">bdneeds.com › product › {name ? name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') : 'slug'}</p>
+                <p className="text-[12px] text-slate-600 mt-0.5 line-clamp-2">{seoDescription || shortDescription || 'Description auto-generate hobe.'}</p>
+              </div>
             </div>
           </div>
         )}

@@ -9,6 +9,22 @@ import { getProducts, getCategories, getCategoryBySlug } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}): Promise<import('next').Metadata> {
+  const { slug } = await props.params;
+  const category = await getCategoryBySlug(slug);
+  if (!category) return { title: 'Category Not Found' };
+  const description =
+    category.description || `Shop ${category.name} at BDNEEDS. Best prices and fast delivery across Bangladesh.`;
+  return {
+    title: category.name,
+    description,
+    alternates: { canonical: `/category/${slug}` },
+    openGraph: { title: `${category.name} | BDNEEDS`, description, url: `/category/${slug}` },
+  };
+}
+
 export default async function CategoryPage(props: {
   params: Promise<{ slug: string }>;
 }) {
