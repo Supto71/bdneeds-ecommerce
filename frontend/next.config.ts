@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    serverExternalPackages: ['@prisma/client', 'bcryptjs'],
   },
   output: "standalone",
 };
