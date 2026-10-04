@@ -73,25 +73,28 @@ export async function GET() {
     }
 
     // Coupons
-    for (const coupon of INITIAL_COUPONS) {
-      await prisma.coupon.create({
-        data: {
-          id: coupon.id,
-          code: coupon.code,
-          discountType: coupon.discountType === 'PERCENTAGE' ? 'PERCENTAGE' : 'FIXED',
-          discountValue: coupon.discountValue,
-          minOrderValue: coupon.minOrderValue,
-          maxDiscount: coupon.maxDiscount,
-          expiryDate: coupon.validUntil ? new Date(coupon.validUntil) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-          isActive: coupon.isActive,
-          usageLimit: coupon.usageLimit,
-          usedCount: coupon.usedCount,
-        }
-      });
+    if (INITIAL_COUPONS) {
+      for (const coupon of INITIAL_COUPONS) {
+        await prisma.coupon.create({
+          data: {
+            id: coupon.id,
+            code: coupon.code,
+            discountType: coupon.discountType === 'PERCENTAGE' ? 'PERCENTAGE' : 'FIXED',
+            discountValue: coupon.discountValue,
+            minOrderValue: coupon.minOrderValue,
+            maxDiscount: coupon.maxDiscount,
+            expiryDate: coupon.validUntil ? new Date(coupon.validUntil) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            isActive: coupon.isActive,
+            usageLimit: coupon.usageLimit,
+            usedCount: coupon.usedCount,
+          }
+        });
+      }
     }
 
     // Products
-    for (const prod of INITIAL_PRODUCTS) {
+    if (INITIAL_PRODUCTS) {
+      for (const prod of INITIAL_PRODUCTS) {
       const createdProduct = await prisma.product.create({
         data: {
           id: prod.id,
@@ -144,58 +147,61 @@ export async function GET() {
     }
 
     // Orders
-    for (const ord of INITIAL_ORDERS) {
-      const createdOrder = await prisma.order.create({
-        data: {
-          id: ord.id,
-          orderNumber: ord.orderNumber,
-          userId: ord.userId,
-          customerName: ord.customerName,
-          customerEmail: ord.customerEmail,
-          customerPhone: ord.customerPhone,
-          shippingAddress: ord.shippingAddress,
-          deliveryNote: ord.deliveryNote,
-          subtotal: ord.subtotal,
-          discount: ord.discount,
-          couponCode: ord.couponCode,
-          shippingFee: ord.shippingFee,
-          tax: ord.tax,
-          total: ord.total,
-          paymentMethod: ord.paymentMethod === 'COD' ? 'COD' : 'CARD',
-          paymentStatus: ord.paymentStatus === 'PAID' ? 'PAID' : 'PENDING',
-          orderStatus: ord.orderStatus === 'DELIVERED' ? 'DELIVERED' : 'PENDING',
-          trackingNumber: ord.trackingNumber,
-          timeline: ord.timeline as any,
-          createdAt: ord.createdAt ? new Date(ord.createdAt) : undefined,
-        }
-      });
+    if (INITIAL_ORDERS) {
+      for (const ord of INITIAL_ORDERS) {
+        const createdOrder = await prisma.order.create({
+          data: {
+            id: ord.id,
+            orderNumber: ord.orderNumber,
+            userId: ord.userId,
+            customerName: ord.customerName,
+            customerEmail: ord.customerEmail,
+            customerPhone: ord.customerPhone,
+            shippingAddress: ord.shippingAddress,
+            deliveryNote: ord.deliveryNote,
+            subtotal: ord.subtotal,
+            discount: ord.discount,
+            couponCode: ord.couponCode,
+            shippingFee: ord.shippingFee,
+            tax: ord.tax,
+            total: ord.total,
+            paymentMethod: ord.paymentMethod === 'COD' ? 'COD' : 'CARD',
+            paymentStatus: ord.paymentStatus === 'PAID' ? 'PAID' : 'PENDING',
+            orderStatus: ord.orderStatus === 'DELIVERED' ? 'DELIVERED' : 'PENDING',
+            trackingNumber: ord.trackingNumber,
+            timeline: ord.timeline as any,
+            createdAt: ord.createdAt ? new Date(ord.createdAt) : undefined,
+          }
+        });
 
-      if (ord.items && ord.items.length > 0) {
-        for (const item of ord.items) {
-          await prisma.orderItem.create({
-            data: {
-              id: item.id,
-              orderId: createdOrder.id,
-              productId: item.productId,
-              productName: item.productName,
-              productSlug: item.productSlug,
-              productImage: item.productImage,
-              variantId: item.variantId,
-              variantSku: item.variantSku,
-              variantColor: item.variantColor,
-              variantSize: item.variantSize,
-              variantStorage: item.variantStorage,
-              price: item.price,
-              quantity: item.quantity,
-              total: item.total,
-            }
-          });
+        if (ord.items && ord.items.length > 0) {
+          for (const item of ord.items) {
+            await prisma.orderItem.create({
+              data: {
+                id: item.id,
+                orderId: createdOrder.id,
+                productId: item.productId,
+                productName: item.productName,
+                productSlug: item.productSlug,
+                productImage: item.productImage,
+                variantId: item.variantId,
+                variantSku: item.variantSku,
+                variantColor: item.variantColor,
+                variantSize: item.variantSize,
+                variantStorage: item.variantStorage,
+                price: item.price,
+                quantity: item.quantity,
+                total: item.total,
+              }
+            });
+          }
         }
       }
     }
 
     // Reviews
-    for (const review of INITIAL_REVIEWS) {
+    if (INITIAL_REVIEWS) {
+      for (const review of INITIAL_REVIEWS) {
       await prisma.review.create({
         data: {
           id: review.id,
