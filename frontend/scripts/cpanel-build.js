@@ -11,7 +11,7 @@ console.log('--- Starting cPanel Build Preparation ---');
 // 1. Build the Next.js app
 console.log('\n> Running next build...');
 try {
-  execSync('npx next build', { stdio: 'inherit' });
+  execSync('npx next build --webpack', { stdio: 'inherit' });
 } catch (error) {
   console.error('\nBuild failed! Aborting cPanel preparation.');
   process.exit(1);

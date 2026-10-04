@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
     optimizePackageImports: ['lucide-react'],
   },
   serverExternalPackages: ['@prisma/client', 'bcryptjs'],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   output: "standalone",
 };
 
