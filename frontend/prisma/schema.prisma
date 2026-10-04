@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -27,7 +27,7 @@ model Category {
   id           String    @id @default(cuid())
   name         String
   slug         String    @unique
-  description  String
+  description  String @db.Text
   image        String
   icon         String?
   productCount Int       @default(0)
@@ -62,8 +62,8 @@ model Product {
   discount          Float            @default(0)
   stock             Int              @default(0)
   sku               String           @unique
-  shortDescription  String
-  description       String
+  shortDescription String @db.Text
+  description  String @db.Text
   features          Json
   specifications    Json
   images            Json
@@ -78,7 +78,7 @@ model Product {
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @default(now()) @updatedAt
   seoTitle          String?
-  seoDescription    String?
+  seoDescription String? @db.Text
   imageAlt          String?
   lowStockThreshold Int              @default(5)
   orderItems        OrderItem[]
@@ -108,7 +108,7 @@ model Banner {
   title       String
   subtitle    String
   badge       String
-  description String
+  description  String @db.Text
   price       Float
   discount    Float      @default(0)
   image       String
@@ -186,7 +186,7 @@ model Review {
   customerAvatar     String?
   rating             Int
   title              String
-  comment            String
+  comment String @db.Text
   images             Json
   isVerifiedPurchase Boolean  @default(false)
   isApproved         Boolean  @default(true)
