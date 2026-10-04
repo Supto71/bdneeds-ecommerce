@@ -9,8 +9,10 @@ const standaloneDir = path.join(rootDir, '.next', 'standalone');
 console.log('--- Starting cPanel Build Preparation ---');
 
 // 1. Build the Next.js app
-console.log('\n> Running next build...');
+console.log('\n> Running prisma generate...');
 try {
+  execSync('npx prisma generate', { stdio: 'inherit' });
+  console.log('\n> Running next build...');
   execSync('npx next build --webpack', { stdio: 'inherit' });
 } catch (error) {
   console.error('\nBuild failed! Aborting cPanel preparation.');
