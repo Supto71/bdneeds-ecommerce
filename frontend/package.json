@@ -6,6 +6,7 @@
     "dev": "next dev --turbo",
     "build": "prisma generate && next build",
     "build:cpanel": "node scripts/cpanel-build.js",
+    "db:seed": "npx tsx prisma/seed.ts",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate || exit 0"
@@ -40,5 +41,8 @@
     "prisma": "^5.22.0",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
   }
 }

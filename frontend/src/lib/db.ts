@@ -367,7 +367,7 @@ export async function createOrder(input: any) {
     const enrichedItems = await Promise.all(
       input.items.map(async (item: any) => {
         // Row-level lock on Product to prevent race conditions
-        const productsRaw = await tx.$queryRaw`SELECT * FROM "Product" WHERE id = ${item.productId} FOR UPDATE`;
+        const productsRaw = await tx.$queryRaw`SELECT * FROM \`Product\` WHERE id = ${item.productId} FOR UPDATE`;
         const productLocked = (productsRaw as any)[0];
         if (!productLocked) throw new Error(`Product not found: ${item.productId}`);
 
@@ -385,7 +385,7 @@ export async function createOrder(input: any) {
 
         if (item.variantId) {
           // Row-level lock on ProductVariant
-          const variantsRaw = await tx.$queryRaw`SELECT * FROM "ProductVariant" WHERE id = ${item.variantId} FOR UPDATE`;
+          const variantsRaw = await tx.$queryRaw`SELECT * FROM \`ProductVariant\` WHERE id = ${item.variantId} FOR UPDATE`;
           const variantLocked = (variantsRaw as any)[0];
           if (!variantLocked) throw new Error(`Variant not found: ${item.variantId}`);
 
@@ -452,7 +452,7 @@ export async function createOrder(input: any) {
     let discount = 0;
     let couponCode: string | null = null;
     if (input.couponCode) {
-      const couponRaw = await tx.$queryRaw`SELECT * FROM "Coupon" WHERE code = ${input.couponCode} FOR UPDATE`;
+      const couponRaw = await tx.$queryRaw`SELECT * FROM \`Coupon\` WHERE code = ${input.couponCode} FOR UPDATE`;
       const couponLocked = (couponRaw as any)[0];
       if (couponLocked) {
         const coupon = await tx.coupon.findUnique({ where: { code: input.couponCode } });

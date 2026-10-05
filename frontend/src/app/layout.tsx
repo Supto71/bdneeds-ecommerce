@@ -75,7 +75,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${notoSerifBengali.variable} ${anekBangla.variable} antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-[#ffffff] text-[#0B132B]">
+      <body className="min-h-screen flex flex-col bg-[#ffffff] text-[#0B132B]" suppressHydrationWarning>
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script

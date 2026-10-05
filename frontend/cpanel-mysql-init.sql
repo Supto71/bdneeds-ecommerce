@@ -288,3 +288,13 @@ ALTER TABLE `Cart` ADD CONSTRAINT `Cart_userId_fkey` FOREIGN KEY (`userId`) REFE
 -- AddForeignKey
 ALTER TABLE `CartItem` ADD CONSTRAINT `CartItem_cartId_fkey` FOREIGN KEY (`cartId`) REFERENCES `Cart`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- Default Settings Record
+INSERT INTO `Settings` (`id`, `storeName`, `currency`, `freeShippingThreshold`, `taxRate`, `contactEmail`, `contactPhone`, `shippingFeeInsideDhaka`, `shippingFeeOutsideDhaka`)
+VALUES (1, 'BdNeeds', 'BDT', 5000, 0, 'contact@bdneeds.com', '01811277828', 70, 130)
+ON DUPLICATE KEY UPDATE `id`=`id`;
+
+-- Default Admin Account (Email: admin@bdneeds.com | Password: admin123)
+INSERT INTO `User` (`id`, `name`, `email`, `password`, `role`, `phone`, `createdAt`, `isFraud`)
+VALUES ('usr-admin-1', 'bdneeds Executive Admin', 'admin@bdneeds.com', 'admin123', 'ADMIN', '01811277828', NOW(), false)
+ON DUPLICATE KEY UPDATE `email`=`email`;
+
